@@ -1,4 +1,4 @@
-import { StyleSheet, TextInput, View } from "react-native";
+import { StyleSheet, TextInput, View, Text } from "react-native";
 import { colors, typography } from "@/theme/theme";
 import { useState } from "react";
 
@@ -17,26 +17,30 @@ const Input = ({
   value = "",
   onChangeText,
   style,
+  label,
   ...props
 }) => {
   const [isFocused, setIsFocused] = useState(false);
 
   return (
-    <View
-      style={[styles.container, isFocused && styles.activeContainer, style]}
-    >
-      {icon && <View style={styles.iconContainer}>{icon}</View>}
-      <TextInput
-        style={styles.input}
-        placeholder={placeholder}
-        value={value}
-        onChangeText={onChangeText}
-        placeholderTextColor={colors["grey-400"]}
-        selectionColor={colors["grey-900"]}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
-        {...props}
-      />
+    <View>
+      {label && <Text style={styles.label}>{label}</Text>}
+      <View
+        style={[styles.container, isFocused && styles.activeContainer, style]}
+      >
+        {icon && <View style={styles.iconContainer}>{icon}</View>}
+        <TextInput
+          style={styles.input}
+          placeholder={placeholder}
+          value={value}
+          onChangeText={onChangeText}
+          placeholderTextColor={colors["grey-400"]}
+          selectionColor={colors["grey-900"]}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+          {...props}
+        />
+      </View>
     </View>
   );
 };
@@ -54,6 +58,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "transparent",
     height: 55,
+  },
+  label: {
+    marginBottom: 12,
+    color: colors["grey-900"],
+    ...typography.body.medium.semibold,
   },
   input: {
     flex: 1,
