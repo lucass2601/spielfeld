@@ -5,13 +5,15 @@ export default function WizardLayout() {
   return (
     <Stack
       screenOptions={{
-        header: ({ options }) => <AppBar title={options.title} />,
+        header: ({ options }) => (
+          <AppBar title="Create Tournament" step={options.step} />
+        ),
       }}
     >
-      <Stack.Screen name="type" options={{ title: "Create Tournament" }} />
-      {/* <Stack.Screen name="info" options={{ title: "Turnier-Infos" }} />
-      <Stack.Screen name="participants" options={{ title: "Teilnehmer" }} />
-      <Stack.Screen name="summary" options={{ title: "Zusammenfassung" }} /> */}
+      <Stack.Screen name="type" options={{ step: "1" }} />
+      <Stack.Screen name="info" options={{ step: "2" }} />
+      <Stack.Screen name="participants" options={{ step: "3" }} />
+      <Stack.Screen name="summary" options={{ step: "4" }} />
     </Stack>
   );
 }

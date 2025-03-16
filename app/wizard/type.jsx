@@ -2,6 +2,7 @@ import Button from "@/components/atoms/Button";
 import ScreenContainer from "@/components/layouts/ScreenContainer";
 import TournamentTypeItem from "@/components/molcecules/TournamentTypeItem";
 import { colors, typography } from "@/theme/theme";
+import { router } from "expo-router";
 import { useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 
@@ -27,7 +28,11 @@ export default function Wizard_Type() {
           selected={selectedType === "knockout"}
         />
       </View>
-      <Button label="Next" style={{ marginTop: "auto", marginBottom: 24 }} />
+      <Button
+        onPress={() => router.push("/wizard/info")}
+        label="Next"
+        style={{ marginTop: "auto", marginBottom: 24 }}
+      />
     </ScreenContainer>
   );
 }
