@@ -8,7 +8,7 @@ import IconUser from "@/assets/icons/icon-user.svg";
 
 const tournamentTypeDefinitions = {
   knockout: "Knockout",
-  roundrobin: "Round Robin",
+  roundrobin: "League",
 };
 
 const tournamentStatusDefinitions = {
