@@ -5,7 +5,7 @@ import { colors, typography } from "@/theme/theme";
 
 import IconArrowBack from "@/assets/icons/icon-arrow-back.svg";
 
-export default function AppBar({ title }) {
+export default function AppBar({ title, step }) {
   const router = useRouter();
 
   return (
@@ -38,7 +38,7 @@ export default function AppBar({ title }) {
           color: colors["primary-600"],
         }}
       >
-        1 of 4
+        {step} of 4
       </Text>
     </View>
   );
