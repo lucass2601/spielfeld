@@ -1,8 +1,6 @@
 import { StyleSheet, Text, View, Pressable, Image } from "react-native";
 import { colors, typography } from "@/theme/theme";
 
-import { DateTime } from "luxon";
-
 import IconClock from "@/assets/icons/icon-clock.svg";
 import IconUser from "@/assets/icons/icon-user.svg";
 
@@ -17,6 +15,8 @@ const tournamentStatusDefinitions = {
   completed: "Completed",
 };
 
+import { formatDateTime } from "@/utils/dateUtils";
+
 const TournamentItem = ({
   title = "Turniername",
   dateTime,
@@ -27,11 +27,8 @@ const TournamentItem = ({
   style,
   ...props
 }) => {
-  const userTimeZone = DateTime.local().zoneName;
-
-  const dt = DateTime.fromISO(dateTime, { zone: "utc" }).setZone(userTimeZone);
-  const formattedDate = dt.toFormat("LLL d"); // z. B. "Mar 16"
-  const formattedTime = dt.toLocaleString(DateTime.TIME_SIMPLE);
+  const formattedDate = formatDateTime(dateTime, "LLL d");
+  const formattedTime = formatDateTime(dateTime, "t");
 
   return (
     <Pressable onPress={onPress} style={[styles.container, style]} {...props}>

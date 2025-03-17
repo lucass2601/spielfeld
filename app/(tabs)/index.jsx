@@ -8,6 +8,7 @@ import ScreenContainer from "@/components/layouts/ScreenContainer";
 import FabButton from "@/components/atoms/FabButton";
 
 import { router } from "expo-router";
+import { formatDateTime } from "@/utils/dateUtils";
 
 const tournaments = [
   {
@@ -54,7 +55,9 @@ const Index = () => {
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.header}>
-          <Text style={styles.date}>{new Date().toDateString()}</Text>
+          <Text style={styles.date}>
+            {formatDateTime(new Date().toISOString(), "cccc, LLL d")}
+          </Text>
           <Text style={styles.greeting}>{greeting}</Text>
         </View>
 
