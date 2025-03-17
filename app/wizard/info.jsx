@@ -113,6 +113,7 @@ export default function Wizard_Information() {
             value={tournamentName}
             onChangeText={(tournamentName) => setTournamentName(tournamentName)}
             label={"Name"}
+            placeholder="Enter tournament name..."
           />
 
           <DateTimePickerInput
