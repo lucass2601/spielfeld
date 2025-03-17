@@ -219,9 +219,8 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   inputText: {
-    flex: 1,
-    fontSize: 16,
-    color: colors["grey-800"],
+    color: colors["grey-900"],
+    ...typography.body.large.regular,
   },
   placeholder: {
     color: colors["grey-400"],
