@@ -6,17 +6,29 @@ import Button from "@/components/atoms/Button";
 
 import ScreenContainer from "@/components/layouts/ScreenContainer";
 
+import useTournamentStore from "@/store/useTournamentStore";
+
 export default function Wizard_Participants() {
+  const newTournament = useTournamentStore((state) => state.newTournament);
+
+  const submitWizard = () => {
+    router.push("/wizard/summary");
+  };
+
   return (
     <ScreenContainer>
       <View style={styles.wizard_header}>
-        <Text style={styles.title}>Tournament Participants</Text>
+        <Text style={styles.title}>
+          {newTournament.participantType === "individual"
+            ? "Select Players"
+            : "Select Teams"}
+        </Text>
       </View>
       <View style={styles.content}>
-        <Text>Tournament Participants</Text>
+        <Text>{JSON.stringify(newTournament)}</Text>
       </View>
       <Button
-        onPress={() => router.push("/wizard/summary")}
+        onPress={submitWizard}
         label="Next"
         style={{ marginTop: "auto", marginBottom: 24 }}
       />

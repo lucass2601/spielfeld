@@ -23,12 +23,29 @@ import SegmentedControl from "@/components/molcecules/SegmentedControl";
 import DateTimePickerInput from "@/components/molcecules/DateTimePickerInput";
 
 import IconHelp from "@/assets/icons/icon-help.svg";
+import useTournamentStore from "@/store/useTournamentStore";
+
+const participantTypes = [
+  {
+    label: "Individual",
+    value: "individual",
+  },
+  {
+    label: "Teams",
+    value: "teams",
+  },
+];
 
 export default function Wizard_Information() {
+  const [participantType, setParticipantType] = useState(
+    participantTypes[0].value
+  );
   const [tournamentName, setTournamentName] = useState("");
-  const [participantType, setParticipantType] = useState(0);
   const [imageUri, setImageUri] = useState(null);
   const [startDate, setStartDate] = useState(null);
+  const setTournamentInfo = useTournamentStore(
+    (state) => state.setTournamentInfo
+  );
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -41,6 +58,14 @@ export default function Wizard_Information() {
     if (!result.canceled) {
       setImageUri(result.assets[0].uri);
     }
+  };
+
+  const submitWizard = () => {
+    setTournamentInfo("imageUri", imageUri);
+    setTournamentInfo("participantType", participantType);
+    setTournamentInfo("name", tournamentName);
+    setTournamentInfo("startDate", startDate);
+    router.push("/wizard/participants");
   };
 
   return (
@@ -101,11 +126,11 @@ export default function Wizard_Information() {
               <IconHelp color={colors["primary-600"]} />
             </View>
             <SegmentedControl
-              selectedIndex={participantType}
+              selectedValue={participantType}
               onChange={(participantType) =>
                 setParticipantType(participantType)
               }
-              options={["Individual", "Teams"]}
+              options={participantTypes}
             />
           </View>
 
@@ -127,7 +152,7 @@ export default function Wizard_Information() {
         </ScrollView>
       </KeyboardAvoidingView>
       <Button
-        onPress={() => router.push("/wizard/participants")}
+        onPress={submitWizard}
         label="Next"
         style={{ marginTop: "auto", marginBottom: 24 }}
       />

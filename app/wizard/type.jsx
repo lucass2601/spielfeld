@@ -1,6 +1,7 @@
 import Button from "@/components/atoms/Button";
 import ScreenContainer from "@/components/layouts/ScreenContainer";
 import TournamentTypeItem from "@/components/molcecules/TournamentTypeItem";
+import useTournamentStore from "@/store/useTournamentStore";
 import { colors, typography } from "@/theme/theme";
 import { router } from "expo-router";
 import { useState } from "react";
@@ -8,6 +9,14 @@ import { View, Text, StyleSheet } from "react-native";
 
 export default function Wizard_Type() {
   const [selectedType, setSelectedType] = useState("roundrobin");
+  const setTournamentInfo = useTournamentStore(
+    (state) => state.setTournamentInfo
+  );
+
+  const submitWizard = () => {
+    setTournamentInfo("type", selectedType);
+    router.push("/wizard/info");
+  };
 
   return (
     <ScreenContainer>
@@ -29,7 +38,7 @@ export default function Wizard_Type() {
         />
       </View>
       <Button
-        onPress={() => router.push("/wizard/info")}
+        onPress={submitWizard}
         label="Next"
         style={{ marginTop: "auto", marginBottom: 24 }}
       />
