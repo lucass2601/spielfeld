@@ -3,29 +3,29 @@ import { Pressable, View, Text, StyleSheet } from "react-native";
 import { colors, typography } from "@/theme/theme";
 
 const SegmentedControl = ({
-  options = ["Option 1", "Option 2"],
-  selectedIndex = 0,
+  options,
+  selectedValue,
   onChange,
   style,
   ...props
 }) => {
-  const [selected, setSelected] = useState(selectedIndex);
+  const [selected, setSelected] = useState(selectedValue);
 
-  const handlePress = (index) => {
-    setSelected(index);
+  const handlePress = (option) => {
+    setSelected(option.value);
     if (onChange) {
-      onChange(index);
+      onChange(option.value);
     }
   };
 
   return (
     <View style={[styles.container, style]} {...props}>
-      {options.map((option, index) => {
-        const isSelected = selected === index;
+      {options.map((option) => {
+        const isSelected = selected === option.value;
         return (
           <Pressable
-            key={option}
-            onPress={() => handlePress(index)}
+            key={option.value}
+            onPress={() => handlePress(option)}
             style={[styles.segment, isSelected && styles.selectedSegment]}
           >
             <Text
@@ -34,7 +34,7 @@ const SegmentedControl = ({
                 isSelected && styles.selectedSegmentText,
               ]}
             >
-              {option}
+              {option.label}
             </Text>
           </Pressable>
         );
