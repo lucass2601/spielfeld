@@ -12,6 +12,12 @@ import IconSettingsFilled from "@/assets/icons/icon-settings-filled.svg";
 
 import { Text } from "react-native";
 
+const tabLabels = {
+  index: "Home",
+  customize: "Customize",
+  settings: "Settings",
+};
+
 const TabLayout = () => {
   return (
     <Tabs
@@ -20,11 +26,6 @@ const TabLayout = () => {
         tabBarActiveTintColor: colors["primary-600"],
         tabBarInactiveTintColor: colors["grey-500"],
         tabBarLabel: ({ focused }) => {
-          const label =
-            route.name === "index"
-              ? "Home"
-              : route.name.charAt(0).toUpperCase() + route.name.slice(1);
-
           return focused ? (
             <Text
               style={{
@@ -32,7 +33,7 @@ const TabLayout = () => {
                 color: colors["primary-600"],
               }}
             >
-              {label}
+              {tabLabels[route.name]}
             </Text>
           ) : (
             <Text
@@ -41,7 +42,7 @@ const TabLayout = () => {
                 color: colors["grey-500"],
               }}
             >
-              {label}
+              {tabLabels[route.name]}
             </Text>
           );
         },
