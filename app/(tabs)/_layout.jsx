@@ -58,12 +58,6 @@ const TabLayout = () => {
             ) : (
               <IconHome color={color} width={24} height={24} />
             ),
-          // <Home
-          //   width={24}
-          //   height={24}
-          //   color={color}
-          //   fill={focused ? "transparent" : "transparent"}
-          // />
         }}
       />
       <Tabs.Screen
