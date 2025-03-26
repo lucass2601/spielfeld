@@ -19,9 +19,11 @@ export default function AppBar({ title, step }) {
         backgroundColor: colors.white,
       }}
     >
-      <Pressable onPress={() => router.back()}>
-        <IconArrowBack color={colors["grey-900"]} width={24} height={24} />
-      </Pressable>
+      <View style={{ width: 32 }}>
+        <Pressable onPress={() => router.back()}>
+          <IconArrowBack color={colors["grey-900"]} width={24} height={24} />
+        </Pressable>
+      </View>
 
       <Text
         style={{
@@ -32,14 +34,18 @@ export default function AppBar({ title, step }) {
         {title}
       </Text>
 
-      <Text
-        style={{
-          ...typography.body.small.medium,
-          color: colors["primary-600"],
-        }}
-      >
-        {step} of 4
-      </Text>
+      <View style={{ width: 32 }}>
+        {step && (
+          <Text
+            style={{
+              ...typography.body.small.medium,
+              color: colors["primary-600"],
+            }}
+          >
+            {step} of 4
+          </Text>
+        )}
+      </View>
     </View>
   );
 }
