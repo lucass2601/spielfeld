@@ -1,14 +1,15 @@
 import ScreenContainer from "@/components/layouts/ScreenContainer";
 import AppBar from "@/components/molcecules/AppBar";
-import { Text } from "react-native";
+import ParticipantForm from "@/components/molcecules/ParticipantWrapper";
 
-export const PlayersScreen = () => (
-  <>
-    <AppBar title="Edit Players" />
+import { useState } from "react";
+
+export const PlayersScreen = () => {
+  return (
     <ScreenContainer>
-      <Text>Players Screen</Text>
+      <ParticipantForm participantType="individual" />
     </ScreenContainer>
-  </>
-);
+  );
+};
 
 export default PlayersScreen;
