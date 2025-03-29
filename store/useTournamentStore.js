@@ -19,12 +19,13 @@ const useTournamentStore = create((set, get) => ({
       newTournament: { ...state.newTournament, [key]: value },
     })),
 
-  addPlayer: (name) => {
+  addPlayer: (imageUri, name) => {
     set((state) => ({
       participants: [
         ...state.participants,
         {
           id: uuidv4(),
+          imageUri,
           type: "player",
           name,
         },
