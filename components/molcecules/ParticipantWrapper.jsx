@@ -114,9 +114,9 @@ const ParticipantWrapper = ({
             name={participant.name}
             selectable={allowSelection}
             selected={
-              allowSelection && selectedParticipants.includes(participant)
+              allowSelection && selectedParticipants.includes(participant.id)
             }
-            onPress={() => handleEntityPress(participant)}
+            onPress={() => handleEntityPress(participant.id)}
             onLongPress={() => router.push(`${route}/edit/${participant.id}`)}
           />
         ))}

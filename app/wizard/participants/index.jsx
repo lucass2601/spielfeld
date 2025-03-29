@@ -21,15 +21,15 @@ export default function Wizard_Participants({ onSelectParticipant }) {
     router.push("/wizard/summary");
   };
 
-  const handleParticipantSelect = (participant) => {
-    if (selectedParticipants.includes(participant)) {
+  const handleParticipantSelect = (participant_id) => {
+    if (selectedParticipants.includes(participant_id)) {
       setSelectedParticipants(
         selectedParticipants.filter(
-          (selectedParticipant) => selectedParticipant !== participant
+          (selectedParticipant_id) => selectedParticipant_id !== participant_id
         )
       );
     } else {
-      setSelectedParticipants([...selectedParticipants, participant]);
+      setSelectedParticipants([...selectedParticipants, participant_id]);
     }
   };
 
@@ -43,14 +43,12 @@ export default function Wizard_Participants({ onSelectParticipant }) {
         </Text>
       </View>
       <View style={styles.content}>
-        <Text>{JSON.stringify(newTournament)}</Text>
-        <Text>{JSON.stringify(selectedParticipants)}</Text>
         <ParticipantWrapper
           participantType={newTournament.participantType}
           allowSelection={true}
           selectedParticipants={selectedParticipants}
-          onSelectParticipant={(participant) =>
-            handleParticipantSelect(participant)
+          onSelectParticipant={(participant_id) =>
+            handleParticipantSelect(participant_id)
           }
         />
       </View>
