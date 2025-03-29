@@ -4,7 +4,7 @@ import { useState } from "react";
 import IconSearch from "@/assets/icons/icon-search.svg";
 import { colors, typography } from "@/theme/theme";
 
-import { router } from "expo-router";
+import { router, usePathname } from "expo-router";
 
 import Input from "../atoms/Input";
 
@@ -12,7 +12,7 @@ import Button from "../atoms/Button";
 import ParticipantEntity from "./ParticipantEntity";
 import useTournamentStore from "@/store/useTournamentStore";
 
-const ParticipantForm = ({
+const ParticipantWrapper = ({
   participantType,
   allowSelection = false,
   onSelectParticipant,
@@ -22,11 +22,24 @@ const ParticipantForm = ({
 
   const [participantSearch, setParticipantSearch] = useState("");
 
+  const route = usePathname();
+
+  const handleEntityPress = (participant) => {
+    if (allowSelection) {
+      onSelectParticipant(participant);
+    } else {
+      router.push(`${route}/edit/${participant.id}`);
+    }
+  };
+
   return (
     <View>
       <View>
         <Input
           value={participantSearch}
+          placeholder={`Search ${
+            participantType === "individual" ? "player" : "team"
+          }`}
           icon={
             <IconSearch color={colors["grey-400"]} width={20} height={20} />
           }
@@ -57,7 +70,7 @@ const ParticipantForm = ({
             label={`Add new ${
               participantType === "individual" ? "Player" : "Team"
             }`}
-            onPress={() => router.push("/customize/players/create")}
+            onPress={() => router.push(`${route}/create`)}
           />
         </View>
         <View
@@ -94,10 +107,22 @@ const ParticipantForm = ({
         contentContainerStyle={{ gap: 16, marginTop: 20 }}
         showsVerticalScrollIndicator={true}
       >
-        <ParticipantEntity onPress={() => alert("works")} />
+        {participants.map((participant) => (
+          <ParticipantEntity
+            key={participant.id}
+            imageUri={participant.imageUri}
+            name={participant.name}
+            selectable={allowSelection}
+            selected={
+              allowSelection && selectedParticipants.includes(participant)
+            }
+            onPress={() => handleEntityPress(participant)}
+            onLongPress={() => router.push(`${route}/edit/${participant.id}`)}
+          />
+        ))}
       </ScrollView>
     </View>
   );
 };
 
-export default ParticipantForm;
+export default ParticipantWrapper;

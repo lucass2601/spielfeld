@@ -2,7 +2,6 @@ import Button from "@/components/atoms/Button";
 import ScreenContainer from "@/components/layouts/ScreenContainer";
 import { colors, typography } from "@/theme/theme";
 import { View, Text, StyleSheet } from "react-native";
-import { router } from "expo-router";
 
 export default function Wizard_Summary() {
   return (

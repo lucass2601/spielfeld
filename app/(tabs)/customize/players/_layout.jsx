@@ -8,8 +8,9 @@ export default function CustomizePlayerLayout() {
         header: ({ options }) => <AppBar title={options.title} />,
       }}
     >
-      <Stack.Screen name="index" options={{ title: "Edit Player" }} />
+      <Stack.Screen name="index" options={{ title: "Customize Players" }} />
       <Stack.Screen name="create" options={{ title: "Add Player" }} />
+      <Stack.Screen name="edit/[id]" options={{ title: "Edit Player" }} />
     </Stack>
   );
 }
