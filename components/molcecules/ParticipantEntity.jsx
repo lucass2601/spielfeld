@@ -29,7 +29,7 @@ const ParticipantEntity = ({
         <Text>{name}</Text>
       </View>
       {selectable ? (
-        <RadioButton selected={selected} />
+        <RadioButton selected={selected} onPress={onPress} />
       ) : (
         <IconChevronLeft width={20} height={20} color={colors["grey-900"]} />
       )}

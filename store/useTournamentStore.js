@@ -32,6 +32,18 @@ const useTournamentStore = create((set, get) => ({
       ],
     }));
   },
+
+  editPlayer: (id, imageUri, name) => {
+    set((state) => ({
+      participants: state.participants.map((participant) =>
+        participant.id === id ? { ...participant, imageUri, name } : participant
+      ),
+    }));
+  },
+
+  getParticipant: (id) => {
+    return get().participants.find((participant) => participant.id === id);
+  },
 }));
 
 export default useTournamentStore;
