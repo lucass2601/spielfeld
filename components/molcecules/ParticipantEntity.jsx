@@ -54,6 +54,6 @@ const styles = StyleSheet.create({
   entityIcon: {
     width: 44,
     height: 44,
-    borderRadius: "50%",
+    borderRadius: 22,
   },
 });
