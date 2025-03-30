@@ -24,11 +24,11 @@ const ParticipantWrapper = ({
 
   const route = usePathname();
 
-  const handleEntityPress = (participant) => {
+  const handleEntityPress = (participant_id) => {
     if (allowSelection) {
-      onSelectParticipant(participant);
+      onSelectParticipant(participant_id);
     } else {
-      router.push(`${route}/edit/${participant.id}`);
+      router.push(`${route}/edit/${participant_id}`);
     }
   };
 
