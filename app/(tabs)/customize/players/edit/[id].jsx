@@ -12,7 +12,7 @@ const EditParticipant = () => {
 
   return (
     <ScreenContainer>
-      <ParticipantForm participant={player} mode="edit" />
+      <ParticipantForm type="players" participant={player} mode="edit" />
     </ScreenContainer>
   );
 };

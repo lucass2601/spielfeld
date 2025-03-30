@@ -10,6 +10,7 @@ import Input from "../atoms/Input";
 
 import Button from "../atoms/Button";
 import ParticipantEntity from "./ParticipantEntity";
+
 import useTournamentStore from "@/store/useTournamentStore";
 
 const ParticipantWrapper = ({
@@ -18,11 +19,37 @@ const ParticipantWrapper = ({
   onSelectParticipant,
   selectedParticipants,
 }) => {
-  const participants = useTournamentStore((state) => state.participants);
+  const getParticipants = useTournamentStore((state) => state.participants);
+  const participants = getParticipants.filter(
+    (p) => p.type === participantType
+  );
+
+  console.log(participants);
 
   const [participantSearch, setParticipantSearch] = useState("");
 
   const route = usePathname();
+  let createPlayersRoute = usePathname();
+
+  switch (route) {
+    case "/wizard/participants":
+      createPlayersRoute = "/wizard/participants/create";
+      break;
+    case "/customize/players":
+      createPlayersRoute = "/customize/players/create";
+      break;
+    case "/customize/teams":
+      createPlayersRoute = "/customize/teams/create";
+      break;
+    default:
+      break;
+  }
+
+  if (route === "/wizard/participants") {
+    createPlayersRoute = "/wizard/participants/create";
+  } else if (route === "/customize/players") {
+    createPlayersRoute = "/customize/players/create";
+  }
 
   const handleEntityPress = (participant_id) => {
     if (allowSelection) {
@@ -38,7 +65,7 @@ const ParticipantWrapper = ({
         <Input
           value={participantSearch}
           placeholder={`Search ${
-            participantType === "individual" ? "player" : "team"
+            participantType === "players" ? "player" : "team"
           }`}
           icon={
             <IconSearch color={colors["grey-400"]} width={20} height={20} />
@@ -68,9 +95,9 @@ const ParticipantWrapper = ({
             size={allowSelection ? "small" : "medium"}
             style={[{ borderRadius: 8 }, !allowSelection && { width: "100%" }]}
             label={`Add new ${
-              participantType === "individual" ? "Player" : "Team"
+              participantType === "players" ? "Player" : "Team"
             }`}
-            onPress={() => router.push(`${route}/create`)}
+            onPress={() => router.push(createPlayersRoute)}
           />
         </View>
         <View
@@ -88,7 +115,7 @@ const ParticipantWrapper = ({
               }}
             >
               {selectedParticipants?.length}{" "}
-              {participantType === "individual" ? "Players" : "Teams"} selected
+              {participantType === "players" ? "Players" : "Teams"} selected
             </Text>
           ) : (
             <Text
@@ -97,8 +124,8 @@ const ParticipantWrapper = ({
                 ...typography.body.large.bold,
               }}
             >
-              {participants?.length}{" "}
-              {participantType === "individual" ? "Players" : "Teams"}
+              {/* {participants?.length}{" "} */}
+              {participantType === "players" ? "Players" : "Teams"}
             </Text>
           )}
         </View>
@@ -107,7 +134,7 @@ const ParticipantWrapper = ({
         contentContainerStyle={{ gap: 16, marginTop: 20 }}
         showsVerticalScrollIndicator={true}
       >
-        {participants.map((participant) => (
+        {participants?.map((participant) => (
           <ParticipantEntity
             key={participant.id}
             imageUri={participant.imageUri}

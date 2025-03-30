@@ -7,12 +7,17 @@ import { useLocalSearchParams } from "expo-router";
 import useTournamentStore from "@/store/useTournamentStore";
 
 const EditParticipant = () => {
+  const newTournament = useTournamentStore((state) => state.newTournament);
   const { id } = useLocalSearchParams();
-  const player = useTournamentStore((state) => state.getParticipant(id));
+  const participant = useTournamentStore((state) => state.getParticipant(id));
 
   return (
     <ScreenContainer>
-      <ParticipantForm participant={player} mode="edit" />
+      <ParticipantForm
+        type={newTournament.participantType}
+        participant={participant}
+        mode="edit"
+      />
     </ScreenContainer>
   );
 };

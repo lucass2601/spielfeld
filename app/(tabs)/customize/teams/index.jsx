@@ -1,12 +1,10 @@
 import ScreenContainer from "@/components/layouts/ScreenContainer";
-import AppBar from "@/components/molcecules/AppBar";
-import { Text } from "react-native";
+import ParticipantWrapper from "@/components/molcecules/ParticipantWrapper";
 
 export const TeamsScreen = () => (
   <>
-    <AppBar title="Edit Teams" />
     <ScreenContainer>
-      <Text>Teams Screen</Text>
+      <ParticipantWrapper participantType="teams" />
     </ScreenContainer>
   </>
 );

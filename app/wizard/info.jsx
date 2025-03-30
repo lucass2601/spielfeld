@@ -27,8 +27,8 @@ import useTournamentStore from "@/store/useTournamentStore";
 
 const participantTypes = [
   {
-    label: "Individual",
-    value: "individual",
+    label: "Players",
+    value: "players",
   },
   {
     label: "Teams",

@@ -4,7 +4,7 @@ import ParticipantWrapper from "@/components/molcecules/ParticipantWrapper";
 export const PlayersScreen = () => {
   return (
     <ScreenContainer>
-      <ParticipantWrapper participantType="individual" />
+      <ParticipantWrapper participantType="players" />
     </ScreenContainer>
   );
 };

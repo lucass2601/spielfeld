@@ -19,27 +19,33 @@ const useTournamentStore = create((set, get) => ({
       newTournament: { ...state.newTournament, [key]: value },
     })),
 
-  addPlayer: (imageUri, name) => {
+  addParticipant: (imageUri, name, type) => {
     set((state) => ({
       participants: [
         ...state.participants,
         {
           id: uuidv4(),
           imageUri,
-          type: "player",
           name,
+          type,
         },
       ],
     }));
   },
 
-  editPlayer: (id, imageUri, name) => {
+  editParticipant: (id, imageUri, name) => {
     set((state) => ({
       participants: state.participants.map((participant) =>
         participant.id === id ? { ...participant, imageUri, name } : participant
       ),
     }));
   },
+
+  // getParticipants: (type) => {
+  //   return get().participants.filter(
+  //     (participant) => participant.type === type
+  //   );
+  // },
 
   getParticipant: (id) => {
     return get().participants.find((participant) => participant.id === id);

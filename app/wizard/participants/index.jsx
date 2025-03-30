@@ -37,7 +37,7 @@ export default function Wizard_Participants({ onSelectParticipant }) {
     <ScreenContainer>
       <View style={styles.wizard_header}>
         <Text style={styles.title}>
-          {newTournament.participantType === "individual"
+          {newTournament.participantType === "players"
             ? "Select Players"
             : "Select Teams"}
         </Text>

@@ -1,13 +1,12 @@
-import { StyleSheet, Text, View } from "react-native";
+import ScreenContainer from "@/components/layouts/ScreenContainer";
+import ParticipantForm from "@/components/molcecules/ParticipantForm";
 
-const CreateTeamScreen = () => {
+const CreateTeamsScreen = () => {
   return (
-    <View>
-      <Text>create</Text>
-    </View>
+    <ScreenContainer>
+      <ParticipantForm type="teams" />
+    </ScreenContainer>
   );
 };
 
-export default CreateTeamScreen;
-
-const styles = StyleSheet.create({});
+export default CreateTeamsScreen;

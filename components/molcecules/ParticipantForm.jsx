@@ -9,18 +9,18 @@ import Button from "../atoms/Button";
 import useTournamentStore from "@/store/useTournamentStore";
 import { router } from "expo-router";
 
-const ParticipantForm = ({ participant, mode = "create" }) => {
+const ParticipantForm = ({ type, participant, mode = "create" }) => {
   const [imageUri, setImageUri] = useState(participant?.imageUri || null);
   const [name, setName] = useState(participant?.name || "");
 
-  const addPlayer = useTournamentStore((state) => state.addPlayer);
-  const editPlayer = useTournamentStore((state) => state.editPlayer);
+  const addParticipant = useTournamentStore((state) => state.addParticipant);
+  const editParticipant = useTournamentStore((state) => state.editParticipant);
 
   const handleSubmit = () => {
     if (mode === "create") {
-      addPlayer(imageUri, name);
+      addParticipant(imageUri, name, type);
     } else if (mode === "edit") {
-      editPlayer(participant.id, imageUri, name);
+      editParticipant(participant.id, imageUri, name, type);
     }
     router.back();
   };
