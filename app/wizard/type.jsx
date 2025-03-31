@@ -8,7 +8,10 @@ import { useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 
 export default function Wizard_Type() {
-  const [selectedType, setSelectedType] = useState("roundrobin");
+  const newTournament = useTournamentStore((state) => state.newTournament);
+  const [selectedType, setSelectedType] = useState(
+    newTournament.type || "roundrobin"
+  );
   const setTournamentInfo = useTournamentStore(
     (state) => state.setTournamentInfo
   );

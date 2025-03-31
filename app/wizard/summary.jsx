@@ -1,9 +1,12 @@
 import Button from "@/components/atoms/Button";
 import ScreenContainer from "@/components/layouts/ScreenContainer";
+import useTournamentStore from "@/store/useTournamentStore";
 import { colors, typography } from "@/theme/theme";
 import { View, Text, StyleSheet } from "react-native";
 
 export default function Wizard_Summary() {
+  const newTournament = useTournamentStore((state) => state.newTournament);
+
   return (
     <ScreenContainer>
       <View style={styles.wizard_header}>

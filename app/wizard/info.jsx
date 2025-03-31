@@ -37,15 +37,16 @@ const participantTypes = [
 ];
 
 export default function Wizard_Information() {
+  const newTournament = useTournamentStore((state) => state.newTournament);
+  const setTournamentInfo = useTournamentStore(
+    (state) => state.setTournamentInfo
+  );
   const [participantType, setParticipantType] = useState(
-    participantTypes[0].value
+    newTournament.participantType || "players"
   );
   const [tournamentName, setTournamentName] = useState("");
   const [imageUri, setImageUri] = useState(null);
   const [startDate, setStartDate] = useState(null);
-  const setTournamentInfo = useTournamentStore(
-    (state) => state.setTournamentInfo
-  );
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({

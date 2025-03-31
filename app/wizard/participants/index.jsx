@@ -14,10 +14,13 @@ import useTournamentStore from "@/store/useTournamentStore";
 
 export default function Wizard_Participants({ onSelectParticipant }) {
   const [selectedParticipants, setSelectedParticipants] = useState([]);
-
   const newTournament = useTournamentStore((state) => state.newTournament);
+  const setTournamentInfo = useTournamentStore(
+    (state) => state.setTournamentInfo
+  );
 
   const submitWizard = () => {
+    setTournamentInfo("participants", selectedParticipants);
     router.push("/wizard/summary");
   };
 

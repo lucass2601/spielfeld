@@ -5,10 +5,10 @@ import { v4 as uuidv4 } from "uuid";
 const useTournamentStore = create((set, get) => ({
   newTournament: {
     imageUri: "",
-    type: "",
+    type: "roundrobin",
     name: "",
     startDate: "",
-    participantType: "",
+    participantType: "players",
     participants: [],
   },
 
