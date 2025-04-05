@@ -18,27 +18,31 @@ const tournamentStatusDefinitions = {
 import { formatDateTime } from "@/utils/dateUtils";
 
 const TournamentItem = ({
-  title = "Turniername",
-  dateTime,
-  participants = 48,
-  tournamentType = "Knockout",
-  tournamentStatus,
+  imageUri,
+  name = "Turniername",
+  startDate,
+  participants,
+  type = "Knockout",
+  preview = false,
+  status,
   onPress,
   style,
   ...props
 }) => {
-  const formattedDate = formatDateTime(dateTime, "LLL d");
-  const formattedTime = formatDateTime(dateTime, "t");
+  const formattedDate = formatDateTime(startDate, "LLL d");
+  const formattedTime = formatDateTime(startDate, "t");
 
   return (
     <Pressable onPress={onPress} style={[styles.container, style]} {...props}>
       <View style={styles.header}>
         <Image
           style={styles.cover}
-          source={require("@/assets/images/icon.png")}
+          source={
+            imageUri ? { uri: imageUri } : require("@/assets/images/icon.png")
+          }
         />
         <View style={styles.infoContainer}>
-          <Text style={styles.title}>{title}</Text>
+          <Text style={styles.title}>{name}</Text>
           <View style={styles.dateTimeContainer}>
             <IconClock width={16} height={16} color={colors["grey-500"]} />
             <Text style={styles.date_time}>{formattedDate}</Text>
@@ -47,28 +51,33 @@ const TournamentItem = ({
           </View>
         </View>
       </View>
-      <View style={styles.footer}>
-        <View style={styles.statsContainer}>
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-          >
-            <IconUser width={14} height={14} color={colors["grey-500"]} />
-            <Text style={[styles.participantCount, styles.statsContainerText]}>
-              {participants}
+
+      {!preview && (
+        <View style={styles.footer}>
+          <View style={styles.statsContainer}>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <IconUser width={14} height={14} color={colors["grey-500"]} />
+              <Text
+                style={[styles.participantCount, styles.statsContainerText]}
+              >
+                {participants.length}
+              </Text>
+            </View>
+            <View style={styles.ellipse}></View>
+            <Text style={[styles.tournamentType, styles.statsContainerText]}>
+              {tournamentTypeDefinitions[type]}
             </Text>
           </View>
-          <View style={styles.ellipse}></View>
-          <Text style={[styles.tournamentType, styles.statsContainerText]}>
-            {tournamentTypeDefinitions[tournamentType]}
+          <Text style={[styles.status, styles[`status__${status}`]]}>
+            {tournamentStatusDefinitions[status]}
           </Text>
         </View>
-        <Text style={[styles.status, styles[`status__${tournamentStatus}`]]}>
-          {tournamentStatusDefinitions[tournamentStatus]}
-        </Text>
-      </View>
+      )}
     </Pressable>
   );
 };
@@ -99,6 +108,7 @@ const styles = StyleSheet.create({
   cover: {
     height: 48,
     width: 48,
+    borderRadius: 6,
   },
   infoContainer: {
     flex: 1,
