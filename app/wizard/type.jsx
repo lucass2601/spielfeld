@@ -12,12 +12,12 @@ export default function Wizard_Type() {
   const [selectedType, setSelectedType] = useState(
     newTournament.type || "roundrobin"
   );
-  const setTournamentInfo = useTournamentStore(
-    (state) => state.setTournamentInfo
+  const setNewTournamentInfo = useTournamentStore(
+    (state) => state.setNewTournamentInfo
   );
 
   const submitWizard = () => {
-    setTournamentInfo("type", selectedType);
+    setNewTournamentInfo("type", selectedType);
     router.push("/wizard/info");
   };
 

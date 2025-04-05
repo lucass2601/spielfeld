@@ -38,8 +38,8 @@ const participantTypes = [
 
 export default function Wizard_Information() {
   const newTournament = useTournamentStore((state) => state.newTournament);
-  const setTournamentInfo = useTournamentStore(
-    (state) => state.setTournamentInfo
+  const setNewTournamentInfo = useTournamentStore(
+    (state) => state.setNewTournamentInfo
   );
   const [participantType, setParticipantType] = useState(
     newTournament.participantType || "players"
@@ -62,10 +62,10 @@ export default function Wizard_Information() {
   };
 
   const submitWizard = () => {
-    setTournamentInfo("imageUri", imageUri);
-    setTournamentInfo("participantType", participantType);
-    setTournamentInfo("name", tournamentName);
-    setTournamentInfo("startDate", startDate);
+    setNewTournamentInfo("imageUri", imageUri);
+    setNewTournamentInfo("participantType", participantType);
+    setNewTournamentInfo("name", tournamentName);
+    setNewTournamentInfo("startDate", startDate);
     router.push("/wizard/participants");
   };
 

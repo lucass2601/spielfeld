@@ -12,15 +12,15 @@ import ParticipantWrapper from "@/components/molcecules/ParticipantWrapper";
 
 import useTournamentStore from "@/store/useTournamentStore";
 
-export default function Wizard_Participants({ onSelectParticipant }) {
+export default function Wizard_Participants() {
   const [selectedParticipants, setSelectedParticipants] = useState([]);
   const newTournament = useTournamentStore((state) => state.newTournament);
-  const setTournamentInfo = useTournamentStore(
-    (state) => state.setTournamentInfo
+  const setNewTournamentInfo = useTournamentStore(
+    (state) => state.setNewTournamentInfo
   );
 
   const submitWizard = () => {
-    setTournamentInfo("participants", selectedParticipants);
+    setNewTournamentInfo("participants", selectedParticipants);
     router.push("/wizard/summary");
   };
 
@@ -73,6 +73,7 @@ const styles = StyleSheet.create({
     color: colors["grey-900"],
   },
   content: {
+    flex: 1,
     marginTop: 32,
     gap: 12,
   },

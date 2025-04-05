@@ -10,35 +10,12 @@ import FabButton from "@/components/atoms/FabButton";
 import { router } from "expo-router";
 import { formatDateTime } from "@/utils/dateUtils";
 
-const tournaments = [
-  {
-    id: "1",
-    title: "Example Tournament",
-    dateTime: "2025-03-16T17:00:00Z",
-    participants: 48,
-    tournamentType: "knockout",
-    tournamentStatus: "pending",
-  },
-  {
-    id: "2",
-    title: "Example Example",
-    dateTime: "2025-01-26T12:30:00Z",
-    participants: 23,
-    tournamentType: "roundrobin",
-    tournamentStatus: "active",
-  },
-  {
-    id: "3",
-    title: "Example Example",
-    dateTime: "2025-01-04T19:00:00Z",
-    participants: 12,
-    tournamentType: "knockout",
-    tournamentStatus: "completed",
-  },
-];
+import useTournamentStore from "@/store/useTournamentStore";
 
 const Index = () => {
   const [greeting, setGreeting] = useState("");
+
+  const tournaments = useTournamentStore((state) => state.tournaments);
 
   useEffect(() => {
     const hour = new Date().getHours();
@@ -66,14 +43,15 @@ const Index = () => {
         </View>
 
         <View style={styles.listContainer}>
-          {tournaments.map((item) => (
+          {tournaments.map((tournament) => (
             <TournamentItem
-              key={item.id}
-              title={item.title}
-              dateTime={item.dateTime}
-              participants={item.participants}
-              tournamentType={item.tournamentType}
-              tournamentStatus={item.tournamentStatus}
+              key={tournament.id}
+              imageUri={tournament.imageUri}
+              name={tournament.name}
+              startDate={new Date(tournament.startDate).toISOString()}
+              participants={tournament.participants}
+              type={tournament.type}
+              status={tournament.status}
             />
           ))}
         </View>

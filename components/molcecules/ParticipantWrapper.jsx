@@ -24,8 +24,6 @@ const ParticipantWrapper = ({
     (p) => p.type === participantType
   );
 
-  console.log(participants);
-
   const [participantSearch, setParticipantSearch] = useState("");
 
   const route = usePathname();
@@ -60,7 +58,7 @@ const ParticipantWrapper = ({
   };
 
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <View>
         <Input
           value={participantSearch}
@@ -124,30 +122,34 @@ const ParticipantWrapper = ({
                 ...typography.body.large.bold,
               }}
             >
-              {/* {participants?.length}{" "} */}
               {participantType === "players" ? "Players" : "Teams"}
             </Text>
           )}
         </View>
       </View>
-      <ScrollView
-        contentContainerStyle={{ gap: 16, marginTop: 20 }}
-        showsVerticalScrollIndicator={true}
-      >
-        {participants?.map((participant) => (
-          <ParticipantEntity
-            key={participant.id}
-            imageUri={participant.imageUri}
-            name={participant.name}
-            selectable={allowSelection}
-            selected={
-              allowSelection && selectedParticipants.includes(participant.id)
-            }
-            onPress={() => handleEntityPress(participant.id)}
-            onLongPress={() => router.push(`${route}/edit/${participant.id}`)}
-          />
-        ))}
-      </ScrollView>
+      <View style={{ flex: 1 }}>
+        <ScrollView
+          contentContainerStyle={{
+            gap: 16,
+            marginTop: 20,
+          }}
+          showsVerticalScrollIndicator={true}
+        >
+          {participants?.map((participant) => (
+            <ParticipantEntity
+              key={participant.id}
+              imageUri={participant.imageUri}
+              name={participant.name}
+              selectable={allowSelection}
+              selected={
+                allowSelection && selectedParticipants.includes(participant.id)
+              }
+              onPress={() => handleEntityPress(participant.id)}
+              onLongPress={() => router.push(`${route}/edit/${participant.id}`)}
+            />
+          ))}
+        </ScrollView>
+      </View>
     </View>
   );
 };
