@@ -5,6 +5,7 @@ import useTournamentStore from "@/store/useTournamentStore";
 import { colors, typography } from "@/theme/theme";
 import { formatDateTime } from "@/utils/dateUtils";
 import { router } from "expo-router";
+
 import {
   View,
   Text,
@@ -33,6 +34,7 @@ export default function Wizard_Summary() {
   const submitWizard = () => {
     submitNewTournament();
     router.replace("/");
+    router.dismissAll();
   };
 
   return (
