@@ -17,6 +17,10 @@ const Index = () => {
 
   const tournaments = useTournamentStore((state) => state.tournaments);
 
+  const handleTournamentPress = (tournament_id) => {
+    router.push(`/tournament/${tournament_id}`);
+  };
+
   useEffect(() => {
     const hour = new Date().getHours();
     if (hour < 12) setGreeting("Good morning!");
@@ -52,6 +56,7 @@ const Index = () => {
               participants={tournament.participants}
               type={tournament.type}
               status={tournament.status}
+              onPress={() => handleTournamentPress(tournament.id)}
             />
           ))}
         </View>
