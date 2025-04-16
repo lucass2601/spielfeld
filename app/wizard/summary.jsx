@@ -59,7 +59,7 @@ export default function Wizard_Summary() {
           <View style={styles.summary_section__header}>
             <Text style={styles.header_item__header}>Tournament Type</Text>
             <Pressable
-              onPress={() => router.push("/wizard/type")}
+              onPress={() => router.dismissTo("/wizard/type")}
               style={styles.header_item__button}
             >
               <Text style={styles.header_item__buttonText}>Change</Text>
@@ -80,7 +80,7 @@ export default function Wizard_Summary() {
               Tournament Information
             </Text>
             <Pressable
-              onPress={() => router.push("/wizard/info")}
+              onPress={() => router.dismissTo("/wizard/info")}
               style={styles.header_item__button}
             >
               <Text style={styles.header_item__buttonText}>Change</Text>
@@ -110,7 +110,7 @@ export default function Wizard_Summary() {
               {participants.length})
             </Text>
             <Pressable
-              onPress={() => router.push("/wizard/participants")}
+              onPress={() => router.dismissTo("/wizard/participants")}
               style={styles.header_item__button}
             >
               <Text style={styles.header_item__buttonText}>Change</Text>
