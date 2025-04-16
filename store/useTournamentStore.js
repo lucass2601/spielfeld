@@ -59,6 +59,10 @@ const useTournamentStore = create((set, get) => ({
   getParticipant: (id) => {
     return get().participants.find((participant) => participant.id === id);
   },
+
+  getTournament: (id) => {
+    return get().tournaments.find((tournament) => tournament.id === id);
+  },
 }));
 
 export default useTournamentStore;
