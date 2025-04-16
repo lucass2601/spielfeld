@@ -13,10 +13,12 @@ import ParticipantWrapper from "@/components/molcecules/ParticipantWrapper";
 import useTournamentStore from "@/store/useTournamentStore";
 
 export default function Wizard_Participants() {
-  const [selectedParticipants, setSelectedParticipants] = useState([]);
   const newTournament = useTournamentStore((state) => state.newTournament);
   const setNewTournamentInfo = useTournamentStore(
     (state) => state.setNewTournamentInfo
+  );
+  const [selectedParticipants, setSelectedParticipants] = useState(
+    newTournament.participants
   );
 
   const submitWizard = () => {
