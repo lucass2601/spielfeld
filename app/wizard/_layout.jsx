@@ -24,11 +24,11 @@ export default function WizardLayout() {
       />
       <Stack.Screen
         name="participants/create"
-        options={{ title: "Add Player", step: "3" }}
+        options={{ title: "Add Participant", step: "3" }}
       />
       <Stack.Screen
         name="participants/edit/[id]"
-        options={{ title: "Edit Player", step: "3" }}
+        options={{ title: "Edit Participant", step: "3" }}
       />
 
       <Stack.Screen
