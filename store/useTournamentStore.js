@@ -2,6 +2,27 @@ import { create } from "zustand";
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
 
+const generateMatches = (tournamentType, participantCount) => {
+  if (tournamentType === "roundrobin") {
+    let schedule = [];
+
+    for (let matchday = 1; matchday < participantCount; matchday++) {
+      console.log("Game: " + matchday);
+      schedule.push({ matchday_id: uuidv4(), matches: [] });
+      for (
+        let participant = 0;
+        participant < Math.ceil(participantCount / 2);
+        participant++
+      ) {
+        console.log("Match: " + participant);
+        schedule[matchday - 1].matches.push({ match_id: uuidv4() });
+      }
+    }
+
+    return schedule;
+  }
+};
+
 const useTournamentStore = create((set, get) => ({
   newTournament: {
     imageUri: "",
@@ -20,10 +41,18 @@ const useTournamentStore = create((set, get) => ({
     })),
 
   submitNewTournament: () => {
+    const state = get();
+    const { participants, newTournament } = state;
+
     set((state) => ({
       tournaments: [
         ...state.tournaments,
-        { id: uuidv4(), status: "pending", ...state.newTournament },
+        {
+          id: uuidv4(),
+          status: "pending",
+          schedule: generateMatches(newTournament.type, participants.length),
+          ...state.newTournament,
+        },
       ],
     }));
   },
