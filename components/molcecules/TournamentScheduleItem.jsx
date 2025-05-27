@@ -1,10 +1,10 @@
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 import React from "react";
 import { colors, typography } from "@/theme/theme";
 
-const TournamentScheduleItem = ({ matchday }) => {
+const TournamentScheduleItem = ({ onPress, matchday }) => {
   return (
-    <View style={styles.container}>
+    <Pressable onPress={onPress} style={styles.container}>
       <View style={styles.imageContainer}>
         <Image
           style={styles.image}
@@ -42,7 +42,7 @@ const TournamentScheduleItem = ({ matchday }) => {
         />
         <Text style={styles.imageText}>No Team</Text>
       </View>
-    </View>
+    </Pressable>
   );
 };
 
