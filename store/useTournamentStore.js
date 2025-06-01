@@ -15,7 +15,11 @@ const generateMatches = (tournamentType, participantCount) => {
         participant++
       ) {
         console.log("Match: " + participant);
-        schedule[matchday - 1].matches.push({ match_id: uuidv4() });
+        schedule[matchday - 1].matches.push({
+          match_id: uuidv4(),
+          participant_home: null,
+          participant_away: null,
+        });
       }
     }
 
