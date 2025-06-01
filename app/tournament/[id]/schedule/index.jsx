@@ -19,66 +19,70 @@ export default function ScheduleTab() {
 
   return (
     <ScreenContainer>
-      <ScrollView
-        horizontal={true}
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{
-          flexDirection: "row",
-          gap: 12,
-          marginBottom: 24,
-        }}
-      >
-        {matchdays.map((matchday, index) => (
-          <Button
-            key={matchday.matchday_id}
-            variant="tertiary"
-            size="small"
-            label={`Matchday ${index + 1}`}
-            onPress={() => {
-              const ref = matchdayRefs.current[index];
+      <View>
+        <ScrollView
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{
+            flexDirection: "row",
+            gap: 12,
+            marginBottom: 24,
+          }}
+        >
+          {matchdays.map((matchday, index) => (
+            <Button
+              key={matchday.matchday_id}
+              variant="tertiary"
+              size="small"
+              label={`Matchday ${index + 1}`}
+              onPress={() => {
+                const ref = matchdayRefs.current[index];
 
-              if (ref && scrollViewRef.current) {
-                ref.measureLayout(
-                  scrollViewRef.current,
-                  (x, y) => {
-                    scrollViewRef.current.scrollTo({ y, animated: true });
-                  },
-                  (error) => console.warn(error)
-                );
-              }
-            }}
-          />
-        ))}
-      </ScrollView>
-      <ScrollView ref={scrollViewRef}>
-        {matchdays.map((matchday, index) => (
-          <View
-            ref={(el) => (matchdayRefs.current[index] = el)}
-            style={{ marginBottom: 24 }}
-            key={matchday.matchday_id}
-          >
-            <Text
-              style={[
-                typography.body.medium.semibold,
-                { color: colors["grey-500"] },
-              ]}
+                if (ref && scrollViewRef.current) {
+                  ref.measureLayout(
+                    scrollViewRef.current,
+                    (x, y) => {
+                      scrollViewRef.current.scrollTo({ y, animated: true });
+                    },
+                    (error) => console.warn(error)
+                  );
+                }
+              }}
+            />
+          ))}
+        </ScrollView>
+        <ScrollView ref={scrollViewRef} contentContainerStyle={{ flex: 0 }}>
+          {matchdays.map((matchday, index) => (
+            <View
+              ref={(el) => (matchdayRefs.current[index] = el)}
+              style={{ marginBottom: 24 }}
+              key={matchday.matchday_id}
             >
-              Matchday {index + 1}
-            </Text>
-            {matchday.matches.map((match) => (
-              <View key={match.match_id} style={{ marginTop: 12 }}>
-                <TournamentScheduleItem
-                  onPress={() =>
-                    router.push(`/tournament/${id}/schedule/${match.match_id}`)
-                  }
-                  matchday={index + 1}
-                  match={match}
-                />
-              </View>
-            ))}
-          </View>
-        ))}
-      </ScrollView>
+              <Text
+                style={[
+                  typography.body.medium.semibold,
+                  { color: colors["grey-500"] },
+                ]}
+              >
+                Matchday {index + 1}
+              </Text>
+              {matchday.matches.map((match) => (
+                <View key={match.match_id} style={{ marginTop: 12 }}>
+                  <TournamentScheduleItem
+                    onPress={() =>
+                      router.push(
+                        `/tournament/${id}/schedule/${match.match_id}`
+                      )
+                    }
+                    matchday={index + 1}
+                    match={match}
+                  />
+                </View>
+              ))}
+            </View>
+          ))}
+        </ScrollView>
+      </View>
     </ScreenContainer>
   );
 }
