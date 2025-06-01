@@ -5,7 +5,7 @@ import { colors, typography } from "@/theme/theme";
 
 import IconArrowBack from "@/assets/icons/icon-arrow-back.svg";
 
-export default function AppBar({ backPress, title, step }) {
+export default function AppBar({ backPress, title, step, iconLeft }) {
   const router = useRouter();
 
   return (
@@ -21,7 +21,11 @@ export default function AppBar({ backPress, title, step }) {
     >
       <View style={{ width: 32 }}>
         <Pressable onPress={() => (backPress ? backPress() : router.back())}>
-          <IconArrowBack color={colors["grey-900"]} width={24} height={24} />
+          {iconLeft ? (
+            iconLeft
+          ) : (
+            <IconArrowBack color={colors["grey-900"]} width={24} height={24} />
+          )}
         </Pressable>
       </View>
 
