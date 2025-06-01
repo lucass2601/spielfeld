@@ -14,6 +14,7 @@ const ParticipantEntity = ({
   name,
   selectable,
   selected,
+  showIcon = true,
 }) => {
   return (
     <Pressable
@@ -28,11 +29,13 @@ const ParticipantEntity = ({
         />
         <Text>{name}</Text>
       </View>
-      {selectable ? (
-        <RadioButton selected={selected} onPress={onPress} />
-      ) : (
-        <IconChevronLeft width={20} height={20} color={colors["grey-900"]} />
-      )}
+      {showIcon ? (
+        selectable ? (
+          <RadioButton selected={selected} onPress={onPress} />
+        ) : (
+          <IconChevronLeft width={20} height={20} color={colors["grey-900"]} />
+        )
+      ) : null}
     </Pressable>
   );
 };
