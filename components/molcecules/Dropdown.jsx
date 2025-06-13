@@ -18,18 +18,17 @@ import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import ScreenContainer from "../layouts/ScreenContainer";
 import ParticipantEntity from "./ParticipantEntity";
 
-export default function Dropdown({ data, onChange, placeholder, modalTitle }) {
+export default function Dropdown({
+  data,
+  onChange,
+  placeholder,
+  value,
+  modalTitle,
+}) {
   const [expanded, setExpanded] = useState(false);
   const toggleExpanded = () => setExpanded(!expanded);
-  const [selectedItem, setSelectedItem] = useState({
-    name: null,
-    imageUri: null,
-    label: null,
-  });
-
   const onSelect = (item) => {
     onChange(item);
-    setSelectedItem(item);
     setExpanded(false);
   };
 
@@ -39,13 +38,15 @@ export default function Dropdown({ data, onChange, placeholder, modalTitle }) {
         <Image
           style={styles.buttonImage}
           source={
-            selectedItem.imageUri
-              ? { uri: selectedItem.imageUri }
+            value?.imageUri
+              ? { uri: value.imageUri }
               : require("@/assets/images/icon.png")
           }
         />
         <View style={styles.button}>
-          <Text style={styles.text}>{selectedItem.label || placeholder}</Text>
+          <Text style={[styles.text, value.value && styles.textSelected]}>
+            {value.label || placeholder}
+          </Text>
           <IconChevronDown color={colors["grey-400"]} height={24} width={24} />
         </View>
       </TouchableOpacity>
@@ -98,6 +99,9 @@ const styles = StyleSheet.create({
   text: {
     color: colors["grey-400"],
     ...typography.body.medium.medium,
+  },
+  textSelected: {
+    color: colors["grey-900"],
   },
   buttonContainer: {
     flexDirection: "row",
