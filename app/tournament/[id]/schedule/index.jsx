@@ -76,6 +76,7 @@ export default function ScheduleTab() {
                     }
                     matchday={index + 1}
                     match={match}
+                    participantType={tournament.participantType}
                   />
                 </View>
               ))}
