@@ -1,16 +1,34 @@
 import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 import React from "react";
 import { colors, typography } from "@/theme/theme";
+import { formatDateTime } from "@/utils/dateUtils";
 
-const TournamentScheduleItem = ({ onPress, matchday }) => {
+const TournamentScheduleItem = ({
+  onPress,
+  matchday,
+  participantType,
+  match,
+}) => {
+  console.log(typeof match.match_date);
+
   return (
     <Pressable onPress={onPress} style={styles.container}>
       <View style={styles.imageContainer}>
         <Image
           style={styles.image}
-          source={require("@/assets/images/icon.png")}
+          source={
+            match.participant_home?.imageUri
+              ? { uri: match.participant_home.imageUri }
+              : require("@/assets/images/icon.png")
+          }
         />
-        <Text style={styles.imageText}>No Team</Text>
+        <Text style={styles.imageText}>
+          {match.participant_home
+            ? match.participant_home.label
+            : participantType === "players"
+            ? "No Player"
+            : "No Team"}
+        </Text>
       </View>
       <View style={{ justifyContent: "space-between", alignItems: "center" }}>
         <View style={{ alignItems: "center" }}>
@@ -20,7 +38,9 @@ const TournamentScheduleItem = ({ onPress, matchday }) => {
               { color: colors["grey-400"] },
             ]}
           >
-            No Date
+            {match.match_date
+              ? formatDateTime(new Date(match.match_date).toISOString())
+              : "No Date"}
           </Text>
           <Text
             style={[
@@ -28,7 +48,7 @@ const TournamentScheduleItem = ({ onPress, matchday }) => {
               { color: colors["grey-900"] },
             ]}
           >
-            Matchday {matchday}
+            {match.match_title ? match.match_title : `Matchday ${matchday}`}
           </Text>
         </View>
         <View>
@@ -38,9 +58,19 @@ const TournamentScheduleItem = ({ onPress, matchday }) => {
       <View style={styles.imageContainer}>
         <Image
           style={styles.image}
-          source={require("@/assets/images/icon.png")}
+          source={
+            match.participant_away?.imageUri
+              ? { uri: match.participant_away.imageUri }
+              : require("@/assets/images/icon.png")
+          }
         />
-        <Text style={styles.imageText}>No Team</Text>
+        <Text style={styles.imageText}>
+          {match.participant_away
+            ? match.participant_away.label
+            : participantType === "players"
+            ? "No Player"
+            : "No Team"}
+        </Text>
       </View>
     </Pressable>
   );
