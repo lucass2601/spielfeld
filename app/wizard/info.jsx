@@ -146,7 +146,6 @@ export default function Wizard_Information() {
             value={startDate}
             onChange={(newStartDate) => setStartDate(newStartDate)}
             label="Start Date"
-            mode="datetime"
             placeholder="Select starting date"
             minDate={new Date()}
           />
