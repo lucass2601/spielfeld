@@ -18,7 +18,7 @@ export default function WizardLayout() {
         name="info"
         options={{ title: "Create Tournament", step: "2" }}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="participants/index"
         options={{ title: "Create Tournament", step: "3" }}
       />
@@ -29,11 +29,11 @@ export default function WizardLayout() {
       <Stack.Screen
         name="participants/edit/[id]"
         options={{ title: "Edit Participant", step: "3" }}
-      />
+      /> */}
 
       <Stack.Screen
         name="summary"
-        options={{ title: "Create Tournament", step: "4" }}
+        options={{ title: "Create Tournament", step: "3" }}
       />
     </Stack>
   );
