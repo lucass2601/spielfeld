@@ -46,7 +46,7 @@ export default function AppBar({ backPress, title, step, iconLeft }) {
               color: colors["primary-600"],
             }}
           >
-            {step} of 4
+            {step} of 3
           </Text>
         )}
       </View>
