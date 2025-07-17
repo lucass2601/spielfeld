@@ -19,31 +19,31 @@ import ScreenContainer from "@/components/layouts/ScreenContainer";
 import Button from "@/components/atoms/Button";
 import Input from "@/components/atoms/Input";
 
-import SegmentedControl from "@/components/molcecules/SegmentedControl";
+// import SegmentedControl from "@/components/molcecules/SegmentedControl";
 import DateTimePickerInput from "@/components/molcecules/DateTimePickerInput";
 
-import IconHelp from "@/assets/icons/icon-help.svg";
+// import IconHelp from "@/assets/icons/icon-help.svg";
 import useTournamentStore from "@/store/useTournamentStore";
 
-const participantTypes = [
-  {
-    label: "Players",
-    value: "players",
-  },
-  {
-    label: "Teams",
-    value: "teams",
-  },
-];
+// const participantTypes = [
+//   {
+//     label: "Players",
+//     value: "players",
+//   },
+//   {
+//     label: "Teams",
+//     value: "teams",
+//   },
+// ];
 
 export default function Wizard_Information() {
-  const newTournament = useTournamentStore((state) => state.newTournament);
+  // const newTournament = useTournamentStore((state) => state.newTournament);
   const setNewTournamentInfo = useTournamentStore(
     (state) => state.setNewTournamentInfo
   );
-  const [participantType, setParticipantType] = useState(
-    newTournament.participantType || "players"
-  );
+  // const [participantType, setParticipantType] = useState(
+  //   newTournament.participantType || "players"
+  // );
   const [tournamentName, setTournamentName] = useState("");
   const [imageUri, setImageUri] = useState(null);
   const [startDate, setStartDate] = useState(null);
@@ -63,10 +63,10 @@ export default function Wizard_Information() {
 
   const submitWizard = () => {
     setNewTournamentInfo("imageUri", imageUri);
-    setNewTournamentInfo("participantType", participantType);
+    // setNewTournamentInfo("participantType", participantType);
     setNewTournamentInfo("name", tournamentName);
     setNewTournamentInfo("startDate", startDate);
-    router.push("/wizard/participants");
+    router.push("/wizard/summary");
   };
 
   return (
@@ -108,7 +108,7 @@ export default function Wizard_Information() {
             </View>
           </View>
 
-          <View style={{ gap: 12 }}>
+          {/* <View style={{ gap: 12 }}>
             <View
               style={{
                 flexDirection: "row",
@@ -133,7 +133,7 @@ export default function Wizard_Information() {
               }
               options={participantTypes}
             />
-          </View>
+          </View> */}
 
           <Input
             value={tournamentName}
