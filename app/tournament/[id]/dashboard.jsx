@@ -1,9 +1,9 @@
 import { View, Text } from "react-native";
 
-export default function RulesTab() {
+export default function DashboardTab() {
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Rules Tab</Text>
+      <Text>Hier kommen so Steps hin</Text>
     </View>
   );
 }
