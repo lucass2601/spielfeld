@@ -10,9 +10,9 @@ export default function TournamentLayout() {
   const id = pathname.split("/")[2];
 
   const tabs = [
-    { name: "General", href: `/tournament/${id}/general` },
-    { name: "Participants", href: `/tournament/${id}/participants` },
-    { name: "Rules", href: `/tournament/${id}/rules` },
+    { name: "Dashboard", href: `/tournament/${id}/dashboard` },
+    { name: "Manage", href: `/tournament/${id}/manage` },
+    { name: "Teams", href: `/tournament/${id}/teams` },
     { name: "Schedule", href: `/tournament/${id}/schedule` },
     { name: "Preview", href: `/tournament/${id}/preview` },
   ];
@@ -46,7 +46,7 @@ export default function TournamentLayout() {
               return (
                 <Pressable
                   key={tab.href}
-                  onPress={() => router.push(tab.href)}
+                  onPress={() => !isActive && router.push(tab.href)}
                   style={{
                     marginTop: 32,
                     paddingBottom: 16,
