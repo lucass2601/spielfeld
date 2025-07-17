@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, Pressable, Image } from "react-native";
 import { colors, typography } from "@/theme/theme";
 
 import IconClock from "@/assets/icons/icon-clock.svg";
-import IconUser from "@/assets/icons/icon-user.svg";
+import IconGroup from "@/assets/icons/icon-group.svg";
 
 const tournamentTypeDefinitions = {
   knockout: "Knockout",
@@ -10,6 +10,7 @@ const tournamentTypeDefinitions = {
 };
 
 const tournamentStatusDefinitions = {
+  draft: "Draft",
   pending: "Pending",
   active: "Active",
   completed: "Completed",
@@ -61,10 +62,8 @@ const TournamentItem = ({
                 alignItems: "center",
               }}
             >
-              <IconUser width={14} height={14} color={colors["grey-500"]} />
-              <Text
-                style={[styles.participantCount, styles.statsContainerText]}
-              >
+              <IconGroup width={18} height={18} color={colors["grey-500"]} />
+              <Text style={[{ marginLeft: 4 }, styles.statsContainerText]}>
                 {participants.length}
               </Text>
             </View>
