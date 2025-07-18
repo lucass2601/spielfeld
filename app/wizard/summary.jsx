@@ -87,12 +87,12 @@ export default function Wizard_Summary() {
             </Pressable>
           </View>
           <View style={styles.summary_section__content}>
-            <View style={styles.summary_section__item}>
+            {/* <View style={styles.summary_section__item}>
               <Text style={styles.content_item__label}>Participant Type</Text>
               <Text style={styles.content_item__value}>
                 {participantType === "players" ? "Players" : "Teams"}
               </Text>
-            </View>
+            </View> */}
             <View style={styles.summary_section__item}>
               <Text style={styles.content_item__label}>Name</Text>
               <Text style={styles.content_item__value}>{name}</Text>
@@ -103,7 +103,7 @@ export default function Wizard_Summary() {
             </View>
           </View>
         </View>
-        <View style={styles.summary_section}>
+        {/* <View style={styles.summary_section}>
           <View style={styles.summary_section__header}>
             <Text style={styles.header_item__header}>
               {participantType === "players" ? "Players" : "Teams"} (
@@ -138,7 +138,7 @@ export default function Wizard_Summary() {
               ))}
             </ScrollView>
           </View>
-        </View>
+        </View> */}
       </View>
       <Button
         onPress={submitWizard}

@@ -19,7 +19,8 @@ export default function ScheduleTab() {
 
   return (
     <ScreenContainer>
-      <View>
+      <Text>Schedule Tab</Text>
+      {/* <View>
         <ScrollView
           horizontal={true}
           showsHorizontalScrollIndicator={false}
@@ -83,7 +84,7 @@ export default function ScheduleTab() {
             </View>
           ))}
         </ScrollView>
-      </View>
+      </View> */}
     </ScreenContainer>
   );
 }

@@ -1,10 +1,14 @@
+import Button from "@/components/atoms/Button";
+import Input from "@/components/atoms/Input";
 import ScreenContainer from "@/components/layouts/ScreenContainer";
 import AppBar from "@/components/molcecules/AppBar";
+import DateTimePickerInput from "@/components/molcecules/DateTimePickerInput";
 import Dropdown from "@/components/molcecules/Dropdown";
 import useTournamentStore from "@/store/useTournamentStore";
 
 import { colors, typography } from "@/theme/theme";
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
+import { useState } from "react";
 import { Text, View } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
@@ -12,13 +16,29 @@ const MatchDetails = () => {
   const { id, match_id } = useLocalSearchParams();
   const tournament = useTournamentStore((state) => state.getTournament(id));
 
-  const getParticipant = (participant_id) =>
-    useTournamentStore((state) => state.getParticipant(participant_id));
-
   const getTournamentMatch = tournament.schedule
     .map((schedule) => schedule.matches)
     .flat()
     .find((match) => match.match_id === match_id);
+
+  const [matchDetails, setMatchDetails] = useState({
+    match_id: getTournamentMatch.match_id,
+    participant_home: getTournamentMatch.participant_home || {
+      label: null,
+      value: null,
+      imageUri: null,
+    },
+    participant_away: getTournamentMatch.participant_away || {
+      label: null,
+      value: null,
+      imageUri: null,
+    },
+    match_title: getTournamentMatch.match_title || null,
+    match_date: getTournamentMatch.match_date || null,
+  });
+
+  const getParticipant = (participant_id) =>
+    useTournamentStore((state) => state.getParticipant(participant_id));
 
   return (
     <SafeAreaProvider>
@@ -65,7 +85,13 @@ const MatchDetails = () => {
                     };
                   }),
                 ]}
-                onChange={console.log}
+                value={matchDetails.participant_home}
+                onChange={(selectedItem) =>
+                  setMatchDetails({
+                    ...matchDetails,
+                    participant_home: selectedItem,
+                  })
+                }
                 placeholder={
                   tournament.participantType === "players"
                     ? "No Player"
@@ -83,6 +109,13 @@ const MatchDetails = () => {
                 Away
               </Text>
               <Dropdown
+                value={matchDetails.participant_away}
+                onChange={(selectedItem) =>
+                  setMatchDetails({
+                    ...matchDetails,
+                    participant_away: selectedItem,
+                  })
+                }
                 modalTitle={
                   tournament.participantType === "players"
                     ? "Select Player"
@@ -106,12 +139,40 @@ const MatchDetails = () => {
                     };
                   }),
                 ]}
-                onChange={console.log}
                 placeholder={
                   tournament.participantType === "players"
                     ? "No Player"
                     : "No Team"
                 }
+              />
+            </View>
+            <View>
+              <Input
+                label="Name"
+                value={matchDetails.match_title}
+                onChangeText={(enteredText) =>
+                  setMatchDetails({ ...matchDetails, match_title: enteredText })
+                }
+              />
+            </View>
+            <View>
+              <DateTimePickerInput
+                value={matchDetails.match_date}
+                onChange={(newMatchDate) =>
+                  setMatchDetails({ ...matchDetails, match_date: newMatchDate })
+                }
+                label="Date"
+                placeholder="Select date for match"
+                minDate={new Date()}
+              />
+            </View>
+            <View>
+              <Button
+                label="Save Matchup"
+                onPress={() => {
+                  useTournamentStore.getState().updateMatch(id, matchDetails);
+                  router.back();
+                }}
               />
             </View>
           </View>
