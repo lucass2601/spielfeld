@@ -18,18 +18,6 @@ export default function WizardLayout() {
         name="info"
         options={{ title: "Create Tournament", step: "2" }}
       />
-      {/* <Stack.Screen
-        name="participants/index"
-        options={{ title: "Create Tournament", step: "3" }}
-      />
-      <Stack.Screen
-        name="participants/create"
-        options={{ title: "Add Participant", step: "3" }}
-      />
-      <Stack.Screen
-        name="participants/edit/[id]"
-        options={{ title: "Edit Participant", step: "3" }}
-      /> */}
 
       <Stack.Screen
         name="summary"

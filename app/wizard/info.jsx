@@ -14,36 +14,18 @@ import { useState } from "react";
 
 import * as ImagePicker from "expo-image-picker";
 
-import ScreenContainer from "@/components/layouts/ScreenContainer";
-
 import Button from "@/components/atoms/Button";
 import Input from "@/components/atoms/Input";
-
-// import SegmentedControl from "@/components/molcecules/SegmentedControl";
 import DateTimePickerInput from "@/components/molcecules/DateTimePickerInput";
+import ScreenContainer from "@/components/layouts/ScreenContainer";
 
-// import IconHelp from "@/assets/icons/icon-help.svg";
 import useTournamentStore from "@/store/useTournamentStore";
 
-// const participantTypes = [
-//   {
-//     label: "Players",
-//     value: "players",
-//   },
-//   {
-//     label: "Teams",
-//     value: "teams",
-//   },
-// ];
-
 export default function Wizard_Information() {
-  // const newTournament = useTournamentStore((state) => state.newTournament);
   const setNewTournamentInfo = useTournamentStore(
     (state) => state.setNewTournamentInfo
   );
-  // const [participantType, setParticipantType] = useState(
-  //   newTournament.participantType || "players"
-  // );
+
   const [tournamentName, setTournamentName] = useState("");
   const [imageUri, setImageUri] = useState(null);
   const [startDate, setStartDate] = useState(null);
@@ -63,7 +45,6 @@ export default function Wizard_Information() {
 
   const submitWizard = () => {
     setNewTournamentInfo("imageUri", imageUri);
-    // setNewTournamentInfo("participantType", participantType);
     setNewTournamentInfo("name", tournamentName);
     setNewTournamentInfo("startDate", startDate);
     router.push("/wizard/summary");
@@ -107,33 +88,6 @@ export default function Wizard_Information() {
               )}
             </View>
           </View>
-
-          {/* <View style={{ gap: 12 }}>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <Text
-                style={{
-                  color: colors["grey-900"],
-                  ...typography.body.medium.semibold,
-                }}
-              >
-                Participant Type
-              </Text>
-              <IconHelp color={colors["primary-600"]} />
-            </View>
-            <SegmentedControl
-              selectedValue={participantType}
-              onChange={(participantType) =>
-                setParticipantType(participantType)
-              }
-              options={participantTypes}
-            />
-          </View> */}
 
           <Input
             value={tournamentName}
