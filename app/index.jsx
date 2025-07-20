@@ -53,7 +53,7 @@ const Index = () => {
               imageUri={tournament.imageUri}
               name={tournament.name}
               startDate={new Date(tournament.startDate).toISOString()}
-              participants={tournament.participants}
+              teams={tournament.teams}
               type={tournament.type}
               status={tournament.status}
               onPress={() => handleTournamentPress(tournament.id)}
@@ -63,7 +63,7 @@ const Index = () => {
       </ScrollView>
       <FabButton
         onPress={() => router.push("/wizard/type")}
-        style={{ position: "absolute", bottom: 24, right: 24 }}
+        style={{ position: "absolute", bottom: 48, right: 24 }}
       />
     </ScreenContainer>
   );

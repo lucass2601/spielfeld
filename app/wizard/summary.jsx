@@ -21,15 +21,10 @@ export default function Wizard_Summary() {
     (state) => state.submitNewTournament
   );
 
-  const { imageUri, name, participantType, participants, startDate, type } =
-    newTournament;
+  const { imageUri, name, startDate, type } = newTournament;
 
   const dateString = new Date(startDate).toISOString();
   const formattedDate = formatDateTime(dateString, "LLL d, yyyy t");
-
-  const getParticipant = (participant_id) => {
-    return useTournamentStore((state) => state.getParticipant(participant_id));
-  };
 
   const submitWizard = () => {
     submitNewTournament();
@@ -50,7 +45,6 @@ export default function Wizard_Summary() {
               imageUri={imageUri}
               name={name}
               startDate={dateString}
-              participants={participants}
               type={type}
             />
           )}
@@ -87,12 +81,6 @@ export default function Wizard_Summary() {
             </Pressable>
           </View>
           <View style={styles.summary_section__content}>
-            {/* <View style={styles.summary_section__item}>
-              <Text style={styles.content_item__label}>Participant Type</Text>
-              <Text style={styles.content_item__value}>
-                {participantType === "players" ? "Players" : "Teams"}
-              </Text>
-            </View> */}
             <View style={styles.summary_section__item}>
               <Text style={styles.content_item__label}>Name</Text>
               <Text style={styles.content_item__value}>{name}</Text>
@@ -103,42 +91,6 @@ export default function Wizard_Summary() {
             </View>
           </View>
         </View>
-        {/* <View style={styles.summary_section}>
-          <View style={styles.summary_section__header}>
-            <Text style={styles.header_item__header}>
-              {participantType === "players" ? "Players" : "Teams"} (
-              {participants.length})
-            </Text>
-            <Pressable
-              onPress={() => router.dismissTo("/wizard/participants")}
-              style={styles.header_item__button}
-            >
-              <Text style={styles.header_item__buttonText}>Change</Text>
-            </Pressable>
-          </View>
-          <View style={styles.summary_section__content}>
-            <ScrollView
-              horizontal={true}
-              contentContainerStyle={styles.participants_container}
-            >
-              {participants?.map((participant) => (
-                <View style={styles.participant_item} key={participant}>
-                  <Image
-                    style={styles.participant_image}
-                    source={
-                      getParticipant(participant).imageUri
-                        ? { uri: getParticipant(participant).imageUri }
-                        : require("@/assets/images/icon.png")
-                    }
-                  />
-                  <Text style={styles.participant_text}>
-                    {getParticipant(participant).name}
-                  </Text>
-                </View>
-              ))}
-            </ScrollView>
-          </View>
-        </View> */}
       </View>
       <Button
         onPress={submitWizard}
@@ -189,22 +141,5 @@ const styles = StyleSheet.create({
   content_item__value: {
     color: colors["grey-900"],
     ...typography.body.small.medium,
-  },
-  participants_container: {
-    gap: 20,
-  },
-  participant_item: {
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  participant_image: {
-    height: 64,
-    width: 64,
-    borderRadius: 32,
-  },
-  participant_text: {
-    marginTop: 12,
-    color: colors["grey-900"],
-    ...typography.body.medium.medium,
   },
 });

@@ -1,11 +1,11 @@
 import { Stack } from "expo-router";
 
-export default function ScheduleLayout() {
+export default function ManageTeams() {
   return (
     <Stack
       screenOptions={{
         headerShown: false,
-        presentation: "fullScreenModal",
+        presentation: "transparentModal",
       }}
     />
   );
