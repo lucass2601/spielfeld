@@ -22,7 +22,7 @@ const TournamentItem = ({
   imageUri,
   name = "Turniername",
   startDate,
-  participants,
+  teams,
   type = "Knockout",
   preview = false,
   status,
@@ -64,7 +64,7 @@ const TournamentItem = ({
             >
               <IconGroup width={18} height={18} color={colors["grey-500"]} />
               <Text style={[{ marginLeft: 4 }, styles.statsContainerText]}>
-                {participants.length}
+                {teams.length}
               </Text>
             </View>
             <View style={styles.ellipse}></View>

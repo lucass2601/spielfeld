@@ -53,7 +53,7 @@ const Index = () => {
               imageUri={tournament.imageUri}
               name={tournament.name}
               startDate={new Date(tournament.startDate).toISOString()}
-              participants={tournament.participants}
+              teams={tournament.teams}
               type={tournament.type}
               status={tournament.status}
               onPress={() => handleTournamentPress(tournament.id)}
