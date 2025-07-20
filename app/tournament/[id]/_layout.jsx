@@ -42,7 +42,7 @@ export default function TournamentLayout() {
             }}
           >
             {tabs.map((tab) => {
-              const isActive = pathname === tab.href;
+              const isActive = pathname.startsWith(tab.href);
               return (
                 <Pressable
                   key={tab.href}
