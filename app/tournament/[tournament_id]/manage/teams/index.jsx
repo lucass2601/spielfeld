@@ -12,26 +12,33 @@ import { colors, typography } from "@/theme/theme";
 
 import useTournamentStore from "@/store/useTournamentStore";
 
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams, usePathname } from "expo-router";
 
 import TeamItem from "@/components/molcecules/TeamItem";
 import Input from "@/components/atoms/Input";
 import Button from "@/components/atoms/Button";
 
 const ManageTeams = () => {
-  const { id } = useLocalSearchParams();
+  const { tournament_id } = useLocalSearchParams();
+  const pathname = usePathname();
 
-  const tournament = useTournamentStore((state) => state.getTournament(id));
+  const tournament = useTournamentStore((state) =>
+    state.getTournament(tournament_id)
+  );
   const addTeam = useTournamentStore((state) => state.addTeam);
 
   const [modalOpen, setModalOpen] = useState(false);
   const [newTeamName, setNewTeamName] = useState("");
 
   const handleAddTeam = () => {
-    addTeam(id, newTeamName);
+    addTeam(tournament_id, newTeamName);
     setNewTeamName("");
     setModalOpen(false);
     console.log(tournament);
+  };
+
+  const handleTeamPress = (team_id) => {
+    router.push(`${pathname}/${team_id}`);
   };
 
   return (
@@ -121,13 +128,24 @@ const ManageTeams = () => {
           </View>
 
           <ScrollView
-            contentContainerStyle={{
-              marginTop: 20,
-            }}
+            contentContainerStyle={[
+              {
+                marginTop: 20,
+              },
+              tournament.teams.length > 0 && {
+                borderBottomWidth: 1,
+                borderBottomColor: colors["grey-100"],
+              },
+            ]}
             showsVerticalScrollIndicator={true}
           >
             {tournament.teams.map((team) => (
-              <TeamItem key={team.id} name={team.name} />
+              <TeamItem
+                onPress={() => handleTeamPress(team.id)}
+                key={team.id}
+                name={team.name}
+                imageUri={team.imageUri}
+              />
             ))}
           </ScrollView>
         </ScreenContainer>

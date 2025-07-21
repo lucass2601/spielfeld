@@ -15,7 +15,7 @@ import { colors, typography } from "@/theme/theme";
 import { router, useLocalSearchParams } from "expo-router";
 
 export default function ManageTab() {
-  const { id } = useLocalSearchParams();
+  const { tournament_id } = useLocalSearchParams();
 
   const items = [
     {
@@ -59,7 +59,7 @@ export default function ManageTab() {
       ),
       icon: <IconGroup color={colors["primary-600"]} height={24} width={24} />,
       onPress: () => {
-        router.push(`/tournament/${id}/manage/teams`);
+        router.push(`/tournament/${tournament_id}/manage/teams`);
       },
     },
     {

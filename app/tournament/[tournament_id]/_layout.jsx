@@ -1,4 +1,9 @@
-import { Slot, useRouter, usePathname } from "expo-router";
+import {
+  Slot,
+  useRouter,
+  usePathname,
+  useLocalSearchParams,
+} from "expo-router";
 import { View, Text, Pressable, ScrollView } from "react-native";
 
 import AppBar from "@/components/molcecules/AppBar";
@@ -7,14 +12,15 @@ import { colors, typography } from "@/theme/theme";
 export default function TournamentLayout() {
   const router = useRouter();
   const pathname = usePathname();
-  const id = pathname.split("/")[2];
+
+  const { tournament_id } = useLocalSearchParams();
 
   const tabs = [
-    { name: "Dashboard", href: `/tournament/${id}/dashboard` },
-    { name: "Manage", href: `/tournament/${id}/manage` },
-    { name: "Teams", href: `/tournament/${id}/teams` },
-    { name: "Schedule", href: `/tournament/${id}/schedule` },
-    { name: "Preview", href: `/tournament/${id}/preview` },
+    { name: "Dashboard", href: `/tournament/${tournament_id}/dashboard` },
+    { name: "Manage", href: `/tournament/${tournament_id}/manage` },
+    { name: "Teams", href: `/tournament/${tournament_id}/teams` },
+    { name: "Schedule", href: `/tournament/${tournament_id}/schedule` },
+    { name: "Preview", href: `/tournament/${tournament_id}/preview` },
   ];
 
   return (
