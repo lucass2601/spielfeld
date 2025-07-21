@@ -31,27 +31,72 @@ const useTournamentStore = create((set, get) => ({
     }));
   },
 
-  getTournament: (id) => {
-    return get().tournaments.find((tournament) => tournament.id === id);
+  getTournament: (tournament_id) => {
+    return get().tournaments.find(
+      (tournament) => tournament.id === tournament_id
+    );
   },
 
-  addTeam: (tournamentId, teamName) =>
+  getTeam: (tournament_id, team_id) => {
+    const tournament = get().tournaments.find(
+      (tournament) => tournament.id === tournament_id
+    );
+
+    return tournament.teams.find((team) => team.id === team_id);
+  },
+
+  addTeam: (tournament_id, team_name) =>
     set((state) => ({
       tournaments: state.tournaments.map((tournament) =>
-        tournament.id === tournamentId
+        tournament.id === tournament_id
           ? {
               ...tournament,
               teams: [
                 ...tournament.teams,
                 {
                   id: uuidv4(),
-                  name: teamName,
+                  name: team_name,
                 },
               ],
             }
           : tournament
       ),
     })),
+
+  deleteTeam: (tournament_id, team_id) =>
+    set((state) => ({
+      tournaments: state.tournaments.map((tournament) => {
+        console.log(tournament_id);
+        console.log(team_id);
+
+        return tournament.id === tournament_id
+          ? {
+              ...tournament,
+              teams: tournament.teams.filter((team) => team.id !== team_id),
+            }
+          : tournament;
+      }),
+    })),
+
+  editTeam: (tournament_id, team_id, imageUri, name) => {
+    set((state) => ({
+      tournaments: state.tournaments.map((tournament) => {
+        console.log(tournament_id);
+        console.log(team_id);
+        console.log(imageUri);
+        console.log(name);
+
+        return tournament.id === tournament_id
+          ? {
+              ...tournament,
+              teams: tournament.teams.map((team) =>
+                team.id === team_id ? { ...team, imageUri, name } : team
+              ),
+            }
+          : tournament;
+      }),
+    }));
+  },
 }));
 
 export default useTournamentStore;
