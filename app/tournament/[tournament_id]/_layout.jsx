@@ -57,8 +57,10 @@ export default function TournamentLayout() {
                     marginTop: 32,
                     paddingBottom: 16,
                     paddingHorizontal: 16,
-                    borderBottomWidth: isActive && 2,
-                    borderBottomColor: isActive && colors["primary-600"],
+                    borderBottomWidth: isActive ? 2 : 0,
+                    borderBottomColor: isActive
+                      ? colors["primary-600"]
+                      : "none",
                   }}
                 >
                   <Text
