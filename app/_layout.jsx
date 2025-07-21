@@ -57,7 +57,7 @@ export default function RootLayout() {
             }}
           />
           <Stack.Screen
-            name="tournament/[id]"
+            name="tournament/[tournament_id]"
             options={{
               headerShown: false,
             }}
