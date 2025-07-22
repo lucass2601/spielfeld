@@ -1,30 +1,17 @@
-import {
-  Slot,
-  useRouter,
-  usePathname,
-  useLocalSearchParams,
-} from "expo-router";
-import { View, Text, Pressable, ScrollView } from "react-native";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import { router, withLayoutContext } from "expo-router";
 
-import AppBar from "@/components/molcecules/AppBar";
 import { colors, typography } from "@/theme/theme";
+import { View } from "react-native";
+import AppBar from "@/components/molcecules/AppBar";
+
+const { Navigator } = createMaterialTopTabNavigator();
+
+export const MaterialTopTabs = withLayoutContext(Navigator);
 
 export default function TournamentLayout() {
-  const router = useRouter();
-  const pathname = usePathname();
-
-  const { tournament_id } = useLocalSearchParams();
-
-  const tabs = [
-    { name: "Dashboard", href: `/tournament/${tournament_id}/dashboard` },
-    { name: "Manage", href: `/tournament/${tournament_id}/manage` },
-    { name: "Teams", href: `/tournament/${tournament_id}/teams` },
-    { name: "Schedule", href: `/tournament/${tournament_id}/schedule` },
-    { name: "Preview", href: `/tournament/${tournament_id}/preview` },
-  ];
-
   return (
-    <View style={{ backgroundColor: "#fff", flex: 1 }}>
+    <View style={{ flex: 1 }}>
       <AppBar
         title="Tournament Details"
         backPress={() => {
@@ -32,53 +19,30 @@ export default function TournamentLayout() {
           router.dismissAll();
         }}
       />
-      <View>
-        <View
-          style={{
-            borderBottomWidth: 1,
-            borderBottomColor: colors["grey-100"],
-          }}
-        >
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{
-              marginHorizontal: 24,
-              gap: 8,
-            }}
-          >
-            {tabs.map((tab) => {
-              const isActive = pathname.startsWith(tab.href);
-              return (
-                <Pressable
-                  key={tab.href}
-                  onPress={() => !isActive && router.push(tab.href)}
-                  style={{
-                    marginTop: 32,
-                    paddingBottom: 16,
-                    paddingHorizontal: 16,
-                    borderBottomWidth: isActive ? 2 : 0,
-                    borderBottomColor: isActive
-                      ? colors["primary-600"]
-                      : "none",
-                  }}
-                >
-                  <Text
-                    style={{
-                      textAlign: "center",
-                      color: isActive ? colors["grey-900"] : colors["grey-400"],
-                      ...typography.body.small.semibold,
-                    }}
-                  >
-                    {tab.name}
-                  </Text>
-                </Pressable>
-              );
-            })}
-          </ScrollView>
-        </View>
-      </View>
-      <Slot />
+      <MaterialTopTabs
+        screenOptions={{
+          tabBarScrollEnabled: true,
+          tabBarItemStyle: { width: "auto", color: "red" },
+          tabBarIndicatorStyle: {
+            backgroundColor: colors["primary-600"],
+          },
+          tabBarLabelStyle: {
+            ...typography.body.small.semibold,
+          },
+        }}
+      >
+        <MaterialTopTabs.Screen
+          name="dashboard"
+          options={{ title: "Dashboard" }}
+        />
+        <MaterialTopTabs.Screen name="manage" options={{ title: "Manage" }} />
+        <MaterialTopTabs.Screen name="teams" options={{ title: "Teams" }} />
+        <MaterialTopTabs.Screen
+          name="schedule"
+          options={{ title: "Schedule" }}
+        />
+        <MaterialTopTabs.Screen name="preview" options={{ title: "Preview" }} />
+      </MaterialTopTabs>
     </View>
   );
 }
