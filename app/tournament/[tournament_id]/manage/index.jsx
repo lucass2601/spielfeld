@@ -12,10 +12,10 @@ import IconCalendarEvent from "@/assets/icons/icon-calendar-event.svg";
 import IconTrash from "@/assets/icons/icon-trash.svg";
 
 import { colors, typography } from "@/theme/theme";
-import { router, useLocalSearchParams } from "expo-router";
+import { router, useGlobalSearchParams } from "expo-router";
 
 export default function ManageTab() {
-  const { tournament_id } = useLocalSearchParams();
+  const { tournament_id } = useGlobalSearchParams();
 
   const items = [
     {
