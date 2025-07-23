@@ -5,7 +5,7 @@ export default function ManageLayout() {
     <Stack
       screenOptions={{
         headerShown: false,
-        presentation: "fullScreenModal",
+        presentation: "transparentModal",
       }}
     />
   );
