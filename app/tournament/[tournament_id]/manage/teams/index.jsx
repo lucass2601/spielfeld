@@ -34,7 +34,6 @@ const ManageTeams = () => {
     addTeam(tournament_id, newTeamName);
     setNewTeamName("");
     setModalOpen(false);
-    console.log(tournament);
   };
 
   const handleTeamPress = (team_id) => {

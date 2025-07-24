@@ -66,9 +66,6 @@ const useTournamentStore = create((set, get) => ({
   deleteTeam: (tournament_id, team_id) =>
     set((state) => ({
       tournaments: state.tournaments.map((tournament) => {
-        console.log(tournament_id);
-        console.log(team_id);
-
         return tournament.id === tournament_id
           ? {
               ...tournament,
@@ -81,11 +78,6 @@ const useTournamentStore = create((set, get) => ({
   editTeam: (tournament_id, team_id, imageUri, name) => {
     set((state) => ({
       tournaments: state.tournaments.map((tournament) => {
-        console.log(tournament_id);
-        console.log(team_id);
-        console.log(imageUri);
-        console.log(name);
-
         return tournament.id === tournament_id
           ? {
               ...tournament,
