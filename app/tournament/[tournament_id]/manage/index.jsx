@@ -1,4 +1,14 @@
-import { View, Text, StyleSheet, FlatList, Alert } from "react-native";
+import { useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  Alert,
+  Modal,
+  TextInput,
+  Pressable,
+} from "react-native";
 
 import ManageItem from "@/components/molcecules/ManageItem";
 
@@ -15,12 +25,31 @@ import { colors, typography } from "@/theme/theme";
 import { router, useGlobalSearchParams } from "expo-router";
 
 import useTournamentStore from "@/store/useTournamentStore";
+import Input from "@/components/atoms/Input";
+import Button from "@/components/atoms/Button";
 
 export default function ManageTab() {
   const { tournament_id } = useGlobalSearchParams();
+
+  const tournament = useTournamentStore((state) =>
+    state.getTournament(tournament_id)
+  );
+
   const deleteTournament = useTournamentStore(
     (state) => state.deleteTournament
   );
+
+  const updateTournamentName = useTournamentStore(
+    (state) => state.updateTournamentName
+  );
+
+  const [isNameModalVisible, setIsNameModalVisible] = useState(false);
+  const [newName, setNewName] = useState(tournament.name || "");
+
+  const handleUpdateTournamentName = () => {
+    updateTournamentName(tournament_id, newName);
+    setIsNameModalVisible(false);
+  };
 
   const items = [
     {
@@ -35,6 +64,9 @@ export default function ManageTab() {
         </Text>
       ),
       icon: <IconEdit color={colors["primary-600"]} height={24} width={24} />,
+      onPress: () => {
+        setIsNameModalVisible(true);
+      },
     },
     {
       title: (
@@ -155,8 +187,58 @@ export default function ManageTab() {
           contentContainerStyle={{ gap: 16 }}
         />
       </View>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={isNameModalVisible}
+        onRequestClose={() => setIsNameModalVisible(false)}
+      >
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "rgba(0,0,0,0.5)",
+          }}
+        >
+          <View
+            style={{
+              backgroundColor: colors.white,
+              borderRadius: 12,
+              padding: 24,
+              width: "90%",
+            }}
+          >
+            <Text style={[typography.body.large.bold, { marginBottom: 16 }]}>
+              Change Name
+            </Text>
+
+            <Input
+              placeholder="Name"
+              value={newName}
+              onChangeText={(tournamentName) => setNewName(tournamentName)}
+            />
+
+            <View
+              style={{
+                marginTop: 16,
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
+              <Button
+                variant="tertiary"
+                label="Cancel"
+                onPress={() => {
+                  setIsNameModalVisible(false);
+                  setNewName("");
+                }}
+              />
+              <Button label="Save" onPress={handleUpdateTournamentName} />
+            </View>
+          </View>
+        </View>
+      </Modal>
     </ScreenContainer>
   );
 }
-
-const styles = StyleSheet.create({});

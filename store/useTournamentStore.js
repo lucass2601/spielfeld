@@ -44,6 +44,18 @@ const useTournamentStore = create((set, get) => ({
       }),
     })),
 
+  updateTournamentName: (tournament_id, newName) =>
+    set((state) => ({
+      tournaments: state.tournaments.map((tournament) =>
+        tournament.id === tournament_id
+          ? {
+              ...tournament,
+              name: newName,
+            }
+          : tournament
+      ),
+    })),
+
   getTeam: (tournament_id, team_id) => {
     const tournament = get().tournaments.find(
       (tournament) => tournament.id === tournament_id
