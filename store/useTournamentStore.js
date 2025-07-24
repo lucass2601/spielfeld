@@ -37,6 +37,13 @@ const useTournamentStore = create((set, get) => ({
     );
   },
 
+  deleteTournament: (tournament_id) =>
+    set((state) => ({
+      tournaments: state.tournaments.filter((tournament) => {
+        return tournament.id !== tournament_id;
+      }),
+    })),
+
   getTeam: (tournament_id, team_id) => {
     const tournament = get().tournaments.find(
       (tournament) => tournament.id === tournament_id

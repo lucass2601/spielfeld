@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, FlatList } from "react-native";
+import { View, Text, StyleSheet, FlatList, Alert } from "react-native";
 
 import ManageItem from "@/components/molcecules/ManageItem";
 
@@ -14,8 +14,13 @@ import IconTrash from "@/assets/icons/icon-trash.svg";
 import { colors, typography } from "@/theme/theme";
 import { router, useGlobalSearchParams } from "expo-router";
 
+import useTournamentStore from "@/store/useTournamentStore";
+
 export default function ManageTab() {
   const { tournament_id } = useGlobalSearchParams();
+  const deleteTournament = useTournamentStore(
+    (state) => state.deleteTournament
+  );
 
   const items = [
     {
@@ -106,6 +111,28 @@ export default function ManageTab() {
         </Text>
       ),
       icon: <IconTrash color={colors["error-600"]} height={24} width={24} />,
+      onPress: () => {
+        Alert.alert(
+          "Delete Tournament",
+          "⚠️ Are you sure you want to permanently delete this tournament?\nThis action cannot be undone.",
+          [
+            {
+              text: "Cancel",
+              onPress: () => {},
+              style: "cancel",
+            },
+            {
+              text: "Delete",
+              onPress: () => {
+                deleteTournament(tournament_id);
+                router.replace("/(tabs)");
+                router.dismissAll();
+              },
+              style: "destructive",
+            },
+          ]
+        );
+      },
     },
   ];
 
