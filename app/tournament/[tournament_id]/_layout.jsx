@@ -41,7 +41,7 @@ export default function TournamentLayout() {
 
       <MaterialTopTabs
         screenOptions={{
-          swipeEnabled: !nestedHomePageOpened && Platform.OS === "android",
+          swipeEnabled: !nestedHomePageOpened,
           tabBarScrollEnabled: true,
           tabBarItemStyle: { width: "auto", color: "red" },
           tabBarIndicatorStyle: {
