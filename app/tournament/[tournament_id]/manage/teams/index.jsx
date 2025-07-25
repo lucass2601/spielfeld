@@ -17,6 +17,7 @@ import { router, useLocalSearchParams, usePathname } from "expo-router";
 import TeamItem from "@/components/molcecules/TeamItem";
 import Input from "@/components/atoms/Input";
 import Button from "@/components/atoms/Button";
+import FormModal from "@/components/molcecules/FormModal";
 
 const ManageTeams = () => {
   const { tournament_id } = useLocalSearchParams();
@@ -48,55 +49,18 @@ const ManageTeams = () => {
           backgroundColor: colors.white,
         }}
       >
-        <Modal
-          animationType="fade"
-          transparent={true}
+        <FormModal
           visible={modalOpen}
-          onRequestClose={() => setModalOpen(false)}
-        >
-          <View
-            style={{
-              flex: 1,
-              justifyContent: "center",
-              alignItems: "center",
-              backgroundColor: "rgba(0,0,0,0.5)",
-            }}
-          >
-            <View
-              style={{
-                backgroundColor: colors.white,
-                borderRadius: 12,
-                padding: 24,
-                width: "90%",
-              }}
-            >
-              <Text style={[typography.body.large.bold, { marginBottom: 16 }]}>
-                Add team
-              </Text>
-
-              <Input
-                placeholder="Name"
-                value={newTeamName}
-                onChangeText={(teamName) => setNewTeamName(teamName)}
-              />
-
-              <View
-                style={{
-                  marginTop: 16,
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Button
-                  variant="tertiary"
-                  label="Cancel"
-                  onPress={() => setModalOpen(false)}
-                />
-                <Button label="Save" onPress={handleAddTeam} />
-              </View>
-            </View>
-          </View>
-        </Modal>
+          title="Add Team"
+          placeholder="Name"
+          value={newTeamName}
+          onChangeText={(text) => setNewTeamName(text)}
+          onCancel={() => {
+            setModalOpen(false);
+            setNewTeamName("");
+          }}
+          onSave={handleAddTeam}
+        />
         <AppBar
           iconLeft={
             <IconClose width={24} height={24} color={colors["grey-900"]} />

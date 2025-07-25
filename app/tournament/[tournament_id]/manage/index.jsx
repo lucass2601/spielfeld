@@ -27,6 +27,7 @@ import { router, useGlobalSearchParams } from "expo-router";
 import useTournamentStore from "@/store/useTournamentStore";
 import Input from "@/components/atoms/Input";
 import Button from "@/components/atoms/Button";
+import FormModal from "@/components/molcecules/FormModal";
 
 export default function ManageTab() {
   const { tournament_id } = useGlobalSearchParams();
@@ -187,58 +188,18 @@ export default function ManageTab() {
           contentContainerStyle={{ gap: 16 }}
         />
       </View>
-      <Modal
-        animationType="fade"
-        transparent={true}
+      <FormModal
         visible={isNameModalVisible}
-        onRequestClose={() => setIsNameModalVisible(false)}
-      >
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "rgba(0,0,0,0.5)",
-          }}
-        >
-          <View
-            style={{
-              backgroundColor: colors.white,
-              borderRadius: 12,
-              padding: 24,
-              width: "90%",
-            }}
-          >
-            <Text style={[typography.body.large.bold, { marginBottom: 16 }]}>
-              Change Name
-            </Text>
-
-            <Input
-              placeholder="Name"
-              value={newName}
-              onChangeText={(tournamentName) => setNewName(tournamentName)}
-            />
-
-            <View
-              style={{
-                marginTop: 16,
-                flexDirection: "row",
-                justifyContent: "space-between",
-              }}
-            >
-              <Button
-                variant="tertiary"
-                label="Cancel"
-                onPress={() => {
-                  setIsNameModalVisible(false);
-                  setNewName("");
-                }}
-              />
-              <Button label="Save" onPress={handleUpdateTournamentName} />
-            </View>
-          </View>
-        </View>
-      </Modal>
+        title="Change Name"
+        placeholder="Name"
+        value={newName}
+        onChangeText={(text) => setNewName(text)}
+        onCancel={() => {
+          setIsNameModalVisible(false);
+          setNewName(tournament.name);
+        }}
+        onSave={handleUpdateTournamentName}
+      />
     </ScreenContainer>
   );
 }
