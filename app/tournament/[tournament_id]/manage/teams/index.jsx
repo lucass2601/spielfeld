@@ -52,15 +52,19 @@ const ManageTeams = () => {
         <FormModal
           visible={modalOpen}
           title="Add Team"
-          placeholder="Name"
-          value={newTeamName}
-          onChangeText={(text) => setNewTeamName(text)}
           onCancel={() => {
             setModalOpen(false);
             setNewTeamName("");
           }}
           onSave={handleAddTeam}
-        />
+        >
+          <Input
+            placeholder="Name"
+            value={newTeamName}
+            onChangeText={(text) => setNewTeamName(text)}
+          />
+        </FormModal>
+
         <AppBar
           iconLeft={
             <IconClose width={24} height={24} color={colors["grey-900"]} />

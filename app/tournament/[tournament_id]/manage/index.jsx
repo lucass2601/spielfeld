@@ -28,6 +28,7 @@ import useTournamentStore from "@/store/useTournamentStore";
 import Input from "@/components/atoms/Input";
 import Button from "@/components/atoms/Button";
 import FormModal from "@/components/molcecules/FormModal";
+import DateTimePickerInput from "@/components/molcecules/DateTimePickerInput";
 
 export default function ManageTab() {
   const { tournament_id } = useGlobalSearchParams();
@@ -44,12 +45,23 @@ export default function ManageTab() {
     (state) => state.updateTournamentName
   );
 
+  const updateTournamentStartDate = useTournamentStore(
+    (state) => state.updateTournamentStartDate
+  );
+
   const [isNameModalVisible, setIsNameModalVisible] = useState(false);
   const [newName, setNewName] = useState(tournament.name || "");
+  const [isDateModalVisible, setIsDateModalVisible] = useState(false);
+  const [newDate, setNewDate] = useState(tournament.startDate || "");
 
   const handleUpdateTournamentName = () => {
     updateTournamentName(tournament_id, newName);
     setIsNameModalVisible(false);
+  };
+
+  const handleUpdateTournamentDate = () => {
+    updateTournamentStartDate(tournament_id, newDate);
+    setIsDateModalVisible(false);
   };
 
   const items = [
@@ -83,6 +95,9 @@ export default function ManageTab() {
       icon: (
         <IconCalendar color={colors["primary-600"]} height={24} width={24} />
       ),
+      onPress: () => {
+        setIsDateModalVisible(true);
+      },
     },
     {
       title: (
@@ -188,18 +203,39 @@ export default function ManageTab() {
           contentContainerStyle={{ gap: 16 }}
         />
       </View>
+
+      <FormModal
+        visible={isDateModalVisible}
+        title="Change Date"
+        onCancel={() => {
+          setIsDateModalVisible(false);
+          setNewDate(tournament.startDate);
+        }}
+        onSave={handleUpdateTournamentDate}
+      >
+        <DateTimePickerInput
+          value={newDate}
+          onChange={(date) => setNewDate(date)}
+          placeholder="Select starting date"
+          minDate={new Date()}
+        />
+      </FormModal>
+
       <FormModal
         visible={isNameModalVisible}
         title="Change Name"
-        placeholder="Name"
-        value={newName}
-        onChangeText={(text) => setNewName(text)}
         onCancel={() => {
           setIsNameModalVisible(false);
           setNewName(tournament.name);
         }}
         onSave={handleUpdateTournamentName}
-      />
+      >
+        <Input
+          placeholder="Name"
+          value={newName}
+          onChangeText={(text) => setNewName(text)}
+        />
+      </FormModal>
     </ScreenContainer>
   );
 }
