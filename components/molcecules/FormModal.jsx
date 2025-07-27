@@ -8,9 +8,7 @@ import { colors, typography } from "@/theme/theme";
 export default function FormModal({
   visible,
   title,
-  placeholder,
-  value,
-  onChangeText,
+  children,
   onCancel,
   onSave,
 }) {
@@ -41,11 +39,7 @@ export default function FormModal({
             {title}
           </Text>
 
-          <Input
-            placeholder={placeholder}
-            value={value}
-            onChangeText={onChangeText}
-          />
+          {children}
 
           <View
             style={{
