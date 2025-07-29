@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
+import generateRounds from "@/utils/generateRounds";
 
 const useTournamentStore = create((set, get) => ({
   newTournament: {
@@ -9,6 +10,7 @@ const useTournamentStore = create((set, get) => ({
     name: "",
     startDate: "",
     teams: [],
+    rounds: [],
   },
   tournaments: [],
   teams: [],
@@ -63,6 +65,18 @@ const useTournamentStore = create((set, get) => ({
           ? {
               ...tournament,
               startDate: newDate,
+            }
+          : tournament
+      ),
+    })),
+
+  updateTournamentRounds: (tournament_id) =>
+    set((state) => ({
+      tournaments: state.tournaments.map((tournament) =>
+        tournament.id === tournament_id
+          ? {
+              ...tournament,
+              rounds: generateRounds(tournament.teams, tournament.type),
             }
           : tournament
       ),
