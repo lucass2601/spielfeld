@@ -43,8 +43,11 @@ const DateTimePickerInput = ({
     newValue.setHours(selectedTime.getHours());
     newValue.setMinutes(selectedTime.getMinutes());
     setTempValue(newValue);
-    setLocalValue(newValue);
-    onChange(newValue);
+
+    if (Platform.OS === "android") {
+      setLocalValue(newValue);
+      onChange(newValue);
+    }
   };
 
   const handleChange = (event, selectedDate, type) => {
@@ -106,6 +109,7 @@ const DateTimePickerInput = ({
       setCurrentPickerMode("date");
       return;
     }
+    setTempValue(localValue);
     setShowModalOnIos(false);
   };
 
