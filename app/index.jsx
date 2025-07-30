@@ -21,6 +21,10 @@ const Index = () => {
     router.push(`/tournament/${tournament_id}`);
   };
 
+  const clearNewTournament = useTournamentStore(
+    (state) => state.clearNewTournament
+  );
+
   useEffect(() => {
     const hour = new Date().getHours();
     if (hour < 12) setGreeting("Good morning!");
@@ -62,7 +66,10 @@ const Index = () => {
         </View>
       </ScrollView>
       <FabButton
-        onPress={() => router.push("/wizard/type")}
+        onPress={() => {
+          clearNewTournament();
+          router.push("/wizard/type");
+        }}
         style={{ position: "absolute", bottom: 48, right: 24 }}
       />
     </ScreenContainer>

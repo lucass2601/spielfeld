@@ -33,6 +33,19 @@ const useTournamentStore = create((set, get) => ({
     }));
   },
 
+  clearNewTournament: () => {
+    set(() => ({
+      newTournament: {
+        imageUri: "",
+        type: "roundrobin",
+        name: "",
+        startDate: "",
+        teams: [],
+        rounds: [],
+      },
+    }));
+  },
+
   getTournament: (tournament_id) => {
     return get().tournaments.find(
       (tournament) => tournament.id === tournament_id
