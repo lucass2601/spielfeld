@@ -42,9 +42,12 @@ export default function TournamentLayout() {
       <MaterialTopTabs
         screenOptions={{
           swipeEnabled: !nestedHomePageOpened,
-          tabBarScrollEnabled: true,
+          tabBarScrollEnabled: false,
           tabBarItemStyle: {
-            width: "auto",
+            flex: 1,
+          },
+          tabBarStyle: {
+            width: "100%",
           },
           tabBarIndicatorStyle: {
             backgroundColor: colors["primary-600"],
