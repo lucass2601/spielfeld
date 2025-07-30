@@ -44,6 +44,8 @@ export default function Wizard_Information() {
   };
 
   const submitWizard = () => {
+    if (!tournamentName || !startDate) return;
+
     setNewTournamentInfo("imageUri", imageUri);
     setNewTournamentInfo("name", tournamentName);
     setNewTournamentInfo("startDate", startDate);
@@ -106,6 +108,7 @@ export default function Wizard_Information() {
         </ScrollView>
       </KeyboardAvoidingView>
       <Button
+        disabled={!tournamentName || !startDate}
         onPress={submitWizard}
         label="Next"
         style={{ marginTop: "auto", marginBottom: 24 }}
