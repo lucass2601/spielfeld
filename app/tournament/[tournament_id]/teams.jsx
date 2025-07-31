@@ -12,15 +12,19 @@ import { colors, typography } from "@/theme/theme";
 
 import useTournamentStore from "@/store/useTournamentStore";
 
-import { router, useLocalSearchParams, usePathname } from "expo-router";
+import {
+  router,
+  useGlobalSearchParams,
+  useLocalSearchParams,
+  usePathname,
+} from "expo-router";
 
 import TeamItem from "@/components/molcecules/TeamItem";
-import Input from "@/components/atoms/Input";
-import Button from "@/components/atoms/Button";
-import FormModal from "@/components/molcecules/FormModal";
+import AddTeamsModal from "@/components/molcecules/AddTeamsModal";
 
 const TeamsTab = () => {
-  const { tournament_id } = useLocalSearchParams();
+  const { tournament_id } = useGlobalSearchParams();
+
   const pathname = usePathname();
 
   const tournament = useTournamentStore((state) =>
@@ -57,6 +61,38 @@ const TeamsTab = () => {
               alignItems: "center",
             }}
           >
+            <Modal
+              visible={modalOpen}
+              transparent
+              animationType="fade"
+              onRequestClose={() => setModalOpen(false)}
+            >
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: "flex-end",
+                  backgroundColor: "rgba(0,0,0,0.5)",
+                }}
+              >
+                <View
+                  style={{
+                    width: "100%",
+                    height: 475,
+                    backgroundColor: "white",
+                    borderTopRightRadius: 35,
+                    borderTopLeftRadius: 35,
+                  }}
+                >
+                  <AddTeamsModal
+                    onAddTeams={(names) => {
+                      names.forEach((name) => addTeam(tournament_id, name));
+                    }}
+                    onClose={() => setModalOpen(false)}
+                  />
+                </View>
+              </View>
+            </Modal>
+
             <Text style={typography.body.large.bold}>
               Teams ({tournament?.teams.length || 0})
             </Text>
