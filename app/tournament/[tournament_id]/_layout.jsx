@@ -61,7 +61,17 @@ export default function TournamentLayout() {
           name="dashboard"
           options={{ title: "Dashboard" }}
         />
-        <MaterialTopTabs.Screen name="teams" options={{ title: "Teams" }} />
+        <MaterialTopTabs.Screen
+          name="teams"
+          options={{
+            title: "Teams",
+            headerShown: !nestedHomePageOpened && Platform.OS === "android",
+            tabBarStyle:
+              nestedHomePageOpened && Platform.OS === "android"
+                ? { display: "none" }
+                : {},
+          }}
+        />
         <MaterialTopTabs.Screen name="rounds" options={{ title: "Rounds" }} />
         <MaterialTopTabs.Screen name="preview" options={{ title: "Preview" }} />
       </MaterialTopTabs>
