@@ -104,22 +104,34 @@ const useTournamentStore = create((set, get) => ({
   },
 
   addTeam: (tournament_id, team_name) =>
-    set((state) => ({
-      tournaments: state.tournaments.map((tournament) =>
-        tournament.id === tournament_id
-          ? {
+    set((state) => {
+      return {
+        tournaments: state.tournaments.map((tournament) => {
+          if (tournament.id === tournament_id) {
+            const existingTeams = tournament.teams.map((team) => team.name);
+            let newName = team_name;
+            let counter = 0;
+
+            while (existingTeams.includes(newName)) {
+              counter++;
+              newName = `${team_name} (${counter})`;
+            }
+
+            return {
               ...tournament,
               teams: [
                 ...tournament.teams,
                 {
                   id: uuidv4(),
-                  name: team_name,
+                  name: newName,
                 },
               ],
-            }
-          : tournament
-      ),
-    })),
+            };
+          }
+          return tournament;
+        }),
+      };
+    }),
 
   deleteTeam: (tournament_id, team_id) =>
     set((state) => ({
