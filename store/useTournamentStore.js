@@ -10,7 +10,7 @@ const useTournamentStore = create((set, get) => ({
     name: "",
     startDate: "",
     teams: [],
-    rounds: [],
+    matchdays: [],
   },
   tournaments: [],
   teams: [],
@@ -41,7 +41,7 @@ const useTournamentStore = create((set, get) => ({
         name: "",
         startDate: "",
         teams: [],
-        rounds: [],
+        matchdays: [],
       },
     }));
   },
@@ -89,7 +89,7 @@ const useTournamentStore = create((set, get) => ({
         tournament.id === tournament_id
           ? {
               ...tournament,
-              rounds: generateRounds(tournament.teams, tournament.type),
+              matchdays: generateRounds(tournament.teams, tournament.type),
             }
           : tournament
       ),

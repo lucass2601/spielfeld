@@ -1,5 +1,11 @@
-export default function generateRounds(teams, type) {
+import "react-native-get-random-values";
+import { v4 as uuidv4 } from "uuid";
+
+export default function generateRounds(tournamentTeams, tournamentType) {
+  let matchdays = [];
   let rounds = [];
+
+  let teams = [...tournamentTeams];
 
   if (teams.length % 2 === 1) {
     teams.unshift(null);
@@ -22,6 +28,7 @@ export default function generateRounds(teams, type) {
         }
 
         rounds.push({
+          id: uuidv4(),
           teamA: teams[i],
           teamB: teams[teams.length - 1 * (i + 1)],
         });
@@ -29,7 +36,7 @@ export default function generateRounds(teams, type) {
     }
   };
 
-  if (type === "roundrobin") {
+  if (tournamentType === "roundrobin") {
     for (let i = 1; i < teams.length; i++) {
       addMatches(teams);
       let temp = teams[teams.length - 1];
@@ -40,8 +47,13 @@ export default function generateRounds(teams, type) {
           teams[j] = teams[j - 1];
         }
       }
+      matchdays.push({
+        id: uuidv4(),
+        rounds: rounds,
+      });
+      rounds = [];
     }
   }
 
-  return rounds;
+  return matchdays;
 }
