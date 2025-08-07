@@ -1,7 +1,6 @@
 import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 import React from "react";
 import { colors, typography } from "@/theme/theme";
-import { formatDateTime } from "@/utils/dateUtils";
 
 const RoundItem = ({ round, index }) => {
   const teamAName = round.teamA ? round.teamA.name : "BYE";
