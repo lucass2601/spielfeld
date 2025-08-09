@@ -5,54 +5,52 @@ export default function generateRounds(tournamentTeams, tournamentType) {
   let matchdays = [];
   let rounds = [];
 
+  // create a copy - otherwise tournamentTeams will get overwritten
   let teams = [...tournamentTeams];
 
-  if (teams.length % 2 === 1) {
-    teams.unshift(null);
-  }
-
-  let addMatches = (teams) => {
-    for (let i = 0; i < teams.length; i++) {
-      if (teams.length % 2 === 1) {
-        if (i === teams.length - 1 - i) {
-          return;
-        }
-
-        if (i === 0) {
-          rounds.push({ teamA: teams[teams.length - 1], teamB: null });
-        }
-        rounds.push({ teamA: teams[i], teamB: teams[teams.length - 2 - i] });
-      } else {
-        if (i > teams.length - 1 * (i + 1)) {
-          return;
-        }
-
-        rounds.push({
-          id: uuidv4(),
-          teamA: teams[i],
-          teamB: teams[teams.length - 1 * (i + 1)],
-        });
-      }
+  const addMatches = (arr) => {
+    const n = arr.length;
+    for (let i = 0; i < n / 2; i++) {
+      rounds.push({
+        id: uuidv4(),
+        teamA: arr[i],
+        teamB: arr[n - 1 - i],
+      });
     }
   };
 
+  const rotate = (arr) => {
+    // Circle Method (https://en.wikipedia.org/wiki/Round-robin_tournament#circle_method)
+
+    // example with teams A, B, C, D
+
+    const fixed = arr[0]; // A
+    const rest = arr.slice(1); // B, C, D
+    rest.unshift(rest.pop()); // D, B, C
+    return [fixed, ...rest]; // A, D, B, C
+  };
+
   if (tournamentType === "roundrobin") {
-    for (let i = 1; i < teams.length; i++) {
-      addMatches(teams);
-      let temp = teams[teams.length - 1];
-      for (let j = teams.length - 1; j >= 1; j--) {
-        if (j === 1) {
-          teams[j] = temp;
-        } else {
-          teams[j] = teams[j - 1];
-        }
-      }
+    if (teams.length % 2 === 1) {
+      teams.unshift(null);
+    }
+
+    let arr = [...teams];
+
+    for (let r = 1; r < arr.length; r++) {
+      addMatches(arr);
       matchdays.push({
         id: uuidv4(),
         rounds: rounds,
       });
       rounds = [];
+      arr = rotate(arr);
     }
+    return matchdays;
+  }
+
+  if (tournamentType === "knockout") {
+    return matchdays;
   }
 
   return matchdays;
