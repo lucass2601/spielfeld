@@ -23,6 +23,17 @@ export default function RoundsTab() {
   const scrollViewRef = useRef(null);
   const matchdayRefs = useRef({});
 
+  const labelForKnockout = (matchday) => {
+    const m = matchday.rounds.length;
+    if (m === 1) return "Final";
+    if (m === 2) return "Semifinals";
+    if (m === 4) return "Quarterfinals";
+
+    return `Round of ${m * 2}`;
+  };
+
+  const isKnockout = tournament.type === "knockout";
+
   return (
     <ScreenContainer>
       <View style={{ flex: 1 }}>
@@ -30,10 +41,9 @@ export default function RoundsTab() {
           horizontal={true}
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{
-            flexDirection: "row",
-            gap: 12,
             marginBottom: 24,
-            flex: 0,
+            gap: 12,
+            flexDirection: "row",
           }}
         >
           {tournament.matchdays.map((matchday, index) => (
@@ -41,7 +51,11 @@ export default function RoundsTab() {
               key={matchday.id}
               variant="tertiary"
               size="small"
-              label={`Matchday ${index + 1}`}
+              label={
+                isKnockout
+                  ? labelForKnockout(matchday)
+                  : `Matchday ${index + 1}`
+              }
               onPress={() => {
                 const ref = matchdayRefs.current[index];
 
@@ -58,7 +72,7 @@ export default function RoundsTab() {
             />
           ))}
         </ScrollView>
-        <ScrollView ref={scrollViewRef} contentContainerStyle={{ flex: 0 }}>
+        <ScrollView ref={scrollViewRef} horizontal={false}>
           {tournament.matchdays && !tournament.matchdays.length && (
             <Button
               variant="tertiary"
@@ -79,7 +93,9 @@ export default function RoundsTab() {
                   { color: colors["grey-500"] },
                 ]}
               >
-                Matchday {matchday_index + 1}
+                {isKnockout
+                  ? labelForKnockout(matchday)
+                  : `Matchday ${matchday_index + 1}`}
               </Text>
               {matchday.rounds.map((round, round_index) => (
                 <View key={round.id} style={{ marginTop: 12 }}>
