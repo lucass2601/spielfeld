@@ -46,12 +46,52 @@ export default function generateRounds(tournamentTeams, tournamentType) {
       rounds = [];
       arr = rotate(arr);
     }
+
     return matchdays;
   }
 
   if (tournamentType === "knockout") {
+    const nextPow2 = (n) => {
+      const power = Math.ceil(Math.log2(n));
+      return 2 ** power;
+    };
+
+    // [A, B, C, D, E] = len 5
+    // da die nächst höhere 2er Potenz 8 ist, wird aufgefüllt
+    // [A, B, C, D, E, null, null, null] = len 8
+
+    const arr = [...teams];
+    const p = nextPow2(arr.length);
+    while (arr.length < p) arr.push(null);
+
+    const makePairs = (teamsParam) => {
+      const teamsLength = teamsParam.length;
+      const matches = [];
+
+      for (let i = 0; i < teamsLength / 2; i++) {
+        matches.push({
+          id: uuidv4(),
+          teamA: teamsParam[i], // 0, 1, 2, 3
+          teamB: teamsParam[teamsLength - 1 - i], // 7, 6, 5, 4
+        });
+      }
+      return matches;
+    };
+
+    const firstRound = makePairs(arr);
+    matchdays.push({ id: uuidv4(), rounds: [...firstRound] });
+
+    let matches = firstRound.length;
+    while (matches > 1) {
+      matches = Math.floor(matches / 2);
+      const emptyRound = Array.from({ length: matches }, () => ({
+        id: uuidv4(),
+        teamA: null,
+        teamB: null,
+      }));
+      matchdays.push({ id: uuidv4(), rounds: [...emptyRound] });
+    }
+
     return matchdays;
   }
-
-  return matchdays;
 }
