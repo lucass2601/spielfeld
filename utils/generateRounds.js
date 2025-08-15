@@ -5,17 +5,21 @@ export default function generateRounds(tournamentTeams, tournamentType) {
   let matchdays = [];
   let rounds = [];
 
+  const makeMatch = (a, b) => ({
+    id: uuidv4(),
+    teamA: a,
+    teamB: b,
+    status: "scheduled", // "scheduled" | "finished"
+    winnerId: null,
+  });
+
   // create a copy - otherwise tournamentTeams will get overwritten
   let teams = [...tournamentTeams];
 
   const addMatches = (arr) => {
     const n = arr.length;
     for (let i = 0; i < n / 2; i++) {
-      rounds.push({
-        id: uuidv4(),
-        teamA: arr[i],
-        teamB: arr[n - 1 - i],
-      });
+      rounds.push(makeMatch(arr[i], arr[n - 1 - i]));
     }
   };
 
@@ -69,11 +73,17 @@ export default function generateRounds(tournamentTeams, tournamentType) {
       const matches = [];
 
       for (let i = 0; i < teamsLength / 2; i++) {
-        matches.push({
-          id: uuidv4(),
-          teamA: teamsParam[i], // 0, 1, 2, 3
-          teamB: teamsParam[teamsLength - 1 - i], // 7, 6, 5, 4
-        });
+        const m = makeMatch(teamsParam[i], teamsParam[teamsLength - 1 - i]);
+
+        if (m.teamA && !m.teamB) {
+          m.status = "finished";
+          m.winnerId = m.teamA.id;
+        } else if (!m.teamA && m.teamB) {
+          m.status = "finished";
+          m.winnerId = m.teamB.id;
+        }
+
+        matches.push(m);
       }
       return matches;
     };
@@ -84,11 +94,9 @@ export default function generateRounds(tournamentTeams, tournamentType) {
     let matches = firstRound.length;
     while (matches > 1) {
       matches = Math.floor(matches / 2);
-      const emptyRound = Array.from({ length: matches }, () => ({
-        id: uuidv4(),
-        teamA: null,
-        teamB: null,
-      }));
+      const emptyRound = Array.from({ length: matches }, () =>
+        makeMatch(null, null)
+      );
       matchdays.push({ id: uuidv4(), rounds: [...emptyRound] });
     }
 
