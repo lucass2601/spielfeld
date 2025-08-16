@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, ScrollView } from "react-native";
-import { router, useGlobalSearchParams } from "expo-router";
+import { router, useGlobalSearchParams, usePathname } from "expo-router";
 
 import { colors, typography } from "@/theme/theme";
 
@@ -12,6 +12,8 @@ import { useRef } from "react";
 
 export default function RoundsTab() {
   const { tournament_id } = useGlobalSearchParams();
+  const pathname = usePathname();
+
   const tournament = useTournamentStore((state) =>
     state.getTournament(tournament_id)
   );
@@ -19,6 +21,10 @@ export default function RoundsTab() {
   const updateTournamentRounds = useTournamentStore(
     (state) => state.updateTournamentRounds
   );
+
+  const handleRoundPress = (round_id) => {
+    router.push(`${pathname}/${round_id}`);
+  };
 
   const scrollViewRef = useRef(null);
   const matchdayRefs = useRef({});
@@ -99,7 +105,11 @@ export default function RoundsTab() {
               </Text>
               {matchday.rounds.map((round, round_index) => (
                 <View key={round.id} style={{ marginTop: 12 }}>
-                  <RoundItem index={round_index} round={round} />
+                  <RoundItem
+                    index={round_index}
+                    round={round}
+                    onPress={() => handleRoundPress(round.id)}
+                  />
                 </View>
               ))}
             </View>
