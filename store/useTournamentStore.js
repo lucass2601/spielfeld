@@ -95,6 +95,22 @@ const useTournamentStore = create((set, get) => ({
       ),
     })),
 
+  updateTournamentRoundWinner: () => {
+    // Evaluate winner...
+  },
+
+  getRound: (tournament_id, round_id) => {
+    const tournament = get().tournaments.find(
+      (tournament) => tournament.id === tournament_id
+    );
+
+    const allRounds = tournament.matchdays.flatMap((md) => md.rounds);
+
+    console.log(allRounds);
+
+    return allRounds.find((round) => round.id === round_id);
+  },
+
   getTeam: (tournament_id, team_id) => {
     const tournament = get().tournaments.find(
       (tournament) => tournament.id === tournament_id
