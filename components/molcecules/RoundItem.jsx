@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 import React from "react";
 import { colors, typography } from "@/theme/theme";
 
-const RoundItem = ({ round, index }) => {
+const RoundItem = ({ round, index, onPress }) => {
   const teamAId = round.teamA ? round.teamA.id : null;
   const teamAName = round.teamA ? round.teamA.name : "BYE";
   const teamAImageUri =
@@ -18,7 +18,7 @@ const RoundItem = ({ round, index }) => {
   // TODO: If matches are generated, all the teams within the matches dataset lose track of updates
 
   return (
-    <View style={styles.container}>
+    <Pressable onPress={onPress} style={styles.container}>
       <View style={styles.imageContainer}>
         <Image
           style={styles.image}
@@ -48,7 +48,7 @@ const RoundItem = ({ round, index }) => {
         />
         <Text style={styles.imageText}>{teamBName}</Text>
       </View>
-    </View>
+    </Pressable>
   );
 };
 
