@@ -7,19 +7,36 @@ const TournamentTypeItem = ({
   description,
   selected = false,
   onPress,
+  disabled = false,
 }) => {
   return (
     <Pressable
       onPress={onPress}
-      style={[styles.container, selected && styles.selectedContainer]}
+      disabled={disabled}
+      style={[
+        styles.container,
+        selected && styles.selectedContainer,
+        disabled && styles.disabledContainer,
+      ]}
     >
       <View style={styles.content}>
         <View style={{ flex: 1 }}>
-          <Text style={styles.title}>{title}</Text>
-          <Text style={styles.description}>{description}</Text>
+          <Text
+            style={[styles.title, disabled && { color: colors["grey-400"] }]}
+          >
+            {title}
+          </Text>
+          <Text
+            style={[
+              styles.description,
+              disabled && { color: colors["grey-400"] },
+            ]}
+          >
+            {description}
+          </Text>
         </View>
         <View>
-          <Checkbox checked={selected} size={16} />
+          <Checkbox checked={selected} size={16} disabled={disabled} />
         </View>
       </View>
     </Pressable>
@@ -40,6 +57,11 @@ const styles = StyleSheet.create({
   selectedContainer: {
     backgroundColor: colors["primary-100"],
     borderColor: colors["primary-200"],
+  },
+  disabledContainer: {
+    backgroundColor: colors["grey-50"],
+    borderColor: colors["grey-100"],
+    opacity: 0.6,
   },
   content: {
     flexDirection: "row",
