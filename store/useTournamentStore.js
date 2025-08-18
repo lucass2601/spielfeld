@@ -21,16 +21,22 @@ const useTournamentStore = create((set, get) => ({
     })),
 
   submitNewTournament: () => {
+    const tournament_id = uuidv4();
+
     set((state) => ({
       tournaments: [
         ...state.tournaments,
         {
-          id: uuidv4(),
+          id: tournament_id,
           status: "draft",
           ...state.newTournament,
         },
       ],
     }));
+
+    return get().tournaments.find(
+      (tournament) => tournament.id === tournament_id
+    );
   },
 
   clearNewTournament: () => {
