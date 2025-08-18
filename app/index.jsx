@@ -35,7 +35,6 @@ const Index = () => {
   return (
     <ScreenContainer>
       <ScrollView
-        contentContainerStyle={styles.scrollContainer}
         stickyHeaderIndices={[1]}
         showsVerticalScrollIndicator={false}
       >
@@ -50,19 +49,35 @@ const Index = () => {
           <Text style={styles.title}>Tournaments</Text>
         </View>
 
-        <View style={styles.listContainer}>
-          {tournaments.map((tournament) => (
-            <TournamentItem
-              key={tournament.id}
-              imageUri={tournament.imageUri}
-              name={tournament.name}
-              startDate={new Date(tournament.startDate).toISOString()}
-              teams={tournament.teams}
-              type={tournament.type}
-              status={tournament.status}
-              onPress={() => handleTournamentPress(tournament.id)}
-            />
-          ))}
+        <View>
+          {!tournaments.length ? (
+            <View
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+                marginTop: 32,
+              }}
+            >
+              <Text style={{ ...typography.body.medium.regular }}>
+                Tap the + button to create your first tournament.
+              </Text>
+            </View>
+          ) : (
+            <View style={styles.listContainer}>
+              {tournaments.map((tournament) => (
+                <TournamentItem
+                  key={tournament.id}
+                  imageUri={tournament.imageUri}
+                  name={tournament.name}
+                  startDate={new Date(tournament.startDate).toISOString()}
+                  teams={tournament.teams}
+                  type={tournament.type}
+                  status={tournament.status}
+                  onPress={() => handleTournamentPress(tournament.id)}
+                />
+              ))}
+            </View>
+          )}
         </View>
       </ScrollView>
       <FabButton
