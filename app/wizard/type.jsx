@@ -34,10 +34,11 @@ export default function Wizard_Type() {
           selected={selectedType === "roundrobin"}
         />
         <TournamentTypeItem
-          title="Knockout"
+          title="Knockout (Coming soon)"
           description="A team is eliminated after losing a match until only one winner remains. Fast-paced, exciting, and perfect for large tournaments."
           onPress={() => setSelectedType("knockout")}
           selected={selectedType === "knockout"}
+          disabled={true}
         />
       </View>
       <Button
