@@ -27,9 +27,9 @@ export default function Wizard_Summary() {
   const formattedDate = formatDateTime(dateString, "LLL d, yyyy t");
 
   const submitWizard = () => {
-    submitNewTournament();
-    router.replace("/");
+    const newTournament = submitNewTournament();
     router.dismissAll();
+    router.replace(`/tournament/${newTournament.id}`);
   };
 
   return (
