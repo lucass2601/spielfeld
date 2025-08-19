@@ -1,21 +1,23 @@
 import { View, Text, StyleSheet, Image, Pressable } from "react-native";
-import React from "react";
 import { colors, typography } from "@/theme/theme";
+import useTournamentStore from "@/store/useTournamentStore";
+import { useGlobalSearchParams } from "expo-router";
 
 const RoundItem = ({ round, index, onPress }) => {
-  const teamAId = round.teamA ? round.teamA.id : null;
-  const teamAName = round.teamA ? round.teamA.name : "BYE";
-  const teamAImageUri =
-    round.teamA && round.teamA.imageUri ? round.teamA.imageUri : null;
+  const { tournament_id } = useGlobalSearchParams();
+  const getTeam = useTournamentStore((state) => state.getTeam);
 
-  const teamBId = round.teamB ? round.teamB.id : null;
-  const teamBName = round.teamB ? round.teamB.name : "BYE";
-  const teamBImageUri =
-    round.teamB && round.teamB.imageUri ? round.teamB.imageUri : null;
+  const getTeamData = (team_id) => {
+    return getTeam(tournament_id, team_id);
+  };
+
+  const teamAName = round.teamA ? getTeamData(round.teamA).name : "BYE";
+  const teamAImageUri = round.teamA ? getTeamData(round.teamA).imageUri : null;
+
+  const teamBName = round.teamB ? getTeamData(round.teamB).name : "BYE";
+  const teamBImageUri = round.teamB ? getTeamData(round.teamB).imageUri : null;
 
   const placeholderImage = require("@/assets/images/icon.png");
-
-  // TODO: If matches are generated, all the teams within the matches dataset lose track of updates
 
   return (
     <Pressable onPress={onPress} style={styles.container}>

@@ -13,7 +13,6 @@ const useTournamentStore = create((set, get) => ({
     matchdays: [],
   },
   tournaments: [],
-  teams: [],
 
   setNewTournamentInfo: (key, value) =>
     set((state) => ({
@@ -95,7 +94,10 @@ const useTournamentStore = create((set, get) => ({
         tournament.id === tournament_id
           ? {
               ...tournament,
-              matchdays: generateRounds(tournament.teams, tournament.type),
+              matchdays: generateRounds(
+                tournament.teams.map((team) => team.id),
+                tournament.type
+              ),
             }
           : tournament
       ),
@@ -111,8 +113,6 @@ const useTournamentStore = create((set, get) => ({
     );
 
     const allRounds = tournament.matchdays.flatMap((md) => md.rounds);
-
-    console.log(allRounds);
 
     return allRounds.find((round) => round.id === round_id);
   },
@@ -146,6 +146,7 @@ const useTournamentStore = create((set, get) => ({
                 {
                   id: uuidv4(),
                   name: newName,
+                  imageUri: null,
                 },
               ],
             };
