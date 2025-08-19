@@ -42,18 +42,16 @@ export default function TournamentLayout() {
       <MaterialTopTabs
         screenOptions={{
           swipeEnabled: !nestedHomePageOpened,
-          tabBarScrollEnabled: false,
+          tabBarScrollEnabled: true,
           tabBarItemStyle: {
-            flex: 1,
-          },
-          tabBarStyle: {
-            width: "100%",
-          },
-          tabBarIndicatorStyle: {
-            backgroundColor: colors["primary-600"],
+            width: "auto",
+            paddingHorizontal: 16,
           },
           tabBarLabelStyle: {
             ...typography.body.small.semibold,
+          },
+          tabBarIndicatorStyle: {
+            backgroundColor: colors["primary-600"],
           },
         }}
       >
@@ -61,6 +59,7 @@ export default function TournamentLayout() {
           name="dashboard"
           options={{ title: "Dashboard" }}
         />
+        <MaterialTopTabs.Screen name="format" options={{ title: "Format" }} />
         <MaterialTopTabs.Screen
           name="teams"
           options={{
@@ -72,6 +71,7 @@ export default function TournamentLayout() {
                 : {},
           }}
         />
+
         <MaterialTopTabs.Screen name="rounds" options={{ title: "Rounds" }} />
         <MaterialTopTabs.Screen name="preview" options={{ title: "Preview" }} />
       </MaterialTopTabs>
