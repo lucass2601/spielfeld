@@ -103,15 +103,19 @@ export default function RoundsTab() {
                   ? labelForKnockout(matchday)
                   : `Matchday ${matchday_index + 1}`}
               </Text>
-              {matchday.rounds.map((round, round_index) => (
-                <View key={round.id} style={{ marginTop: 12 }}>
-                  <RoundItem
-                    index={round_index}
-                    round={round}
-                    onPress={() => handleRoundPress(round.id)}
-                  />
-                </View>
-              ))}
+              {matchday.rounds.map((round, round_index) => {
+                if (round.teamA && round.teamB) {
+                  return (
+                    <View key={round.id} style={{ marginTop: 12 }}>
+                      <RoundItem
+                        index={round_index}
+                        round={round}
+                        onPress={() => handleRoundPress(round.id)}
+                      />
+                    </View>
+                  );
+                }
+              })}
             </View>
           ))}
         </ScrollView>
