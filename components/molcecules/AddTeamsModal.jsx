@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View, Text, TextInput, Pressable } from "react-native";
+import { View, Text, Pressable } from "react-native";
 import { colors, typography } from "@/theme/theme";
 import SegmentedControl from "./SegmentedControl";
 import Button from "../atoms/Button";

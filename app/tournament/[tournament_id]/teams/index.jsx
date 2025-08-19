@@ -1,23 +1,23 @@
-import { View, Text, Pressable, Modal, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  Pressable,
+  Modal,
+  ScrollView,
+  Platform,
+  KeyboardAvoidingView,
+} from "react-native";
 import { useState } from "react";
 
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 import ScreenContainer from "@/components/layouts/ScreenContainer";
-import AppBar from "@/components/molcecules/AppBar";
-
-import IconClose from "@/assets/icons/icon-close.svg";
 
 import { colors, typography } from "@/theme/theme";
 
 import useTournamentStore from "@/store/useTournamentStore";
 
-import {
-  router,
-  useGlobalSearchParams,
-  useLocalSearchParams,
-  usePathname,
-} from "expo-router";
+import { router, useGlobalSearchParams, usePathname } from "expo-router";
 
 import TeamItem from "@/components/molcecules/TeamItem";
 import AddTeamsModal from "@/components/molcecules/AddTeamsModal";
@@ -74,22 +74,28 @@ const TeamsTab = () => {
                   backgroundColor: "rgba(0,0,0,0.5)",
                 }}
               >
-                <View
-                  style={{
-                    width: "100%",
-                    height: 475,
-                    backgroundColor: "white",
-                    borderTopRightRadius: 35,
-                    borderTopLeftRadius: 35,
-                  }}
+                <KeyboardAvoidingView
+                  style={{ flex: 0, justifyContent: "flex-end" }}
+                  behavior={Platform.OS === "ios" ? "padding" : "height"}
+                  keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
                 >
-                  <AddTeamsModal
-                    onAddTeams={(names) => {
-                      names.forEach((name) => addTeam(tournament_id, name));
+                  <View
+                    style={{
+                      width: "100%",
+                      height: 400,
+                      backgroundColor: "white",
+                      borderTopRightRadius: 35,
+                      borderTopLeftRadius: 35,
                     }}
-                    onClose={() => setModalOpen(false)}
-                  />
-                </View>
+                  >
+                    <AddTeamsModal
+                      onAddTeams={(names) => {
+                        names.forEach((name) => addTeam(tournament_id, name));
+                      }}
+                      onClose={() => setModalOpen(false)}
+                    />
+                  </View>
+                </KeyboardAvoidingView>
               </View>
             </Modal>
 
