@@ -33,6 +33,7 @@ const Textarea = ({
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
           multiline={true}
+          scrollEnabled={true}
           {...props}
         />
       </View>
@@ -64,6 +65,8 @@ const styles = StyleSheet.create({
     color: colors["grey-900"],
     ...typography.body.large.regular,
     textAlignVertical: "top",
+    minHeight: 100,
+    maxHeight: 100,
   },
   iconContainer: {
     marginRight: 12,
