@@ -4,7 +4,7 @@ import { colors, typography } from "@/theme/theme";
 import IconClock from "@/assets/icons/icon-clock.svg";
 import IconGroup from "@/assets/icons/icon-group.svg";
 
-const tournamentTypeDefinitions = {
+const tournamentFormatDefinitions = {
   knockout: "Knockout",
   roundrobin: "League",
 };
@@ -23,7 +23,7 @@ const TournamentItem = ({
   name = "Turniername",
   startDate,
   teams,
-  type = "Knockout",
+  format = "Knockout",
   preview = false,
   status,
   onPress,
@@ -68,8 +68,8 @@ const TournamentItem = ({
               </Text>
             </View>
             <View style={styles.ellipse}></View>
-            <Text style={[styles.tournamentType, styles.statsContainerText]}>
-              {tournamentTypeDefinitions[type]}
+            <Text style={[styles.tournamentFormat, styles.statsContainerText]}>
+              {tournamentFormatDefinitions[format]}
             </Text>
           </View>
           <Text style={[styles.status, styles[`status__${status}`]]}>

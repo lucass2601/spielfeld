@@ -38,7 +38,7 @@ export default function RoundsTab() {
     return `Round of ${m * 2}`;
   };
 
-  const isKnockout = tournament.type === "knockout";
+  const isKnockout = tournament.format === "knockout";
 
   return (
     <ScreenContainer>

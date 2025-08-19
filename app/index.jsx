@@ -71,7 +71,7 @@ const Index = () => {
                   name={tournament.name}
                   startDate={new Date(tournament.startDate).toISOString()}
                   teams={tournament.teams}
-                  type={tournament.type}
+                  format={tournament.format}
                   status={tournament.status}
                   onPress={() => handleTournamentPress(tournament.id)}
                 />
@@ -83,7 +83,7 @@ const Index = () => {
       <FabButton
         onPress={() => {
           clearNewTournament();
-          router.push("/wizard/type");
+          router.push("/wizard/format");
         }}
         style={{ position: "absolute", bottom: 48, right: 24 }}
       />

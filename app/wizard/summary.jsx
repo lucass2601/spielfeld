@@ -21,7 +21,7 @@ export default function Wizard_Summary() {
     (state) => state.submitNewTournament
   );
 
-  const { imageUri, name, startDate, type } = newTournament;
+  const { imageUri, name, startDate, format } = newTournament;
 
   const dateString = new Date(startDate).toISOString();
   const formattedDate = formatDateTime(dateString, "LLL d, yyyy t");
@@ -45,15 +45,15 @@ export default function Wizard_Summary() {
               imageUri={imageUri}
               name={name}
               startDate={dateString}
-              type={type}
+              format={format}
             />
           )}
         </View>
         <View style={styles.summary_section}>
           <View style={styles.summary_section__header}>
-            <Text style={styles.header_item__header}>Tournament Type</Text>
+            <Text style={styles.header_item__header}>Tournament Format</Text>
             <Pressable
-              onPress={() => router.dismissTo("/wizard/type")}
+              onPress={() => router.dismissTo("/wizard/format")}
               style={styles.header_item__button}
             >
               <Text style={styles.header_item__buttonText}>Change</Text>
@@ -61,9 +61,9 @@ export default function Wizard_Summary() {
           </View>
           <View style={styles.summary_section__content}>
             <View style={styles.summary_section__item}>
-              <Text style={styles.content_item__label}>Type</Text>
+              <Text style={styles.content_item__label}>Format</Text>
               <Text style={styles.content_item__value}>
-                {type === "roundrobin" ? "League" : "Knockout"}
+                {format === "roundrobin" ? "League" : "Knockout"}
               </Text>
             </View>
           </View>

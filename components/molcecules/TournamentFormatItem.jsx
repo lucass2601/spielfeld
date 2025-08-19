@@ -2,7 +2,7 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import Checkbox from "../atoms/Checkbox";
 import { colors, typography } from "@/theme/theme";
 
-const TournamentTypeItem = ({
+const TournamentFormatItem = ({
   title,
   description,
   selected = false,
@@ -43,7 +43,7 @@ const TournamentTypeItem = ({
   );
 };
 
-export default TournamentTypeItem;
+export default TournamentFormatItem;
 
 const styles = StyleSheet.create({
   container: {

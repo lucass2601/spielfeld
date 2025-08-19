@@ -1,7 +1,7 @@
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
 
-export default function generateRounds(tournamentTeams, tournamentType) {
+export default function generateRounds(tournamentTeams, tournamentFormat) {
   let matchdays = [];
   let rounds = [];
 
@@ -34,7 +34,7 @@ export default function generateRounds(tournamentTeams, tournamentType) {
     return [fixed, ...rest]; // A, D, B, C
   };
 
-  if (tournamentType === "roundrobin") {
+  if (tournamentFormat === "roundrobin") {
     if (teams.length % 2 === 1) {
       teams.unshift(null);
     }
@@ -54,7 +54,7 @@ export default function generateRounds(tournamentTeams, tournamentType) {
     return matchdays;
   }
 
-  if (tournamentType === "knockout") {
+  if (tournamentFormat === "knockout") {
     const nextPow2 = (n) => {
       const power = Math.ceil(Math.log2(n));
       return 2 ** power;

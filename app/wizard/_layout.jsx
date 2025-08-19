@@ -11,7 +11,7 @@ export default function WizardLayout() {
       }}
     >
       <Stack.Screen
-        name="type"
+        name="format"
         options={{ title: "Create Tournament", step: "1" }}
       />
       <Stack.Screen

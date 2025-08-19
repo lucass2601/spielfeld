@@ -6,7 +6,7 @@ import generateRounds from "@/utils/generateRounds";
 const useTournamentStore = create((set, get) => ({
   newTournament: {
     imageUri: "",
-    type: "roundrobin",
+    format: "roundrobin",
     name: "",
     startDate: "",
     teams: [],
@@ -42,7 +42,7 @@ const useTournamentStore = create((set, get) => ({
     set(() => ({
       newTournament: {
         imageUri: "",
-        type: "roundrobin",
+        format: "roundrobin",
         name: "",
         startDate: "",
         teams: [],
@@ -96,7 +96,7 @@ const useTournamentStore = create((set, get) => ({
               ...tournament,
               matchdays: generateRounds(
                 tournament.teams.map((team) => team.id),
-                tournament.type
+                tournament.format
               ),
             }
           : tournament
