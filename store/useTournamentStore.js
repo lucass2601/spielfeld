@@ -103,8 +103,30 @@ const useTournamentStore = create((set, get) => ({
       ),
     })),
 
-  updateTournamentRoundWinner: () => {
-    // Evaluate winner...
+  updateTournamentRoundWinner: (tournament_id, round_id, team_id) => {
+    set((state) => ({
+      tournaments: state.tournaments.map((tournament) => {
+        if (tournament.id !== tournament_id) return tournament;
+
+        const teamExists = tournament.teams.some((team) => team.id === team_id);
+        if (!teamExists) return tournament;
+
+        return {
+          ...tournament,
+          matchdays: tournament.matchdays.map((md) => ({
+            ...md,
+            rounds: md.rounds.map((round) =>
+              round.id === round_id
+                ? {
+                    ...round,
+                    winnerId: team_id,
+                  }
+                : round
+            ),
+          })),
+        };
+      }),
+    }));
   },
 
   getRound: (tournament_id, round_id) => {

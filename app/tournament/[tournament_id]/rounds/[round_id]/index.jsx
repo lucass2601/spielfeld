@@ -2,9 +2,7 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
-import { router, useLocalSearchParams } from "expo-router";
-
-import { useMemo } from "react";
+import { useLocalSearchParams } from "expo-router";
 
 import ScreenContainer from "@/components/layouts/ScreenContainer";
 import AppBar from "@/components/molcecules/AppBar";
@@ -21,12 +19,18 @@ const RoundDetails = () => {
     state.getRound(tournament_id, round_id)
   );
 
+  const getTeam = useTournamentStore((state) => state.getTeam);
+
+  const getTeamData = (team_id) => {
+    return getTeam(tournament_id, team_id);
+  };
+
   const updateTournamentRoundWinner = useTournamentStore(
     (state) => state.updateTournamentRoundWinner
   );
 
-  const teamAName = useMemo(() => round?.teamA?.name ?? "BYE", [round]);
-  const teamBName = useMemo(() => round?.teamB?.name ?? "BYE", [round]);
+  const teamA = getTeamData(round.teamA);
+  const teamB = getTeamData(round.teamB);
   const winnerId = round?.winnerId ?? null;
 
   const handlePickWinner = (team_id) => {
@@ -60,39 +64,23 @@ const RoundDetails = () => {
                   <Text style={styles.title}>Pick Winner</Text>
 
                   <Pressable
-                    style={[
-                      styles.option,
-                      winnerId === round?.teamA?.id && styles.optionSelected,
-                      !round?.teamA && styles.optionDisabled,
-                    ]}
-                    onPress={() => handlePickWinner(round.teamA.id)}
-                    disabled={!round?.teamA}
+                    style={[styles.option]}
+                    onPress={() => handlePickWinner(teamA.id)}
                   >
                     <Text style={styles.optionText}>
-                      {teamAName}
-                      {winnerId === round?.teamA?.id ? "  ✓" : ""}
+                      {teamA.name}
+                      {winnerId === teamA.id && " ✅"}
                     </Text>
-                    {!round?.teamA && (
-                      <Text style={styles.hint}>BYE – cannot select</Text>
-                    )}
                   </Pressable>
 
                   <Pressable
-                    style={[
-                      styles.option,
-                      winnerId === round?.teamB?.id && styles.optionSelected,
-                      !round?.teamB && styles.optionDisabled,
-                    ]}
-                    onPress={() => handlePickWinner(round.teamB.id)}
-                    disabled={!round?.teamB}
+                    style={[styles.option]}
+                    onPress={() => handlePickWinner(teamB.id)}
                   >
                     <Text style={styles.optionText}>
-                      {teamBName}
-                      {winnerId === round?.teamB?.id ? "  ✓" : ""}
+                      {teamB.name}
+                      {winnerId === teamB.id && " ✅"}
                     </Text>
-                    {!round?.teamB && (
-                      <Text style={styles.hint}>BYE – cannot select</Text>
-                    )}
                   </Pressable>
                 </View>
 
