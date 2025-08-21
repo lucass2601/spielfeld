@@ -73,7 +73,10 @@ export default function TournamentLayout() {
         />
 
         <MaterialTopTabs.Screen name="rounds" options={{ title: "Rounds" }} />
-        <MaterialTopTabs.Screen name="preview" options={{ title: "Preview" }} />
+        <MaterialTopTabs.Screen
+          name="standings"
+          options={{ title: "Standings" }}
+        />
       </MaterialTopTabs>
     </View>
   );
