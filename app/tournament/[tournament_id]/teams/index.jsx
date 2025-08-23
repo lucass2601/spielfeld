@@ -33,16 +33,10 @@ const TeamsTab = () => {
   const addTeam = useTournamentStore((state) => state.addTeam);
 
   const [modalOpen, setModalOpen] = useState(false);
-  const [newTeamName, setNewTeamName] = useState("");
-
-  const handleAddTeam = () => {
-    addTeam(tournament_id, newTeamName);
-    setNewTeamName("");
-    setModalOpen(false);
-  };
 
   const handleTeamPress = (team_id) => {
-    router.push(`${pathname}/${team_id}`);
+    if (pathname !== `/tournament/${tournament_id}/teams/${team_id}`)
+      router.push(`${pathname}/${team_id}`);
   };
 
   return (

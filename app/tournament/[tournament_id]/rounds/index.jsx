@@ -23,7 +23,9 @@ export default function RoundsTab() {
   );
 
   const handleRoundPress = (round_id) => {
-    router.push(`${pathname}/${round_id}`);
+    if (pathname !== `/tournament/${tournament_id}/rounds/${round_id}`) {
+      router.push(`${pathname}/${round_id}`);
+    }
   };
 
   const scrollViewRef = useRef(null);
