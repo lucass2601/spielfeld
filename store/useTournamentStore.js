@@ -9,6 +9,7 @@ const useTournamentStore = create((set, get) => ({
   newTournament: {
     imageUri: "",
     format: "roundrobin",
+    sport: null,
     name: "",
     startDate: "",
     teams: [],
