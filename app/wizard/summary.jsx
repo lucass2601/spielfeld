@@ -6,14 +6,7 @@ import { colors, typography } from "@/theme/theme";
 import { formatDateTime } from "@/utils/dateUtils";
 import { router } from "expo-router";
 
-import {
-  View,
-  Text,
-  StyleSheet,
-  Pressable,
-  Image,
-  ScrollView,
-} from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 
 export default function Wizard_Summary() {
   const newTournament = useTournamentStore((state) => state.newTournament);
@@ -21,7 +14,7 @@ export default function Wizard_Summary() {
     (state) => state.submitNewTournament
   );
 
-  const { imageUri, name, startDate, format } = newTournament;
+  const { imageUri, name, startDate, format, sport } = newTournament;
 
   const dateString = new Date(startDate).toISOString();
   const formattedDate = formatDateTime(dateString, "LLL d, yyyy t");
@@ -45,6 +38,7 @@ export default function Wizard_Summary() {
               imageUri={imageUri}
               name={name}
               startDate={dateString}
+              sport={sport}
               format={format}
             />
           )}
@@ -64,6 +58,25 @@ export default function Wizard_Summary() {
               <Text style={styles.content_item__label}>Format</Text>
               <Text style={styles.content_item__value}>
                 {format === "roundrobin" ? "League" : "Knockout"}
+              </Text>
+            </View>
+          </View>
+        </View>
+        <View style={styles.summary_section}>
+          <View style={styles.summary_section__header}>
+            <Text style={styles.header_item__header}>Sport</Text>
+            <Pressable
+              onPress={() => router.dismissTo("/wizard/sport")}
+              style={styles.header_item__button}
+            >
+              <Text style={styles.header_item__buttonText}>Change</Text>
+            </Pressable>
+          </View>
+          <View style={styles.summary_section__content}>
+            <View style={styles.summary_section__item}>
+              <Text style={styles.content_item__label}>Sport</Text>
+              <Text style={styles.content_item__value}>
+                {sport === null ? "No Sport" : "Football"}
               </Text>
             </View>
           </View>

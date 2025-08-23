@@ -18,7 +18,7 @@ export default function Wizard_Format() {
 
   const submitWizard = () => {
     setNewTournamentInfo("format", selectedFormat);
-    router.push("/wizard/info");
+    router.push("/wizard/sport");
   };
 
   return (
