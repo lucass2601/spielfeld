@@ -11,6 +11,7 @@ export default function generateRounds(tournamentTeams, tournamentFormat) {
     teamB: b,
     status: "scheduled", // "scheduled" | "finished"
     winnerId: null,
+    isDraw: null,
   });
 
   // create a copy - otherwise tournamentTeams will get overwritten
