@@ -22,13 +22,17 @@ import ScreenContainer from "@/components/layouts/ScreenContainer";
 import useTournamentStore from "@/store/useTournamentStore";
 
 export default function Wizard_Information() {
+  const newTournament = useTournamentStore((state) => state.newTournament);
+
   const setNewTournamentInfo = useTournamentStore(
     (state) => state.setNewTournamentInfo
   );
 
-  const [tournamentName, setTournamentName] = useState("");
-  const [imageUri, setImageUri] = useState(null);
-  const [startDate, setStartDate] = useState(null);
+  const [tournamentName, setTournamentName] = useState(
+    newTournament.name || ""
+  );
+  const [imageUri, setImageUri] = useState(newTournament.imageUri || null);
+  const [startDate, setStartDate] = useState(newTournament.startDate || null);
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
