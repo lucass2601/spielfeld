@@ -5,7 +5,13 @@ import { colors, typography } from "@/theme/theme";
 
 import IconArrowBack from "@/assets/icons/icon-arrow-back.svg";
 
-export default function AppBar({ backPress, title, step, iconLeft }) {
+export default function AppBar({
+  backPress,
+  title,
+  step,
+  totalSteps,
+  iconLeft,
+}) {
   const router = useRouter();
 
   return (
@@ -46,7 +52,7 @@ export default function AppBar({ backPress, title, step, iconLeft }) {
               color: colors["primary-600"],
             }}
           >
-            {step} of 3
+            {step} of {totalSteps}
           </Text>
         )}
       </View>
