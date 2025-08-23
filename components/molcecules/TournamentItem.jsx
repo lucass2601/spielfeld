@@ -16,6 +16,15 @@ const tournamentStatusDefinitions = {
   completed: "Completed",
 };
 
+const getSportIcon = (sport) => {
+  switch (sport) {
+    case "football":
+      return "⚽";
+    default:
+      return "Error occured.";
+  }
+};
+
 import { formatDateTime } from "@/utils/dateUtils";
 
 const TournamentItem = ({
@@ -23,6 +32,7 @@ const TournamentItem = ({
   name = "Turniername",
   startDate,
   teams,
+  sport,
   format = "Knockout",
   preview = false,
   status,
@@ -51,6 +61,12 @@ const TournamentItem = ({
             <Text style={styles.date_time}>{formattedTime}</Text>
           </View>
         </View>
+
+        {sport && (
+          <View>
+            <Text style={{ fontSize: 28 }}>{getSportIcon(sport)}</Text>
+          </View>
+        )}
       </View>
 
       {!preview && (
