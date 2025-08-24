@@ -32,10 +32,11 @@ const RoundDetails = () => {
   const teamA = getTeamData(round.teamA);
   const teamB = getTeamData(round.teamB);
   const winnerId = round?.winnerId ?? null;
+  const isDraw = round?.isDraw ?? null;
 
-  const handlePickWinner = (team_id) => {
+  const handlePickWinner = (team_id, isDraw) => {
     if (!round) return;
-    updateTournamentRoundWinner(tournament_id, round_id, team_id);
+    updateTournamentRoundWinner(tournament_id, round_id, team_id, isDraw);
   };
 
   return (
@@ -65,7 +66,7 @@ const RoundDetails = () => {
 
                   <Pressable
                     style={[styles.option]}
-                    onPress={() => handlePickWinner(teamA.id)}
+                    onPress={() => handlePickWinner(teamA.id, false)}
                   >
                     <Text style={styles.optionText}>
                       {teamA.name}
@@ -75,7 +76,17 @@ const RoundDetails = () => {
 
                   <Pressable
                     style={[styles.option]}
-                    onPress={() => handlePickWinner(teamB.id)}
+                    onPress={() => handlePickWinner(null, true)}
+                  >
+                    <Text style={styles.optionText}>
+                      Tie
+                      {isDraw && " ✅"}
+                    </Text>
+                  </Pressable>
+
+                  <Pressable
+                    style={[styles.option]}
+                    onPress={() => handlePickWinner(teamB.id, false)}
                   >
                     <Text style={styles.optionText}>
                       {teamB.name}
