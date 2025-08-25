@@ -1,0 +1,128 @@
+import { useState } from "react";
+import { View, Text, Pressable, TextInput } from "react-native";
+import { colors, typography } from "@/theme/theme";
+import Button from "../atoms/Button";
+import Input from "../atoms/Input";
+
+import IconClose from "@/assets/icons/icon-close.svg";
+import useTournamentStore from "@/store/useTournamentStore";
+import { useGlobalSearchParams } from "expo-router";
+
+const MatchDetailsModal = ({ round, onClose }) => {
+  const { tournament_id } = useGlobalSearchParams();
+
+  const getTeam = useTournamentStore((state) => state.getTeam);
+
+  const teamA = getTeam(tournament_id, round.teamA);
+  const teamB = getTeam(tournament_id, round.teamB);
+
+  const [scoreA, setScoreA] = useState(0);
+  const [scoreB, setScoreB] = useState(0);
+
+  return (
+    <View style={{ paddingHorizontal: 24, paddingVertical: 32, flex: 1 }}>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <Pressable
+          onPress={onClose}
+          accessibilityRole="button"
+          accessibilityLabel="Close"
+        >
+          <IconClose height={24} width={24} color={colors["primary-600"]} />
+        </Pressable>
+        <Text
+          style={{
+            ...typography.body.large.bold,
+            color: colors["grey-900"],
+          }}
+        >
+          {teamA.name} vs {teamB.name}
+        </Text>
+        <View style={{ height: 24, width: 24 }} />
+      </View>
+
+      <View
+        style={{
+          justifyContent: "space-between",
+          marginTop: 16,
+          marginBottom: 16,
+          flex: 1,
+        }}
+      >
+        <View style={{ gap: 8, flex: 1 }}>
+          <View
+            style={{
+              gap: 12,
+              flex: 1,
+              justifyContent: "center",
+            }}
+          >
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Text
+                style={{
+                  flex: 1,
+                  ...typography.body.large.medium,
+                  color: colors["grey-900"],
+                }}
+              >
+                {teamA.name}
+              </Text>
+              <Input
+                value={scoreA}
+                onChangeText={(t) => setScoreA(t)}
+                placeholder="0"
+                inputMode="numeric"
+                keyboardType="number-pad"
+                maxLength={3}
+                textAlign="center"
+                placeholderTextColor={colors["grey-400"]}
+                selectionColor={colors["grey-900"]}
+                style={{ width: 80 }}
+              />
+            </View>
+
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Text
+                style={{
+                  flex: 1,
+                  ...typography.body.large.medium,
+                  color: colors["grey-900"],
+                }}
+              >
+                {teamB.name}
+              </Text>
+              <Input
+                value={scoreB}
+                onChangeText={(t) => setScoreB(t)}
+                placeholder="0"
+                inputMode="numeric"
+                keyboardType="number-pad"
+                maxLength={3}
+                textAlign="center"
+                placeholderTextColor={colors["grey-400"]}
+                selectionColor={colors["grey-900"]}
+                style={{ width: 80 }}
+              />
+            </View>
+          </View>
+        </View>
+
+        <View style={{ gap: 12, marginTop: 16 }}>
+          <Button
+            style={{ borderColor: colors["primary-600"] }}
+            variant="tertiary"
+            label="Go Live"
+          />
+          <Button label="Submit Score" />
+        </View>
+      </View>
+    </View>
+  );
+};
+
+export default MatchDetailsModal;

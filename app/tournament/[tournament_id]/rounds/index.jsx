@@ -1,4 +1,12 @@
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Modal,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
 import { router, useGlobalSearchParams, usePathname } from "expo-router";
 
 import { colors, typography } from "@/theme/theme";
@@ -8,24 +16,30 @@ import ScreenContainer from "@/components/layouts/ScreenContainer";
 import useTournamentStore from "@/store/useTournamentStore";
 import Button from "@/components/atoms/Button";
 import RoundItem from "@/components/molcecules/RoundItem";
-import { useRef } from "react";
+import MatchDetailsModal from "@/components/molcecules/MatchDetailsModal";
+
+import { useRef, useState } from "react";
 
 export default function RoundsTab() {
   const { tournament_id } = useGlobalSearchParams();
   const pathname = usePathname();
 
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedRound, setSelectedRound] = useState({});
+
   const tournament = useTournamentStore((state) =>
     state.getTournament(tournament_id)
   );
+
+  const getRound = useTournamentStore((state) => state.getRound);
 
   const updateTournamentRounds = useTournamentStore(
     (state) => state.updateTournamentRounds
   );
 
   const handleRoundPress = (round_id) => {
-    if (pathname !== `/tournament/${tournament_id}/rounds/${round_id}`) {
-      router.push(`${pathname}/${round_id}`);
-    }
+    setSelectedRound(getRound(tournament_id, round_id));
+    setModalOpen(true);
   };
 
   const scrollViewRef = useRef(null);
@@ -54,6 +68,41 @@ export default function RoundsTab() {
             flexDirection: "row",
           }}
         >
+          <Modal
+            visible={modalOpen}
+            transparent
+            animationType="fade"
+            onRequestClose={() => setModalOpen(false)}
+          >
+            <View
+              style={{
+                flex: 1,
+                justifyContent: "flex-end",
+                backgroundColor: "rgba(0,0,0,0.5)",
+              }}
+            >
+              <KeyboardAvoidingView
+                style={{ flex: 0, justifyContent: "flex-end" }}
+                behavior={Platform.OS === "ios" ? "padding" : "height"}
+                keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
+              >
+                <View
+                  style={{
+                    width: "100%",
+                    height: 400,
+                    backgroundColor: "white",
+                    borderTopRightRadius: 35,
+                    borderTopLeftRadius: 35,
+                  }}
+                >
+                  <MatchDetailsModal
+                    round={selectedRound}
+                    onClose={() => setModalOpen(false)}
+                  />
+                </View>
+              </KeyboardAvoidingView>
+            </View>
+          </Modal>
           {tournament.matchdays.map((matchday, index) => (
             <Button
               key={matchday.id}
