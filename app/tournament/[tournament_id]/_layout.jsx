@@ -73,9 +73,9 @@ export default function TournamentLayout() {
         />
 
         <MaterialTopTabs.Screen
-          name="rounds"
+          name="matches"
           options={{
-            title: "Rounds",
+            title: "Matches",
             headerShown: !nestedHomePageOpened && Platform.OS === "android",
             tabBarStyle:
               nestedHomePageOpened && Platform.OS === "android"

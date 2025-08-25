@@ -15,30 +15,30 @@ import ScreenContainer from "@/components/layouts/ScreenContainer";
 
 import useTournamentStore from "@/store/useTournamentStore";
 import Button from "@/components/atoms/Button";
-import RoundItem from "@/components/molcecules/RoundItem";
+import MatchItem from "@/components/molcecules/MatchItem";
 import MatchDetailsModal from "@/components/molcecules/MatchDetailsModal";
 
 import { useRef, useState } from "react";
 
-export default function RoundsTab() {
+export default function MatchesTab() {
   const { tournament_id } = useGlobalSearchParams();
   const pathname = usePathname();
 
   const [modalOpen, setModalOpen] = useState(false);
-  const [selectedRound, setSelectedRound] = useState({});
+  const [selectedMatch, setSelectedMatch] = useState({});
 
   const tournament = useTournamentStore((state) =>
     state.getTournament(tournament_id)
   );
 
-  const getRound = useTournamentStore((state) => state.getRound);
+  const getMatch = useTournamentStore((state) => state.getMatch);
 
-  const updateTournamentRounds = useTournamentStore(
-    (state) => state.updateTournamentRounds
+  const updateTournamentMatches = useTournamentStore(
+    (state) => state.updateTournamentMatches
   );
 
-  const handleRoundPress = (round_id) => {
-    setSelectedRound(getRound(tournament_id, round_id));
+  const handleMatchPress = (match_id) => {
+    setSelectedMatch(getMatch(tournament_id, match_id));
     setModalOpen(true);
   };
 
@@ -46,12 +46,12 @@ export default function RoundsTab() {
   const matchdayRefs = useRef({});
 
   const labelForKnockout = (matchday) => {
-    const m = matchday.rounds.length;
+    const m = matchday.matches.length;
     if (m === 1) return "Final";
     if (m === 2) return "Semifinals";
     if (m === 4) return "Quarterfinals";
 
-    return `Round of ${m * 2}`;
+    return `match of ${m * 2}`;
   };
 
   const isKnockout = tournament.format === "knockout";
@@ -96,7 +96,7 @@ export default function RoundsTab() {
                   }}
                 >
                   <MatchDetailsModal
-                    round={selectedRound}
+                    match={selectedMatch}
                     onClose={() => setModalOpen(false)}
                   />
                 </View>
@@ -133,8 +133,8 @@ export default function RoundsTab() {
           {tournament.matchdays && !tournament.matchdays.length && (
             <Button
               variant="tertiary"
-              label="Generate Rounds"
-              onPress={() => updateTournamentRounds(tournament_id)}
+              label="Generate Matches"
+              onPress={() => updateTournamentMatches(tournament_id)}
             />
           )}
 
@@ -154,15 +154,15 @@ export default function RoundsTab() {
                   ? labelForKnockout(matchday)
                   : `Matchday ${matchday_index + 1}`}
               </Text>
-              {matchday.rounds
-                .filter((round) => round.teamA && round.teamB)
-                .map((round, round_index) => {
+              {matchday.matches
+                .filter((match) => match.teamA && match.teamB)
+                .map((match, match_index) => {
                   return (
-                    <View key={round.id} style={{ marginTop: 12 }}>
-                      <RoundItem
-                        index={round_index}
-                        round={round}
-                        onPress={() => handleRoundPress(round.id)}
+                    <View key={match.id} style={{ marginTop: 12 }}>
+                      <MatchItem
+                        index={match_index}
+                        match={match}
+                        onPress={() => handleMatchPress(match.id)}
                       />
                     </View>
                   );

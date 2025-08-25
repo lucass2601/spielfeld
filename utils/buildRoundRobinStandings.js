@@ -15,11 +15,11 @@ export default function buildRoundRobinStandings(tournament) {
     pts: 0,
   }));
 
-  const getRow = (teamId) => rows.find((r) => r.id === teamId);
+  const getRow = (teamId) => rows.find((m) => m.id === teamId);
 
   for (const md of tournament.matchdays || []) {
-    for (const r of md.rounds || []) {
-      const { teamA, teamB, winnerId, isDraw } = r;
+    for (const m of md.matches || []) {
+      const { teamA, teamB, winnerId, isDraw } = m;
 
       const hasA = Boolean(teamA);
       const hasB = Boolean(teamB);

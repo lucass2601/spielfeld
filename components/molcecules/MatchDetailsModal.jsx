@@ -8,13 +8,13 @@ import IconClose from "@/assets/icons/icon-close.svg";
 import useTournamentStore from "@/store/useTournamentStore";
 import { useGlobalSearchParams } from "expo-router";
 
-const MatchDetailsModal = ({ round, onClose }) => {
+const MatchDetailsModal = ({ match, onClose }) => {
   const { tournament_id } = useGlobalSearchParams();
 
   const getTeam = useTournamentStore((state) => state.getTeam);
 
-  const teamA = getTeam(tournament_id, round.teamA);
-  const teamB = getTeam(tournament_id, round.teamB);
+  const teamA = getTeam(tournament_id, match.teamA);
+  const teamB = getTeam(tournament_id, match.teamB);
 
   const [scoreA, setScoreA] = useState(0);
   const [scoreB, setScoreB] = useState(0);

@@ -3,7 +3,7 @@ import { colors, typography } from "@/theme/theme";
 import useTournamentStore from "@/store/useTournamentStore";
 import { useGlobalSearchParams } from "expo-router";
 
-const RoundItem = ({ round, index, onPress }) => {
+const MatchItem = ({ match, index, onPress }) => {
   const { tournament_id } = useGlobalSearchParams();
   const getTeam = useTournamentStore((state) => state.getTeam);
 
@@ -11,11 +11,11 @@ const RoundItem = ({ round, index, onPress }) => {
     return getTeam(tournament_id, team_id);
   };
 
-  const teamAName = round.teamA ? getTeamData(round.teamA).name : "BYE";
-  const teamAImageUri = round.teamA ? getTeamData(round.teamA).imageUri : null;
+  const teamAName = match.teamA ? getTeamData(match.teamA).name : "BYE";
+  const teamAImageUri = match.teamA ? getTeamData(match.teamA).imageUri : null;
 
-  const teamBName = round.teamB ? getTeamData(round.teamB).name : "BYE";
-  const teamBImageUri = round.teamB ? getTeamData(round.teamB).imageUri : null;
+  const teamBName = match.teamB ? getTeamData(match.teamB).name : "BYE";
+  const teamBImageUri = match.teamB ? getTeamData(match.teamB).imageUri : null;
 
   const placeholderImage = require("@/assets/images/icon.png");
 
@@ -36,7 +36,7 @@ const RoundItem = ({ round, index, onPress }) => {
               { color: colors["grey-900"] },
             ]}
           >
-            {`Round ${index + 1}`}
+            {`Match ${index + 1}`}
           </Text>
         </View>
         <View>
@@ -54,7 +54,7 @@ const RoundItem = ({ round, index, onPress }) => {
   );
 };
 
-export default RoundItem;
+export default MatchItem;
 
 const styles = StyleSheet.create({
   container: {

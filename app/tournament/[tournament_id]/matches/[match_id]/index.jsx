@@ -12,11 +12,11 @@ import IconClose from "@/assets/icons/icon-close.svg";
 import { colors, typography } from "@/theme/theme";
 import useTournamentStore from "@/store/useTournamentStore";
 
-const RoundDetails = () => {
-  const { tournament_id, round_id } = useLocalSearchParams();
+const MatchDetails = () => {
+  const { tournament_id, match_id } = useLocalSearchParams();
 
-  const round = useTournamentStore((state) =>
-    state.getRound(tournament_id, round_id)
+  const match = useTournamentStore((state) =>
+    state.getMatch(tournament_id, match_id)
   );
 
   const getTeam = useTournamentStore((state) => state.getTeam);
@@ -25,18 +25,18 @@ const RoundDetails = () => {
     return getTeam(tournament_id, team_id);
   };
 
-  const updateTournamentRoundWinner = useTournamentStore(
-    (state) => state.updateTournamentRoundWinner
+  const updateTournamentMatchWinner = useTournamentStore(
+    (state) => state.updateTournamentMatchWinner
   );
 
-  const teamA = getTeamData(round.teamA);
-  const teamB = getTeamData(round.teamB);
-  const winnerId = round?.winnerId ?? null;
-  const isDraw = round?.isDraw ?? null;
+  const teamA = getTeamData(match.teamA);
+  const teamB = getTeamData(match.teamB);
+  const winnerId = match?.winnerId ?? null;
+  const isDraw = match?.isDraw ?? null;
 
   const handlePickWinner = (team_id, isDraw) => {
-    if (!round) return;
-    updateTournamentRoundWinner(tournament_id, round_id, team_id, isDraw);
+    if (!match) return;
+    updateTournamentMatchWinner(tournament_id, match_id, team_id, isDraw);
   };
 
   return (
@@ -51,13 +51,13 @@ const RoundDetails = () => {
           iconLeft={
             <IconClose width={24} height={24} color={colors["grey-900"]} />
           }
-          title="Edit Round"
+          title="Edit Match"
         />
         <ScreenContainer>
           <View style={{ gap: 24 }}>
-            {!round ? (
+            {!match ? (
               <Text style={{ color: colors["error-600"] }}>
-                Round not found.
+                Match not found.
               </Text>
             ) : (
               <>
@@ -97,7 +97,7 @@ const RoundDetails = () => {
 
                 <View style={styles.debugBox}>
                   <Text style={styles.debugTitle}>Debug</Text>
-                  <Text style={styles.debugText}>{JSON.stringify(round)}</Text>
+                  <Text style={styles.debugText}>{JSON.stringify(match)}</Text>
                 </View>
               </>
             )}
@@ -108,7 +108,7 @@ const RoundDetails = () => {
   );
 };
 
-export default RoundDetails;
+export default MatchDetails;
 
 const styles = StyleSheet.create({
   imageContainer: {

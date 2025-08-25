@@ -2,7 +2,7 @@ import { create } from "zustand";
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
 
-import generateRounds from "@/utils/generateRounds";
+import generateMatches from "@/utils/generateMatches";
 import buildRoundRobinStandings from "@/utils/buildRoundRobinStandings";
 
 const useTournamentStore = create((set, get) => ({
@@ -178,13 +178,13 @@ const useTournamentStore = create((set, get) => ({
       ),
     })),
 
-  updateTournamentRounds: (tournament_id) =>
+  updateTournamentMatches: (tournament_id) =>
     set((state) => ({
       tournaments: state.tournaments.map((tournament) =>
         tournament.id === tournament_id
           ? {
               ...tournament,
-              matchdays: generateRounds(
+              matchdays: generateMatches(
                 tournament.teams.map((team) => team.id),
                 tournament.format
               ),
@@ -193,7 +193,7 @@ const useTournamentStore = create((set, get) => ({
       ),
     })),
 
-  updateTournamentRoundWinner: (tournament_id, round_id, team_id, isDraw) => {
+  updateTournamentMatchWinner: (tournament_id, match_id, team_id, isDraw) => {
     set((state) => ({
       tournaments: state.tournaments.map((tournament) => {
         if (tournament.id !== tournament_id) return tournament;
@@ -205,14 +205,14 @@ const useTournamentStore = create((set, get) => ({
           ...tournament,
           matchdays: tournament.matchdays.map((md) => ({
             ...md,
-            rounds: md.rounds.map((round) =>
-              round.id === round_id
+            matches: md.matches.map((match) =>
+              match.id === match_id
                 ? {
-                    ...round,
+                    ...match,
                     winnerId: team_id ? team_id : null,
                     isDraw: isDraw,
                   }
-                : round
+                : match
             ),
           })),
         };
@@ -225,14 +225,14 @@ const useTournamentStore = create((set, get) => ({
     return buildRoundRobinStandings(tournament);
   },
 
-  getRound: (tournament_id, round_id) => {
+  getMatch: (tournament_id, match_id) => {
     const tournament = get().tournaments.find(
       (tournament) => tournament.id === tournament_id
     );
 
-    const allRounds = tournament.matchdays.flatMap((md) => md.rounds);
+    const allMatches = tournament.matchdays.flatMap((md) => md.matches);
 
-    return allRounds.find((round) => round.id === round_id);
+    return allMatches.find((match) => match.id === match_id);
   },
 
   getTeam: (tournament_id, team_id) => {

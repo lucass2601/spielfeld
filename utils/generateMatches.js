@@ -1,9 +1,9 @@
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
 
-export default function generateRounds(tournamentTeams, tournamentFormat) {
+export default function generateMatches(tournamentTeams, tournamentFormat) {
   let matchdays = [];
-  let rounds = [];
+  let matches = [];
 
   const makeMatch = (a, b) => ({
     id: uuidv4(),
@@ -20,7 +20,7 @@ export default function generateRounds(tournamentTeams, tournamentFormat) {
   const addMatches = (arr) => {
     const n = arr.length;
     for (let i = 0; i < n / 2; i++) {
-      rounds.push(makeMatch(arr[i], arr[n - 1 - i]));
+      matches.push(makeMatch(arr[i], arr[n - 1 - i]));
     }
   };
 
@@ -46,9 +46,9 @@ export default function generateRounds(tournamentTeams, tournamentFormat) {
       addMatches(arr);
       matchdays.push({
         id: uuidv4(),
-        rounds: rounds,
+        matches: matches,
       });
-      rounds = [];
+      matches = [];
       arr = rotate(arr);
     }
 
@@ -71,7 +71,7 @@ export default function generateRounds(tournamentTeams, tournamentFormat) {
 
     const makePairs = (teamsParam) => {
       const teamsLength = teamsParam.length;
-      const matches = [];
+      pairMatches = [];
 
       for (let i = 0; i < teamsLength / 2; i++) {
         const m = makeMatch(teamsParam[i], teamsParam[teamsLength - 1 - i]);
@@ -84,21 +84,21 @@ export default function generateRounds(tournamentTeams, tournamentFormat) {
           m.winnerId = m.teamB.id;
         }
 
-        matches.push(m);
+        pairMatches.push(m);
       }
-      return matches;
+      return pairMatches;
     };
 
-    const firstRound = makePairs(arr);
-    matchdays.push({ id: uuidv4(), rounds: [...firstRound] });
+    const firstMatch = makePairs(arr);
+    matchdays.push({ id: uuidv4(), matches: [...firstMatch] });
 
-    let matches = firstRound.length;
+    let matches = firstMatch.length;
     while (matches > 1) {
       matches = Math.floor(matches / 2);
-      const emptyRound = Array.from({ length: matches }, () =>
+      const emptyMatch = Array.from({ length: matches }, () =>
         makeMatch(null, null)
       );
-      matchdays.push({ id: uuidv4(), rounds: [...emptyRound] });
+      matchdays.push({ id: uuidv4(), matches: [...emptyMatch] });
     }
 
     return matchdays;
