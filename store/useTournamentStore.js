@@ -220,6 +220,7 @@ const useTournamentStore = create((set, get) => ({
                     isDraw: isDraw,
                     teamAScore: teamAScore,
                     teamBScore: teamBScore,
+                    status: "finished",
                   }
                 : match
             ),
