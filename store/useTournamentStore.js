@@ -193,7 +193,14 @@ const useTournamentStore = create((set, get) => ({
       ),
     })),
 
-  updateTournamentMatchWinner: (tournament_id, match_id, team_id, isDraw) => {
+  updateTournamentMatchWinner: (
+    tournament_id,
+    match_id,
+    team_id,
+    isDraw,
+    teamAScore,
+    teamBScore
+  ) => {
     set((state) => ({
       tournaments: state.tournaments.map((tournament) => {
         if (tournament.id !== tournament_id) return tournament;
@@ -211,6 +218,8 @@ const useTournamentStore = create((set, get) => ({
                     ...match,
                     winnerId: team_id ? team_id : null,
                     isDraw: isDraw,
+                    teamAGd: (match.teamAGd || 0) + (teamAScore - teamBScore),
+                    teamBGd: (match.teamBGd || 0) + (teamBScore - teamAScore),
                   }
                 : match
             ),

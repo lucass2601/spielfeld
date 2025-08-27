@@ -12,6 +12,7 @@ export default function buildRoundRobinStandings(tournament) {
     w: 0,
     t: 0,
     l: 0,
+    gd: 0,
     pts: 0,
   }));
 
@@ -19,7 +20,7 @@ export default function buildRoundRobinStandings(tournament) {
 
   for (const md of tournament.matchdays || []) {
     for (const m of md.matches || []) {
-      const { teamA, teamB, winnerId, isDraw } = m;
+      const { teamA, teamAGd, teamB, teamBGd, winnerId, isDraw } = m;
 
       const hasA = Boolean(teamA);
       const hasB = Boolean(teamB);
@@ -39,6 +40,7 @@ export default function buildRoundRobinStandings(tournament) {
         b.gp += 1;
         a.t += 1;
         b.t += 1;
+        a.gd;
         a.pts += pointsDraw;
         b.pts += pointsDraw;
         continue;
@@ -59,14 +61,26 @@ export default function buildRoundRobinStandings(tournament) {
         b.pts += pointsWin;
         a.pts += pointsLoss;
       }
+
+      a.gd += teamAGd ? teamAGd : 0;
+      b.gd += teamBGd ? teamBGd : 0;
     }
   }
 
   rows.sort((x, y) => {
     if (y.pts !== x.pts) return y.pts - x.pts;
     if (y.w !== x.w) return y.w - x.w;
+    if (y.gd !== x.gd) return y.gd - x.gd;
     return x.name.localeCompare(y.name);
   });
 
-  return rows.map(({ name, gp, w, t, l, pts }) => ({ name, gp, w, t, l, pts }));
+  return rows.map(({ name, gp, w, t, l, gd, pts }) => ({
+    name,
+    gp,
+    w,
+    t,
+    l,
+    gd,
+    pts,
+  }));
 }

@@ -21,6 +21,7 @@ const RoundRobinTable = ({ data }) => {
         <Text style={[styles.cell, styles.headerText]}>W</Text>
         <Text style={[styles.cell, styles.headerText]}>T</Text>
         <Text style={[styles.cell, styles.headerText]}>L</Text>
+        <Text style={[styles.cell, styles.headerText]}>GD</Text>
         <Text style={[styles.cell, styles.headerText]}>PTS</Text>
       </View>
 
@@ -36,6 +37,7 @@ const RoundRobinTable = ({ data }) => {
           <Text style={styles.cell}>{item.w}</Text>
           <Text style={styles.cell}>{item.t}</Text>
           <Text style={styles.cell}>{item.l}</Text>
+          <Text style={styles.cell}>{item.gd}</Text>
           <Text style={styles.cell}>{item.pts}</Text>
         </View>
       ))}

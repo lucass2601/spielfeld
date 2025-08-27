@@ -11,6 +11,10 @@ import { useGlobalSearchParams } from "expo-router";
 const MatchDetailsModal = ({ match, onClose }) => {
   const { tournament_id } = useGlobalSearchParams();
 
+  const updateTournamentMatchWinner = useTournamentStore(
+    (state) => state.updateTournamentMatchWinner
+  );
+
   const getTeam = useTournamentStore((state) => state.getTeam);
 
   const teamA = getTeam(tournament_id, match.teamA);
@@ -18,6 +22,30 @@ const MatchDetailsModal = ({ match, onClose }) => {
 
   const [scoreA, setScoreA] = useState(0);
   const [scoreB, setScoreB] = useState(0);
+
+  const handlePickWinner = (scoreA, scoreB) => {
+    let winner_id = null;
+    let isDraw = false;
+
+    if (scoreA > scoreB) {
+      winner_id = teamA.id;
+    } else if (scoreA < scoreB) {
+      winner_id = teamB.id;
+    } else {
+      isDraw = true;
+    }
+
+    updateTournamentMatchWinner(
+      tournament_id,
+      match.id,
+      winner_id,
+      isDraw,
+      scoreA,
+      scoreB
+    );
+
+    onClose();
+  };
 
   return (
     <View style={{ paddingHorizontal: 24, paddingVertical: 32, flex: 1 }}>
@@ -118,7 +146,10 @@ const MatchDetailsModal = ({ match, onClose }) => {
             variant="tertiary"
             label="Go Live"
           />
-          <Button label="Submit Score" />
+          <Button
+            label="Submit Score"
+            onPress={() => handlePickWinner(Number(scoreA), Number(scoreB))}
+          />
         </View>
       </View>
     </View>
