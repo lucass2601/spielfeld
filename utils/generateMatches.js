@@ -9,6 +9,8 @@ export default function generateMatches(tournamentTeams, tournamentFormat) {
     id: uuidv4(),
     teamA: a,
     teamB: b,
+    teamAScore: 0,
+    teamBScore: 0,
     status: "scheduled", // "scheduled" | "finished"
     winnerId: null,
     isDraw: null,

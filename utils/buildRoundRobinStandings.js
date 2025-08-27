@@ -20,7 +20,7 @@ export default function buildRoundRobinStandings(tournament) {
 
   for (const md of tournament.matchdays || []) {
     for (const m of md.matches || []) {
-      const { teamA, teamAGd, teamB, teamBGd, winnerId, isDraw } = m;
+      const { teamA, teamAScore, teamB, teamBScore, winnerId, isDraw } = m;
 
       const hasA = Boolean(teamA);
       const hasB = Boolean(teamB);
@@ -62,8 +62,8 @@ export default function buildRoundRobinStandings(tournament) {
         a.pts += pointsLoss;
       }
 
-      a.gd += teamAGd ? teamAGd : 0;
-      b.gd += teamBGd ? teamBGd : 0;
+      a.gd += teamAScore - teamBScore;
+      b.gd += teamBScore - teamAScore;
     }
   }
 

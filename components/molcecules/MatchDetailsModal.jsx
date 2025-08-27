@@ -20,8 +20,8 @@ const MatchDetailsModal = ({ match, onClose }) => {
   const teamA = getTeam(tournament_id, match.teamA);
   const teamB = getTeam(tournament_id, match.teamB);
 
-  const [scoreA, setScoreA] = useState(0);
-  const [scoreB, setScoreB] = useState(0);
+  const [scoreA, setScoreA] = useState(match.teamAScore || 0);
+  const [scoreB, setScoreB] = useState(match.teamBScore || 0);
 
   const handlePickWinner = (scoreA, scoreB) => {
     let winner_id = null;
@@ -103,7 +103,7 @@ const MatchDetailsModal = ({ match, onClose }) => {
               <Input
                 value={scoreA}
                 onChangeText={(t) => setScoreA(t)}
-                placeholder="0"
+                placeholder={String(scoreA)}
                 inputMode="numeric"
                 keyboardType="number-pad"
                 maxLength={3}
@@ -127,7 +127,7 @@ const MatchDetailsModal = ({ match, onClose }) => {
               <Input
                 value={scoreB}
                 onChangeText={(t) => setScoreB(t)}
-                placeholder="0"
+                placeholder={String(scoreB)}
                 inputMode="numeric"
                 keyboardType="number-pad"
                 maxLength={3}
