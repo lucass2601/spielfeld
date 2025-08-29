@@ -1,19 +1,32 @@
 import { useState } from "react";
-import { View, Text, Pressable, TextInput } from "react-native";
+import { View, Text, Pressable } from "react-native";
 import { colors, typography } from "@/theme/theme";
 import Button from "../atoms/Button";
 import Input from "../atoms/Input";
 
 import IconClose from "@/assets/icons/icon-close.svg";
 import useTournamentStore from "@/store/useTournamentStore";
-import { useGlobalSearchParams } from "expo-router";
+
+import { router, useGlobalSearchParams, usePathname } from "expo-router";
 
 const MatchDetailsModal = ({ match, onClose }) => {
   const { tournament_id } = useGlobalSearchParams();
+  const pathname = usePathname();
+
+  const tournament = useTournamentStore((state) =>
+    state.getTournament(tournament_id)
+  );
 
   const updateTournamentMatchWinner = useTournamentStore(
     (state) => state.updateTournamentMatchWinner
   );
+
+  const openLiveMatch = () => {
+    if (pathname !== `/tournament/${tournament_id}/match/${match.id}`) {
+      onClose();
+      router.push(`${pathname}/${match.id}`);
+    }
+  };
 
   const getTeam = useTournamentStore((state) => state.getTeam);
 
@@ -141,11 +154,14 @@ const MatchDetailsModal = ({ match, onClose }) => {
         </View>
 
         <View style={{ gap: 12, marginTop: 16 }}>
-          <Button
-            style={{ borderColor: colors["primary-600"] }}
-            variant="tertiary"
-            label="Go Live"
-          />
+          {tournament.sport === "football" && (
+            <Button
+              style={{ borderColor: colors["primary-600"] }}
+              variant="tertiary"
+              label="Go Live"
+              onPress={openLiveMatch}
+            />
+          )}
           <Button
             label="Submit Score"
             onPress={() => handlePickWinner(Number(scoreA), Number(scoreB))}
