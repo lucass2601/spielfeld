@@ -4,12 +4,12 @@ import defaultImage from "@/assets/images/icon.png";
 
 import { colors } from "@/theme/theme";
 
-const TeamItem = ({ onPress, imageUri, name }) => {
+const EntityItem = ({ onPress, imageUri, name }) => {
   return (
     <Pressable onPress={onPress} style={styles.container}>
       <View style={{ flexDirection: "row", alignItems: "center", gap: 16 }}>
         <Image
-          style={styles.teamIcon}
+          style={styles.entityIcon}
           source={imageUri ? { uri: imageUri } : defaultImage}
         />
         <Text>{name}</Text>
@@ -18,7 +18,7 @@ const TeamItem = ({ onPress, imageUri, name }) => {
   );
 };
 
-export default TeamItem;
+export default EntityItem;
 
 const styles = StyleSheet.create({
   container: {
@@ -30,12 +30,11 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderColor: colors["grey-100"],
   },
-  teamIcon: {
+  entityIcon: {
     width: 32,
     height: 32,
     borderRadius: 16,
   },
-  styleAnimation: { justifyContent: "center", alignItems: "center" },
   rightAction: {
     width: 50,
     height: "100%",

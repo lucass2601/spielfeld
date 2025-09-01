@@ -8,14 +8,14 @@ import Input from "../atoms/Input";
 import IconClose from "@/assets/icons/icon-close.svg";
 import Textarea from "../atoms/Textarea";
 
-const AddTeamsModal = ({ onAddTeams, onClose }) => {
+const AddTeamsModal = ({ entity, onAddEntities, onClose }) => {
   const [mode, setMode] = useState("single"); // "single" oder "bulk"
   const [singleName, setSingleName] = useState("");
   const [bulkNames, setBulkNames] = useState("");
 
-  const handleAddTeams = () => {
+  const handleAddEntity = () => {
     if (mode === "single" && singleName.trim()) {
-      onAddTeams([singleName.trim()]);
+      onAddEntities([singleName.trim()]);
       setSingleName("");
       onClose();
     }
@@ -27,7 +27,7 @@ const AddTeamsModal = ({ onAddTeams, onClose }) => {
         .filter(Boolean);
 
       if (names.length > 0) {
-        onAddTeams(names);
+        onAddEntities(names);
         setBulkNames("");
         onClose();
       }
@@ -46,7 +46,7 @@ const AddTeamsModal = ({ onAddTeams, onClose }) => {
             color: colors["grey-900"],
           }}
         >
-          Add teams
+          Add {entity === "teams" ? "Teams" : "Players"}
         </Text>
         <View style={{ height: 24, width: 24 }}></View>
       </View>
@@ -71,13 +71,15 @@ const AddTeamsModal = ({ onAddTeams, onClose }) => {
           {/* Inputs */}
           {mode === "single" ? (
             <Input
-              placeholder="Enter team"
+              placeholder={`Enter ${entity === "teams" ? "team" : "player"}`}
               value={singleName}
               onChangeText={(newName) => setSingleName(newName)}
             />
           ) : (
             <Textarea
-              placeholder="Enter team names separated by commas or new lines"
+              placeholder={`Enter ${
+                entity === "teams" ? "team" : "player"
+              } names separated by commas or new lines`}
               value={bulkNames}
               onChangeText={(newNames) => setBulkNames(newNames)}
             />
@@ -85,7 +87,7 @@ const AddTeamsModal = ({ onAddTeams, onClose }) => {
         </View>
 
         <View>
-          <Button label="Save" onPress={handleAddTeams} />
+          <Button label="Save" onPress={handleAddEntity} />
         </View>
       </View>
     </View>
