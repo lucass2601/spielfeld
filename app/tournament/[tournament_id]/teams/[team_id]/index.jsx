@@ -9,15 +9,19 @@ import { router, useLocalSearchParams } from "expo-router";
 
 import ScreenContainer from "@/components/layouts/ScreenContainer";
 import AppBar from "@/components/molcecules/AppBar";
+import EntityEditor from "@/components/molcecules/EntityEditor";
 import Button from "@/components/atoms/Button";
 import Input from "@/components/atoms/Input";
 
 import IconClose from "@/assets/icons/icon-close.svg";
 
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+const Tab = createMaterialTopTabNavigator();
+
 import { colors, typography } from "@/theme/theme";
 import useTournamentStore from "@/store/useTournamentStore";
 
-const TeamDetails = () => {
+const GeneralTab = () => {
   const { tournament_id, team_id } = useLocalSearchParams();
 
   const team = useTournamentStore((state) =>
@@ -68,6 +72,77 @@ const TeamDetails = () => {
   };
 
   return (
+    <View style={styles.tabContainer}>
+      <View style={styles.imageContainer}>
+        <Pressable onPress={pickImage} style={styles.imageWrapper}>
+          <Image
+            style={styles.image}
+            source={{ uri: imageUri }}
+            resizeMode="cover"
+          />
+        </Pressable>
+        <View style={styles.imageOptions}>
+          <Text
+            onPress={imageUri ? () => setImageUri(null) : pickImage}
+            style={[
+              styles.imageText,
+              { color: imageUri ? colors["error-600"] : colors["primary-600"] },
+            ]}
+          >
+            {imageUri ? "Remove Image" : "Upload Image"}
+          </Text>
+        </View>
+      </View>
+
+      <View style={styles.formContainer}>
+        <View>
+          <Input
+            value={name}
+            onChangeText={(val) => setName(val)}
+            label="Name"
+          />
+        </View>
+
+        <View>
+          <Button label="Save" onPress={handleSubmit} />
+        </View>
+
+        <View>
+          <Pressable
+            onPress={handleDelete}
+            style={{
+              width: "100%",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Text
+              style={[
+                {
+                  ...typography.body.medium.bold,
+                  color: colors["error-600"],
+                },
+              ]}
+            >
+              Delete Team
+            </Text>
+          </Pressable>
+        </View>
+      </View>
+    </View>
+  );
+};
+
+const RosterTab = () => {
+  return (
+    <View style={styles.tabContainer}>
+      <EntityEditor entity="players" />
+    </View>
+  );
+};
+
+const TeamDetails = () => {
+  return (
     <SafeAreaProvider>
       <SafeAreaView
         style={{
@@ -80,67 +155,34 @@ const TeamDetails = () => {
             <IconClose width={24} height={24} color={colors["grey-900"]} />
           }
           title="Edit Team"
+          backPress={() => router.dismiss()}
         />
         <ScreenContainer>
-          <View style={{ gap: 32 }}>
-            <View style={styles.imageContainer}>
-              <Pressable onPress={pickImage} style={styles.imageWrapper}>
-                <Image
-                  style={styles.image}
-                  source={{ uri: imageUri }}
-                  resizeMode="cover"
-                />
-              </Pressable>
-              <View style={styles.imageOptions}>
-                {imageUri ? (
-                  <Text
-                    onPress={() => setImageUri(null)}
-                    style={styles.removeText}
-                  >
-                    Remove Image
-                  </Text>
-                ) : (
-                  <Text onPress={pickImage} style={styles.uploadText}>
-                    Upload Image
-                  </Text>
-                )}
-              </View>
-            </View>
-
-            <View>
-              <Input
-                value={name}
-                onChangeText={(val) => setName(val)}
-                label="Name"
-              />
-            </View>
-
-            <View>
-              <Button label="Save" onPress={handleSubmit} />
-            </View>
-
-            <View>
-              <Pressable
-                onPress={handleDelete}
-                style={{
-                  width: "100%",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Text
-                  style={[
-                    {
-                      ...typography.body.medium.bold,
-                      color: colors["error-600"],
-                    },
-                  ]}
-                >
-                  Delete
-                </Text>
-              </Pressable>
-            </View>
-          </View>
+          <Tab.Navigator
+            screenOptions={{
+              tabBarLabelStyle: {
+                ...typography.body.small.semibold,
+              },
+              tabBarIndicatorStyle: {
+                backgroundColor: colors["primary-600"],
+              },
+            }}
+          >
+            <Tab.Screen
+              name="general"
+              component={GeneralTab}
+              options={{
+                tabBarLabel: "General",
+              }}
+            />
+            <Tab.Screen
+              name="roster"
+              component={RosterTab}
+              options={{
+                tabBarLabel: "Roster",
+              }}
+            />
+          </Tab.Navigator>
         </ScreenContainer>
       </SafeAreaView>
     </SafeAreaProvider>
@@ -150,8 +192,12 @@ const TeamDetails = () => {
 export default TeamDetails;
 
 const styles = StyleSheet.create({
+  tabContainer: {
+    backgroundColor: colors.white,
+    flex: 1,
+    paddingTop: 24,
+  },
   imageContainer: {
-    margin: "auto",
     justifyContent: "center",
     alignItems: "center",
   },
@@ -169,14 +215,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  uploadText: {
+  imageText: {
     marginTop: 12,
-    color: colors["primary-600"],
     ...typography.body.medium.bold,
   },
-  removeText: {
-    marginTop: 12,
-    color: colors["error-600"],
-    ...typography.body.medium.bold,
+  formContainer: {
+    marginTop: 32,
+    gap: 24,
   },
 });
