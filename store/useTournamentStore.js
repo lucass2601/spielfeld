@@ -30,30 +30,35 @@ const useTournamentStore = create((set, get) => ({
           name: "Player 1",
           imageUri:
             "file:///Users/lucasfischer-privat/Library/Developer/CoreSimulator/Devices/9944995A-FF48-4EC2-B485-64480C7088D0/data/Containers/Data/Application/00B3C885-363A-40E4-80D7-D465260DA5DB/Library/Caches/ExponentExperienceData/@lucass2601/tournal/ImagePicker/D3CB6F03-FC9A-4AA0-9AD1-4C6956EFABBA.jpg",
+          roster: [],
         },
         {
           id: "a7427c48-dce8-40c5-9893-c136a41a827a",
           name: "Player 2",
           imageUri:
             "file:///Users/lucasfischer-privat/Library/Developer/CoreSimulator/Devices/9944995A-FF48-4EC2-B485-64480C7088D0/data/Containers/Data/Application/00B3C885-363A-40E4-80D7-D465260DA5DB/Library/Caches/ExponentExperienceData/@lucass2601/tournal/ImagePicker/DE52D4D7-8359-4CBA-94B9-E0E3836ECD04.jpg",
+          roster: [],
         },
         {
           id: "0235cd93-ee86-48d5-9039-7c69bc41e932",
           name: "Player 3",
           imageUri:
             "file:///Users/lucasfischer-privat/Library/Developer/CoreSimulator/Devices/9944995A-FF48-4EC2-B485-64480C7088D0/data/Containers/Data/Application/00B3C885-363A-40E4-80D7-D465260DA5DB/Library/Caches/ExponentExperienceData/@lucass2601/tournal/ImagePicker/446DC3CF-B8BF-4711-B6D1-D3272BB4911A.jpg",
+          roster: [],
         },
         {
           id: "ab9bb926-e86b-4c8d-b383-2d8af2c5000a",
           name: "Player 4",
           imageUri:
             "file:///Users/lucasfischer-privat/Library/Developer/CoreSimulator/Devices/9944995A-FF48-4EC2-B485-64480C7088D0/data/Containers/Data/Application/00B3C885-363A-40E4-80D7-D465260DA5DB/Library/Caches/ExponentExperienceData/@lucass2601/tournal/ImagePicker/8C514BB6-D285-4299-833B-D39000436D39.jpg",
+          roster: [],
         },
         {
           id: "04f97f0e-0281-4ced-9b59-3f3e5c30faeb",
           name: "Player 5",
           imageUri:
             "file:///Users/lucasfischer-privat/Library/Developer/CoreSimulator/Devices/9944995A-FF48-4EC2-B485-64480C7088D0/data/Containers/Data/Application/00B3C885-363A-40E4-80D7-D465260DA5DB/Library/Caches/ExponentExperienceData/@lucass2601/tournal/ImagePicker/F5BAD0CB-F96F-4E04-B3AB-4E616C6B8FE0.jpg",
+          roster: [],
         },
       ],
       matchdays: [],
@@ -73,30 +78,35 @@ const useTournamentStore = create((set, get) => ({
           name: "Player 1",
           imageUri:
             "file:///Users/lucasfischer-privat/Library/Developer/CoreSimulator/Devices/9944995A-FF48-4EC2-B485-64480C7088D0/data/Containers/Data/Application/00B3C885-363A-40E4-80D7-D465260DA5DB/Library/Caches/ExponentExperienceData/@lucass2601/tournal/ImagePicker/D3CB6F03-FC9A-4AA0-9AD1-4C6956EFABBA.jpg",
+          roster: [],
         },
         {
           id: "886afb9f-d911-4062-8362-55dbd5c5283a",
           name: "Player 2",
           imageUri:
             "file:///Users/lucasfischer-privat/Library/Developer/CoreSimulator/Devices/9944995A-FF48-4EC2-B485-64480C7088D0/data/Containers/Data/Application/00B3C885-363A-40E4-80D7-D465260DA5DB/Library/Caches/ExponentExperienceData/@lucass2601/tournal/ImagePicker/DE52D4D7-8359-4CBA-94B9-E0E3836ECD04.jpg",
+          roster: [],
         },
         {
           id: "1e712ccf-5d7f-44d7-ae9e-ae3df5c0cc23",
           name: "Player 3",
           imageUri:
             "file:///Users/lucasfischer-privat/Library/Developer/CoreSimulator/Devices/9944995A-FF48-4EC2-B485-64480C7088D0/data/Containers/Data/Application/00B3C885-363A-40E4-80D7-D465260DA5DB/Library/Caches/ExponentExperienceData/@lucass2601/tournal/ImagePicker/446DC3CF-B8BF-4711-B6D1-D3272BB4911A.jpg",
+          roster: [],
         },
         {
           id: "3400976a-2e96-484e-8fa5-c30d9418d536",
           name: "Player 4",
           imageUri:
             "file:///Users/lucasfischer-privat/Library/Developer/CoreSimulator/Devices/9944995A-FF48-4EC2-B485-64480C7088D0/data/Containers/Data/Application/00B3C885-363A-40E4-80D7-D465260DA5DB/Library/Caches/ExponentExperienceData/@lucass2601/tournal/ImagePicker/8C514BB6-D285-4299-833B-D39000436D39.jpg",
+          roster: [],
         },
         {
           id: "26271077-5e27-4586-81c1-917aa9d2b509",
           name: "Player 5",
           imageUri:
             "file:///Users/lucasfischer-privat/Library/Developer/CoreSimulator/Devices/9944995A-FF48-4EC2-B485-64480C7088D0/data/Containers/Data/Application/00B3C885-363A-40E4-80D7-D465260DA5DB/Library/Caches/ExponentExperienceData/@lucass2601/tournal/ImagePicker/F5BAD0CB-F96F-4E04-B3AB-4E616C6B8FE0.jpg",
+          roster: [],
         },
       ],
       matchdays: [],
@@ -275,11 +285,56 @@ const useTournamentStore = create((set, get) => ({
                   id: uuidv4(),
                   name: newName,
                   imageUri: null,
+                  roster: [],
                 },
               ],
             };
           }
           return tournament;
+        }),
+      };
+    }),
+
+  getPlayer: (tournament_id, team_id, player_id) => {
+    const tournament = get().tournaments.find(
+      (tournament) => tournament.id === tournament_id
+    );
+
+    const team = tournament.teams.find((team) => team.id === team_id);
+
+    return team.roster.find((player) => player.id === player_id);
+  },
+
+  addPlayer: (tournament_id, team_id, player_name) =>
+    set((state) => {
+      return {
+        tournaments: state.tournaments.map((tournament) => {
+          if (tournament.id !== tournament_id) return tournament;
+
+          const teamToUpdate = tournament.teams.find((t) => t.id === team_id);
+          if (!teamToUpdate) return tournament;
+
+          const existingPlayers = teamToUpdate.roster.map((p) => p.name);
+
+          let newName = player_name;
+          let counter = 0;
+          while (existingPlayers.includes(newName)) {
+            counter++;
+            newName = `${player_name} (${counter})`;
+          }
+
+          const updatedTeams = tournament.teams.map((team) =>
+            team.id === team_id
+              ? {
+                  ...team,
+                  roster: [
+                    ...team.roster,
+                    { id: uuidv4(), name: newName, imageUri: null },
+                  ],
+                }
+              : team
+          );
+          return { ...tournament, teams: updatedTeams };
         }),
       };
     }),
@@ -316,6 +371,68 @@ const useTournamentStore = create((set, get) => ({
           ...tournament,
           teams: tournament.teams.map((team) =>
             team.id === team_id ? { ...team, imageUri, name: newName } : team
+          ),
+        };
+      }),
+    }));
+  },
+
+  deletePlayer: (tournament_id, team_id, player_id) =>
+    set((state) => ({
+      tournaments: state.tournaments.map((tournament) => {
+        if (tournament.id !== tournament_id) return tournament;
+
+        const teamExists = tournament.teams.some((t) => t.id === team_id);
+        if (!teamExists) return tournament;
+
+        return {
+          ...tournament,
+          teams: tournament.teams.map((team) =>
+            team.id === team_id
+              ? {
+                  ...team,
+                  roster: team.roster.filter(
+                    (player) => player.id !== player_id
+                  ),
+                }
+              : team
+          ),
+        };
+      }),
+    })),
+
+  editPlayer: (tournament_id, team_id, player_id, imageUri, name) => {
+    set((state) => ({
+      tournaments: state.tournaments.map((tournament) => {
+        if (tournament.id !== tournament_id) return tournament;
+
+        const team = tournament.teams.find((t) => t.id === team_id);
+        if (!team) return tournament;
+
+        const existingNames = team.roster
+          .filter((p) => p.id !== player_id)
+          .map((p) => p.name);
+
+        let newName = name;
+        let counter = 0;
+        while (existingNames.includes(newName)) {
+          counter++;
+          newName = `${name} (${counter})`;
+        }
+
+        return {
+          ...tournament,
+          teams: tournament.teams.map((t) =>
+            t.id === team_id
+              ? {
+                  ...t,
+                  roster: t.roster.map((player) =>
+                    player.id === player_id
+                      ? { ...player, imageUri, name: newName }
+                      : player
+                  ),
+                }
+              : t
           ),
         };
       }),
