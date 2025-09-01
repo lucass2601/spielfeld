@@ -47,8 +47,6 @@ const ParticipantEdtior = ({ entity }) => {
   const [modalOpen, setModalOpen] = useState(false);
 
   const handleEntityPress = (entity_id) => {
-    console.log(entity_id);
-
     if (entity === "teams") {
       if (pathname !== `/tournament/${tournament_id}/teams/${entity_id}`)
         router.push(`${pathname}/${entity_id}`);
@@ -57,9 +55,7 @@ const ParticipantEdtior = ({ entity }) => {
         pathname !==
         `/tournament/${tournament_id}/teams/${team_id}/roster/${entity_id}`
       )
-        console.log(pathname);
-
-      router.push(`${pathname}/${entity_id}`);
+        router.push(`${pathname}/${entity_id}`);
     } else {
       console.error("No Entity matched");
     }
