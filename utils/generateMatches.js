@@ -12,6 +12,7 @@ export default function generateMatches(tournamentTeams, tournamentFormat) {
     teamAScore: 0,
     teamBScore: 0,
     status: "scheduled", // "scheduled" | "finished"
+    events: [],
     winnerId: null,
     isDraw: null,
   });
