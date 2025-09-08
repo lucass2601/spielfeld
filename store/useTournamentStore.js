@@ -75,35 +75,85 @@ const useTournamentStore = create((set, get) => ({
       teams: [
         {
           id: "6866744d-8bc0-4222-9cbb-62f35adb27b4",
-          name: "Player 1",
+          name: "Team 1",
           imageUri:
             "file:///Users/lucasfischer-privat/Library/Developer/CoreSimulator/Devices/9944995A-FF48-4EC2-B485-64480C7088D0/data/Containers/Data/Application/00B3C885-363A-40E4-80D7-D465260DA5DB/Library/Caches/ExponentExperienceData/@lucass2601/tournal/ImagePicker/D3CB6F03-FC9A-4AA0-9AD1-4C6956EFABBA.jpg",
-          roster: [],
+          roster: [
+            {
+              id: "57e31cbd-174d-4dbf-a721-681d8e43c346",
+              name: "Player 1",
+              imageUri:
+                "file:///Users/lucasfischer-privat/Library/Developer/CoreSimulator/Devices/9944995A-FF48-4EC2-B485-64480C7088D0/data/Containers/Data/Application/00B3C885-363A-40E4-80D7-D465260DA5DB/Library/Caches/ExponentExperienceData/@lucass2601/tournal/ImagePicker/D3CB6F03-FC9A-4AA0-9AD1-4C6956EFABBA.jpg",
+            },
+            {
+              id: "bb9acb02-9623-4dd8-a3a9-87b9d91c7e9d",
+              name: "Player 2",
+              imageUri:
+                "file:///Users/lucasfischer-privat/Library/Developer/CoreSimulator/Devices/9944995A-FF48-4EC2-B485-64480C7088D0/data/Containers/Data/Application/00B3C885-363A-40E4-80D7-D465260DA5DB/Library/Caches/ExponentExperienceData/@lucass2601/tournal/ImagePicker/DE52D4D7-8359-4CBA-94B9-E0E3836ECD04.jpg",
+            },
+            {
+              id: "af40a5ff-2467-401a-8e1c-ce6602aeff72",
+              name: "Player 3",
+              imageUri:
+                "file:///Users/lucasfischer-privat/Library/Developer/CoreSimulator/Devices/9944995A-FF48-4EC2-B485-64480C7088D0/data/Containers/Data/Application/00B3C885-363A-40E4-80D7-D465260DA5DB/Library/Caches/ExponentExperienceData/@lucass2601/tournal/ImagePicker/446DC3CF-B8BF-4711-B6D1-D3272BB4911A.jpg",
+            },
+            {
+              id: "dd5c44ca-0c6c-403b-b3f6-b0c91f47c98a",
+              name: "Player 4",
+              imageUri:
+                "file:///Users/lucasfischer-privat/Library/Developer/CoreSimulator/Devices/9944995A-FF48-4EC2-B485-64480C7088D0/data/Containers/Data/Application/00B3C885-363A-40E4-80D7-D465260DA5DB/Library/Caches/ExponentExperienceData/@lucass2601/tournal/ImagePicker/8C514BB6-D285-4299-833B-D39000436D39.jpg",
+            },
+          ],
         },
         {
           id: "886afb9f-d911-4062-8362-55dbd5c5283a",
-          name: "Player 2",
+          name: "Team 2",
           imageUri:
             "file:///Users/lucasfischer-privat/Library/Developer/CoreSimulator/Devices/9944995A-FF48-4EC2-B485-64480C7088D0/data/Containers/Data/Application/00B3C885-363A-40E4-80D7-D465260DA5DB/Library/Caches/ExponentExperienceData/@lucass2601/tournal/ImagePicker/DE52D4D7-8359-4CBA-94B9-E0E3836ECD04.jpg",
           roster: [],
         },
         {
           id: "1e712ccf-5d7f-44d7-ae9e-ae3df5c0cc23",
-          name: "Player 3",
+          name: "Team 3",
           imageUri:
             "file:///Users/lucasfischer-privat/Library/Developer/CoreSimulator/Devices/9944995A-FF48-4EC2-B485-64480C7088D0/data/Containers/Data/Application/00B3C885-363A-40E4-80D7-D465260DA5DB/Library/Caches/ExponentExperienceData/@lucass2601/tournal/ImagePicker/446DC3CF-B8BF-4711-B6D1-D3272BB4911A.jpg",
           roster: [],
         },
         {
           id: "3400976a-2e96-484e-8fa5-c30d9418d536",
-          name: "Player 4",
+          name: "Team 4",
           imageUri:
             "file:///Users/lucasfischer-privat/Library/Developer/CoreSimulator/Devices/9944995A-FF48-4EC2-B485-64480C7088D0/data/Containers/Data/Application/00B3C885-363A-40E4-80D7-D465260DA5DB/Library/Caches/ExponentExperienceData/@lucass2601/tournal/ImagePicker/8C514BB6-D285-4299-833B-D39000436D39.jpg",
-          roster: [],
+          roster: [
+            {
+              id: "a54e7bc3-aaac-4c0b-b0a0-7a67391da965",
+              name: "Player 5",
+              imageUri:
+                "file:///Users/lucasfischer-privat/Library/Developer/CoreSimulator/Devices/9944995A-FF48-4EC2-B485-64480C7088D0/data/Containers/Data/Application/00B3C885-363A-40E4-80D7-D465260DA5DB/Library/Caches/ExponentExperienceData/@lucass2601/tournal/ImagePicker/D3CB6F03-FC9A-4AA0-9AD1-4C6956EFABBA.jpg",
+            },
+            {
+              id: "f01c79a6-fdf0-4556-979b-a7254db6cc48",
+              name: "Player 6",
+              imageUri:
+                "file:///Users/lucasfischer-privat/Library/Developer/CoreSimulator/Devices/9944995A-FF48-4EC2-B485-64480C7088D0/data/Containers/Data/Application/00B3C885-363A-40E4-80D7-D465260DA5DB/Library/Caches/ExponentExperienceData/@lucass2601/tournal/ImagePicker/DE52D4D7-8359-4CBA-94B9-E0E3836ECD04.jpg",
+            },
+            {
+              id: "83999a3e-5e84-4cde-a318-d3f8cdd65b20",
+              name: "Player 7",
+              imageUri:
+                "file:///Users/lucasfischer-privat/Library/Developer/CoreSimulator/Devices/9944995A-FF48-4EC2-B485-64480C7088D0/data/Containers/Data/Application/00B3C885-363A-40E4-80D7-D465260DA5DB/Library/Caches/ExponentExperienceData/@lucass2601/tournal/ImagePicker/446DC3CF-B8BF-4711-B6D1-D3272BB4911A.jpg",
+            },
+            {
+              id: "a899d172-a780-4a21-a64b-0e54a1924c96",
+              name: "Player 8",
+              imageUri:
+                "file:///Users/lucasfischer-privat/Library/Developer/CoreSimulator/Devices/9944995A-FF48-4EC2-B485-64480C7088D0/data/Containers/Data/Application/00B3C885-363A-40E4-80D7-D465260DA5DB/Library/Caches/ExponentExperienceData/@lucass2601/tournal/ImagePicker/8C514BB6-D285-4299-833B-D39000436D39.jpg",
+            },
+          ],
         },
         {
           id: "26271077-5e27-4586-81c1-917aa9d2b509",
-          name: "Player 5",
+          name: "Team 5",
           imageUri:
             "file:///Users/lucasfischer-privat/Library/Developer/CoreSimulator/Devices/9944995A-FF48-4EC2-B485-64480C7088D0/data/Containers/Data/Application/00B3C885-363A-40E4-80D7-D465260DA5DB/Library/Caches/ExponentExperienceData/@lucass2601/tournal/ImagePicker/F5BAD0CB-F96F-4E04-B3AB-4E616C6B8FE0.jpg",
           roster: [],
@@ -231,6 +281,29 @@ const useTournamentStore = create((set, get) => ({
                     teamAScore: teamAScore,
                     teamBScore: teamBScore,
                     status: "finished",
+                  }
+                : match
+            ),
+          })),
+        };
+      }),
+    }));
+  },
+
+  updateTournamentMatchEvent: (tournament_id, match_id, event) => {
+    set((state) => ({
+      tournaments: state.tournaments.map((tournament) => {
+        if (tournament.id !== tournament_id) return tournament;
+
+        return {
+          ...tournament,
+          matchdays: tournament.matchdays.map((md) => ({
+            ...md,
+            matches: md.matches.map((match) =>
+              match.id === match_id
+                ? {
+                    ...match,
+                    events: [{ ...event, id: uuidv4() }, ...match.events],
                   }
                 : match
             ),
