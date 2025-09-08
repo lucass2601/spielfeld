@@ -7,10 +7,11 @@ import IconArrowBack from "@/assets/icons/icon-arrow-back.svg";
 
 export default function AppBar({
   backPress,
-  title,
-  step,
-  totalSteps,
+  forwardPress,
   iconLeft,
+  iconRight,
+  textRight,
+  title,
 }) {
   const router = useRouter();
 
@@ -45,16 +46,18 @@ export default function AppBar({
       </Text>
 
       <View style={{ width: 32 }}>
-        {step && (
+        {forwardPress && iconRight ? (
+          <Pressable onPress={() => forwardPress()}>{iconRight}</Pressable>
+        ) : textRight ? (
           <Text
             style={{
               ...typography.body.small.medium,
               color: colors["primary-600"],
             }}
           >
-            {step} of {totalSteps}
+            {textRight}
           </Text>
-        )}
+        ) : null}
       </View>
     </View>
   );
