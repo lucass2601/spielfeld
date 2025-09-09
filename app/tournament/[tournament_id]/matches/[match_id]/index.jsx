@@ -2,6 +2,7 @@ import {
   Image,
   Modal,
   Pressable,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -29,6 +30,7 @@ import IconArrowBack from "@/assets/icons/icon-arrow-back.svg";
 
 import defaultImage from "@/assets/images/icon.png";
 import LiveMatchColumn from "@/components/molcecules/MatchEventTile";
+import SegmentedControl from "@/components/molcecules/SegmentedControl";
 
 const EVENT_TYPES = {
   comment: {
@@ -85,7 +87,7 @@ const MatchTracker = ({ tournament_id, match_id, timestamp, teamA, teamB }) => {
 
   const addMatchEvent = (event_type, team_id, player_id) => {
     const matchEvent = {
-      timestamp: timestamp,
+      minute: Math.floor(timestamp / 60),
       event: event_type,
       team_id: team_id,
       player_id: player_id,
@@ -228,16 +230,35 @@ const MatchTimeline = ({ tournament_id, match_id }) => {
       {matchEvents.map((event) => (
         <Text
           key={event.id}
-        >{`${event.timestamp}': ${event.player_id} - ${event.event}`}</Text>
+        >{`${event.minute}': ${event.player_id} - ${event.event}`}</Text>
       ))}
     </View>
   );
 };
 
-const MatchPlayerList = () => {
+const MatchPlayerList = ({ teamA, teamB }) => {
+  const [selectedTeam, setSelectedTeam] = useState(teamA || null);
+
+  const handleTeamSelect = (team_id) => {
+    setSelectedTeam([teamA, teamB].find((team) => team.id === team_id));
+  };
+
   return (
     <View style={styles.tabContainer}>
-      <Text>Player List</Text>
+      <SegmentedControl
+        options={[
+          { value: teamA.id, label: teamA.name },
+          { value: teamB.id, label: teamB.name },
+        ]}
+        selectedValue={selectedTeam?.id}
+        onChange={(team) => handleTeamSelect(team)}
+      />
+
+      <View>
+        {selectedTeam?.roster.map((player) => (
+          <Text key={player.id}>{player.name}</Text>
+        ))}
+      </View>
     </View>
   );
 };
@@ -252,6 +273,10 @@ const LivePanel = () => {
   );
 
   const getTeam = useTournamentStore((state) => state.getTeam);
+
+  const updateTournamentMatchWinner = useTournamentStore(
+    (state) => state.updateTournamentMatchWinner
+  );
 
   const getTeamData = (team_id) => {
     return getTeam(tournament_id, team_id);
@@ -276,7 +301,19 @@ const LivePanel = () => {
   }, [gameIsRunning]);
 
   const submitMatch = () => {
-    alert("Match was submitted");
+    const winner_id =
+      scoreA > scoreB ? teamA.id : scoreB > scoreA ? teamB.id : null;
+
+    const isDraw = scoreA === scoreB || null;
+
+    updateTournamentMatchWinner(
+      tournament_id,
+      match_id,
+      winner_id,
+      isDraw,
+      scoreA,
+      scoreB
+    );
   };
 
   const formatTime = (time) => {
@@ -364,7 +401,10 @@ const LivePanel = () => {
               />
             )}
           />
-          <Tab.Screen name="Players" component={MatchPlayerList} />
+          <Tab.Screen
+            name="Players"
+            children={() => <MatchPlayerList teamA={teamA} teamB={teamB} />}
+          />
         </Tab.Navigator>
         {/* </ScreenContainer> */}
       </SafeAreaView>
