@@ -1,15 +1,17 @@
 import { colors, typography } from "@/theme/theme";
-import { Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
 const MatchEventTile = ({ icon, label, style, onPress }) => {
   return (
     <TouchableOpacity
-      style={[styles.liveColumn, style]}
+      style={[styles.eventTile, style]}
       onPress={onPress}
-      activeOpacity={0.7}
+      activeOpacity={0.8}
     >
-      <Text style={[styles.icon]}>{icon}</Text>
-      <Text style={[styles.label]}>{label}</Text>
+      <View style={styles.iconContainer}>
+        <Text style={styles.icon}>{icon}</Text>
+      </View>
+      <Text style={styles.label}>{label}</Text>
     </TouchableOpacity>
   );
 };
@@ -17,24 +19,27 @@ const MatchEventTile = ({ icon, label, style, onPress }) => {
 export default MatchEventTile;
 
 const styles = StyleSheet.create({
-  liveColumn: {
+  eventTile: {
     backgroundColor: colors["grey-50"],
-    borderColor: colors["grey-200"],
+    borderColor: colors["grey-100"],
     justifyContent: "center",
     alignItems: "center",
-    padding: 16,
+    padding: 8,
     borderWidth: 1,
-    borderRadius: 8,
-    minHeight: 80,
+    borderRadius: 12,
+    flex: 1,
+    gap: 4,
+  },
+  iconContainer: {
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    backgroundColor: colors.white,
   },
   icon: {
-    fontSize: 24,
-    marginBottom: 6,
-    textAlign: "center",
+    ...typography.headings.h6,
   },
   label: {
-    ...typography.body.small.medium,
-    color: colors["grey-700"],
-    textAlign: "center",
+    ...typography.body.medium.semibold,
+    color: colors["primary-600"],
   },
 });
