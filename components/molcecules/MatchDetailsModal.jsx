@@ -22,9 +22,9 @@ const MatchDetailsModal = ({ match, onClose }) => {
   );
 
   const openLiveMatch = () => {
-    if (pathname !== `/tournament/${tournament_id}/match/${match.id}`) {
+    if (pathname !== `/tournament/${tournament_id}/matches/${match.id}/live`) {
       onClose();
-      router.push(`${pathname}/${match.id}`);
+      router.push(`${pathname}/${match.id}/live`);
     }
   };
 
