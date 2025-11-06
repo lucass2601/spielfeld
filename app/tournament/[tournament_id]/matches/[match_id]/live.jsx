@@ -6,7 +6,10 @@ import {
   TouchableOpacity,
   View,
   ScrollView,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
+
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { useEffect, useState } from "react";
 
@@ -27,6 +30,8 @@ import Button from "@/components/atoms/Button";
 
 import MatchEventTile from "@/components/molcecules/MatchEventTile";
 import MatchEventTimelineItem from "@/components/molcecules/MatchEventTimelineItem";
+
+import MatchEventModal from "@/components/molcecules/MatchEventModal";
 
 const placeholderImage = require("@/assets/images/icon.png");
 
@@ -53,6 +58,7 @@ const LivePanel = () => {
   const { tournament_id, match_id } = useGlobalSearchParams();
   const [gameIsRunning, setGameIsRunning] = useState(false);
   const [gameTimer, setGameTimer] = useState(0);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const match = useTournamentStore((state) =>
     state.getMatch(tournament_id, match_id)
@@ -190,6 +196,7 @@ const LivePanel = () => {
             <View style={styles.scoreEvent}>
               <Text style={styles.scoreEventText}>Home Score</Text>
               <Button
+                onPress={() => setModalVisible(true)}
                 style={styles.scoreEventAdd}
                 label={<IconAdd width={24} height={24} color={colors.white} />}
               />
@@ -225,6 +232,39 @@ const LivePanel = () => {
             <MatchEventTimelineItem />
           </ScrollView>
         </View>
+
+        <Modal
+          visible={modalVisible}
+          transparent
+          animationType="fade"
+          onRequestClose={() => setModalVisible(false)}
+        >
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "flex-end",
+              backgroundColor: "rgba(0,0,0,0.5)",
+            }}
+          >
+            <KeyboardAvoidingView
+              style={{ flex: 0, justifyContent: "flex-end" }}
+              behavior={Platform.OS === "ios" ? "padding" : "height"}
+              keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
+            >
+              <View
+                style={{
+                  width: "100%",
+                  height: 400,
+                  backgroundColor: "white",
+                  borderTopRightRadius: 35,
+                  borderTopLeftRadius: 35,
+                }}
+              >
+                <MatchEventModal onClose={() => setModalVisible(false)} />
+              </View>
+            </KeyboardAvoidingView>
+          </View>
+        </Modal>
       </SafeAreaView>
     </SafeAreaProvider>
   );
@@ -342,5 +382,46 @@ const styles = StyleSheet.create({
   },
   timeline: {
     gap: 8,
+  },
+
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  buttonOpen: {
+    backgroundColor: "#F194FF",
+  },
+  buttonClose: {
+    backgroundColor: "#2196F3",
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
   },
 });
