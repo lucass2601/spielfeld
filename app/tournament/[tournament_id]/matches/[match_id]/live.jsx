@@ -35,31 +35,16 @@ import MatchEventModal from "@/components/molcecules/MatchEventModal";
 
 const placeholderImage = require("@/assets/images/icon.png");
 
-const EVENT_TYPES = {
-  comment: {
-    label: "Comment",
-    icon: "💬",
-  },
-  goal: {
-    label: "Goal",
-    icon: "⚽",
-  },
-  yellow_card: {
-    label: "Yellow Card",
-    icon: "🟨",
-  },
-  red_card: {
-    label: "Red Card",
-    icon: "🟥",
-  },
-};
-
 const LivePanel = () => {
   const { tournament_id, match_id } = useGlobalSearchParams();
   const [gameIsRunning, setGameIsRunning] = useState(false);
   const [gameTimer, setGameTimer] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
-
+  const [newEvent, setNewEvent] = useState({
+    team: null,
+    player: null,
+    timestamp: null,
+  });
   const match = useTournamentStore((state) =>
     state.getMatch(tournament_id, match_id)
   );
@@ -96,7 +81,7 @@ const LivePanel = () => {
     const winner_id =
       scoreA > scoreB ? teamA.id : scoreB > scoreA ? teamB.id : null;
 
-    const isDraw = scoreA === scoreB || null;
+    const isDraw = scoreA === scoreB;
 
     updateTournamentMatchWinner(
       tournament_id,
@@ -108,6 +93,16 @@ const LivePanel = () => {
     );
 
     router.back();
+  };
+
+  const addGoalModal = (team) => {
+    setNewEvent({
+      ...newEvent,
+      team: team,
+      timestamp: Math.floor(gameTimer / 60).toString(),
+    });
+
+    setModalVisible(true);
   };
 
   const formatTime = (time) => {
@@ -170,21 +165,29 @@ const LivePanel = () => {
         {/* Score Container */}
         <View style={styles.scoreContainer}>
           <View style={styles.playerContainer}>
-            <Image style={styles.playerImage} source={placeholderImage} />
+            <Image
+              style={styles.playerImage}
+              source={{ uri: teamA.imageUri }}
+            />
             <View style={styles.playerText}>
-              <Text style={styles.playerName}>Player 1</Text>
+              <Text style={styles.playerName}>{teamA.name}</Text>
               <Text style={styles.side}>Home</Text>
             </View>
           </View>
 
           <View style={styles.score}>
-            <Text style={styles.scoreText}>0:0</Text>
+            <Text style={styles.scoreText}>
+              {scoreA}:{scoreB}
+            </Text>
           </View>
 
           <View style={styles.playerContainer}>
-            <Image style={styles.playerImage} source={placeholderImage} />
+            <Image
+              style={styles.playerImage}
+              source={{ uri: teamB.imageUri }}
+            />
             <View style={styles.playerText}>
-              <Text style={styles.playerName}>Player 2</Text>
+              <Text style={styles.playerName}>{teamB.name}</Text>
               <Text style={styles.side}>Away</Text>
             </View>
           </View>
@@ -196,7 +199,7 @@ const LivePanel = () => {
             <View style={styles.scoreEvent}>
               <Text style={styles.scoreEventText}>Home Score</Text>
               <Button
-                onPress={() => setModalVisible(true)}
+                onPress={() => addGoalModal(teamA)}
                 style={styles.scoreEventAdd}
                 label={<IconAdd width={24} height={24} color={colors.white} />}
               />
@@ -204,17 +207,10 @@ const LivePanel = () => {
             <View style={styles.scoreEvent}>
               <Text style={styles.scoreEventText}>Away Score</Text>
               <Button
+                onPress={() => addGoalModal(teamB)}
                 style={styles.scoreEventAdd}
                 label={<IconAdd width={24} height={24} color={colors.white} />}
               />
-            </View>
-          </View>
-          <View style={styles.matchEventsContainer}>
-            <Text style={styles.matchEventsTitle}>Match events</Text>
-            <View style={styles.matchEvents}>
-              <MatchEventTile icon={"⚽"} label="Goal" />
-              <MatchEventTile icon={"🟨"} label="Yellow" />
-              <MatchEventTile icon={"🟥"} label="Red" />
             </View>
           </View>
         </View>
@@ -223,13 +219,9 @@ const LivePanel = () => {
         <View style={styles.timelineContainer}>
           <Text style={styles.timelineTitle}>Recent Events</Text>
           <ScrollView contentContainerStyle={styles.timeline}>
-            <MatchEventTimelineItem />
-            <MatchEventTimelineItem />
-            <MatchEventTimelineItem />
-            <MatchEventTimelineItem />
-            <MatchEventTimelineItem />
-            <MatchEventTimelineItem />
-            <MatchEventTimelineItem />
+            {match.events.map((event) => (
+              <MatchEventTile />
+            ))}
           </ScrollView>
         </View>
 
@@ -254,13 +246,19 @@ const LivePanel = () => {
               <View
                 style={{
                   width: "100%",
-                  height: 400,
+
+                  height: 517,
                   backgroundColor: "white",
                   borderTopRightRadius: 35,
                   borderTopLeftRadius: 35,
                 }}
               >
-                <MatchEventModal onClose={() => setModalVisible(false)} />
+                <MatchEventModal
+                  teamA={teamA}
+                  teamB={teamB}
+                  event={newEvent}
+                  onClose={() => setModalVisible(false)}
+                />
               </View>
             </KeyboardAvoidingView>
           </View>
@@ -362,14 +360,6 @@ const styles = StyleSheet.create({
   },
   scoreEventAdd: {
     width: "100%",
-  },
-  matchEventsTitle: {
-    ...typography.body.medium.semibold,
-  },
-  matchEvents: {
-    flexDirection: "row",
-    gap: 8,
-    marginTop: 8,
   },
   timelineContainer: {
     paddingHorizontal: 24,
