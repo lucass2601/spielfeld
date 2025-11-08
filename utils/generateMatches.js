@@ -14,7 +14,7 @@ export default function generateMatches(tournamentTeams, tournamentFormat) {
     status: "scheduled", // "scheduled" | "finished"
     events: [],
     winnerId: null,
-    isDraw: null,
+    isDraw: false,
   });
 
   // create a copy - otherwise tournamentTeams will get overwritten
