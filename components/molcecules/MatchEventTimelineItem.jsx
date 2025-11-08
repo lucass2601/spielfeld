@@ -12,16 +12,14 @@ const MatchEventTimelineItem = ({ icon, label, style, onPress }) => {
         <Text style={styles.timelineEventTypeTitle}>⚽</Text>
       </View>
       <View style={styles.timelineContent}>
-        <Text style={styles.timelineTimestamp}>'12</Text>
+        <Text style={styles.timelineEvent}>Goal!</Text>
         <View style={styles.timelinePlayer}>
           <Image style={styles.playerImage} source={placeholderImage} />
           <Text style={styles.playerName}>Lucas Fischer</Text>
         </View>
       </View>
-      <View style={styles.timelineItemDelete}>
-        <TouchableOpacity>
-          <IconClose width={24} height={24} color={colors["grey-400"]} />
-        </TouchableOpacity>
+      <View>
+        <Text style={styles.timelineTimestamp}>'12</Text>
       </View>
     </View>
   );
@@ -38,18 +36,27 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     padding: 8,
-    gap: 8,
+    gap: 12,
+  },
+  timelineEventType: {
+    borderRadius: 12,
+    height: 44,
+    width: 44,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: colors["grey-50"],
   },
   timelineEventTypeTitle: {
     ...typography.headings.h6,
   },
   timelineContent: {
-    flexDirection: "row",
     flex: 1,
-    gap: 12,
-    alignItems: "center",
+    gap: 4,
   },
   timelineTimestamp: {
+    ...typography.body.medium.bold,
+  },
+  timelineEvent: {
     ...typography.body.small.bold,
     color: colors["grey-400"],
   },
