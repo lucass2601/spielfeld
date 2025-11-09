@@ -290,7 +290,7 @@ const useTournamentStore = create((set, get) => ({
     }));
   },
 
-  updateTournamentMatchEvent: (tournament_id, match_id, event) => {
+  updateTournamentMatchEvents: (tournament_id, match_id, events) => {
     set((state) => ({
       tournaments: state.tournaments.map((tournament) => {
         if (tournament.id !== tournament_id) return tournament;
@@ -303,7 +303,8 @@ const useTournamentStore = create((set, get) => ({
               match.id === match_id
                 ? {
                     ...match,
-                    events: [{ ...event, id: uuidv4() }, ...match.events],
+                    // events: [{ ...event, id: uuidv4() }, ...match.events],
+                    events: events.length ? events : [],
                   }
                 : match
             ),
