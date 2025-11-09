@@ -152,7 +152,6 @@ const LivePanel = () => {
     });
 
     let matchEvent;
-    console.log(submitType);
 
     if (submitType === "edit") {
       matchEvent = {
