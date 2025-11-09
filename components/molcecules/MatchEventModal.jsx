@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View, Text, Pressable } from "react-native";
+import { View, Text, Pressable, Alert } from "react-native";
 import { colors, typography } from "@/theme/theme";
 
 import IconClose from "@/assets/icons/icon-close.svg";
@@ -7,8 +7,9 @@ import MatchEventTeamTile from "./MatchEventTeamTile";
 import CustomPicker from "./CustomPicker";
 import Button from "../atoms/Button";
 
-const MatchEventModal = ({ teamA, teamB, event, onClose }) => {
+const MatchEventModal = ({ teamA, teamB, event, onClose, onSubmit }) => {
   const [modalEvent, setModalEvent] = useState({
+    id: event.id || null,
     team: event.team || null,
     player: event.player || null,
     timestamp: event.timestamp || null,
@@ -19,6 +20,40 @@ const MatchEventModal = ({ teamA, teamB, event, onClose }) => {
       ...modalEvent,
       team: team,
     });
+  };
+
+  const handlePlayerChange = (player) => {
+    setModalEvent({
+      ...modalEvent,
+      player: player,
+    });
+  };
+
+  const handleMinuteChange = (minute) => {
+    setModalEvent({
+      ...modalEvent,
+      timestamp: minute,
+    });
+  };
+
+  const deleteEvent = () => {
+    Alert.alert(
+      "Delete Goal?",
+      "Are you sure you want to delete this goal? This action cannot be undone.",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Delete",
+          style: "destructive",
+          onPress: () => {
+            onSubmit("delete", modalEvent);
+          },
+        },
+      ]
+    );
   };
 
   return (
@@ -49,7 +84,7 @@ const MatchEventModal = ({ teamA, teamB, event, onClose }) => {
             color: colors["grey-900"],
           }}
         >
-          Add Goal
+          {modalEvent.id !== null ? "Edit Goal" : "Add Goal"}
         </Text>
         <View style={{ height: 24, width: 24 }} />
       </View>
@@ -78,8 +113,9 @@ const MatchEventModal = ({ teamA, teamB, event, onClose }) => {
           <CustomPicker
             title="Select Player"
             label="Player"
-            value={event.player}
+            value={modalEvent.player}
             placeholder="Select Player..."
+            onSubmit={(newPlayer) => handlePlayerChange(newPlayer)}
             options={[
               { name: "No Player", id: null },
               ...modalEvent.team?.roster,
@@ -93,7 +129,8 @@ const MatchEventModal = ({ teamA, teamB, event, onClose }) => {
           <CustomPicker
             title="Select Minute"
             label="Minute"
-            value={event.timestamp}
+            value={modalEvent.timestamp}
+            onSubmit={(newMinute) => handleMinuteChange(newMinute)}
             options={[...Array(91).keys()].map((opt) => {
               return {
                 label: opt.toString(),
@@ -101,7 +138,29 @@ const MatchEventModal = ({ teamA, teamB, event, onClose }) => {
               };
             })}
           />
-          <Button />
+          {modalEvent.id !== null ? (
+            <Pressable onPress={deleteEvent}>
+              <Text
+                style={{
+                  ...typography.body.medium.bold,
+                  color: colors["error-600"],
+                  textAlign: "center",
+                }}
+              >
+                Delete Goal
+              </Text>
+            </Pressable>
+          ) : (
+            <></>
+          )}
+
+          <Button
+            style={{ marginTop: "auto" }}
+            label={modalEvent.id !== null ? "Edit Goal" : "Add Goal"}
+            onPress={() =>
+              onSubmit(modalEvent.id !== null ? "edit" : "new", modalEvent)
+            }
+          />
         </View>
       </View>
     </View>
