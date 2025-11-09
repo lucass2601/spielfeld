@@ -8,12 +8,16 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Platform,
+  Alert,
 } from "react-native";
 
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { useEffect, useState } from "react";
 
 import AppBar from "@/components/molcecules/AppBar";
+
+import "react-native-get-random-values";
+import { v4 as uuidv4 } from "uuid";
 
 import { colors, typography } from "@/theme/theme";
 
@@ -28,7 +32,6 @@ import IconPause from "@/assets/icons/icon-pause.svg";
 import IconAdd from "@/assets/icons/icon-add.svg";
 import Button from "@/components/atoms/Button";
 
-import MatchEventTile from "@/components/molcecules/MatchEventTile";
 import MatchEventTimelineItem from "@/components/molcecules/MatchEventTimelineItem";
 
 import MatchEventModal from "@/components/molcecules/MatchEventModal";
@@ -45,24 +48,36 @@ const LivePanel = () => {
     player: null,
     timestamp: null,
   });
+  const [tempEvents, setTempEvents] = useState([]);
+
   const match = useTournamentStore((state) =>
     state.getMatch(tournament_id, match_id)
   );
 
   const getTeam = useTournamentStore((state) => state.getTeam);
 
+  const getPlayer = useTournamentStore((state) => state.getPlayer);
+
   const updateTournamentMatchWinner = useTournamentStore(
     (state) => state.updateTournamentMatchWinner
+  );
+
+  const updateTournamentMatchEvents = useTournamentStore(
+    (state) => state.updateTournamentMatchEvents
   );
 
   const getTeamData = (team_id) => {
     return getTeam(tournament_id, team_id);
   };
 
+  const getPlayerData = (team_id, player_id) => {
+    return getPlayer(tournament_id, team_id, player_id);
+  };
+
   const teamA = getTeamData(match.teamA);
   const teamB = getTeamData(match.teamB);
 
-  const goals = match.events.filter((e) => e.event === "goal");
+  const goals = tempEvents.filter((e) => e.event === "goal");
 
   const scoreA = goals.filter((e) => e.team_id === teamA.id).length;
   const scoreB = goals.filter((e) => e.team_id === teamB.id).length;
@@ -77,11 +92,33 @@ const LivePanel = () => {
     return () => clearInterval(id);
   }, [gameIsRunning]);
 
+  const closeMatch = () => {
+    Alert.alert(
+      "Leave Live Match?",
+      "Are you sure you want to leave? Your current match progress won't be saved.",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Leave",
+          style: "destructive",
+          onPress: () => {
+            router.back();
+          },
+        },
+      ]
+    );
+  };
+
   const submitMatch = () => {
     const winner_id =
       scoreA > scoreB ? teamA.id : scoreB > scoreA ? teamB.id : null;
 
     const isDraw = scoreA === scoreB;
+
+    updateTournamentMatchEvents(tournament_id, match_id, tempEvents);
 
     updateTournamentMatchWinner(
       tournament_id,
@@ -100,6 +137,75 @@ const LivePanel = () => {
       ...newEvent,
       team: team,
       timestamp: Math.floor(gameTimer / 60).toString(),
+    });
+
+    setModalVisible(true);
+  };
+
+  const addGoal = (submitType, updatedEvent) => {
+    setModalVisible(false);
+
+    setNewEvent({
+      team: null,
+      player: null,
+      timestamp: null,
+    });
+
+    let matchEvent;
+    console.log(submitType);
+
+    if (submitType === "edit") {
+      matchEvent = {
+        id: updatedEvent.id,
+        event: "goal",
+        team_id: updatedEvent.team.id,
+        player_id: updatedEvent.player,
+        minute: updatedEvent.timestamp,
+      };
+
+      setTempEvents(
+        tempEvents.map((tempEvent) =>
+          tempEvent.id === updatedEvent.id ? { ...matchEvent } : tempEvent
+        )
+      );
+    } else if (submitType === "delete") {
+      setTempEvents(
+        tempEvents.filter((tempEvent) => tempEvent.id !== updatedEvent.id)
+      );
+    } else {
+      matchEvent = {
+        id: uuidv4(),
+        event: "goal",
+        team_id: updatedEvent.team.id,
+        player_id: updatedEvent.player,
+        minute: updatedEvent.timestamp,
+      };
+
+      setTempEvents([...tempEvents, matchEvent]);
+    }
+  };
+
+  const closeEventModal = () => {
+    setModalVisible(false);
+
+    setNewEvent({
+      team: null,
+      player: null,
+      timestamp: null,
+    });
+  };
+
+  const recentEvents = () => {
+    return tempEvents.sort((a, b) => b.minute - a.minute);
+  };
+
+  const editTimelineItem = (event) => {
+    setNewEvent({
+      ...newEvent,
+      id: event.id,
+      team: getTeamData(event.team_id),
+      player: event.player_id,
+      timestamp: event.minute,
     });
 
     setModalVisible(true);
@@ -132,7 +238,7 @@ const LivePanel = () => {
             <IconCheck width={24} height={24} color={colors["success-600"]} />
           }
           title="Live Match"
-          backPress={() => router.dismiss()}
+          backPress={closeMatch}
           forwardPress={submitMatch}
         />
         {/* <ScreenContainer> */}
@@ -219,8 +325,18 @@ const LivePanel = () => {
         <View style={styles.timelineContainer}>
           <Text style={styles.timelineTitle}>Recent Events</Text>
           <ScrollView contentContainerStyle={styles.timeline}>
-            {match.events.map((event) => (
-              <MatchEventTile />
+            {recentEvents().map((event) => (
+              <MatchEventTimelineItem
+                onPress={() => editTimelineItem(event)}
+                key={event.id}
+                team={getTeamData(event.team_id)}
+                player={
+                  event.player_id
+                    ? getPlayerData(event.team_id, event.player_id)
+                    : null
+                }
+                minute={event.minute}
+              />
             ))}
           </ScrollView>
         </View>
@@ -247,7 +363,7 @@ const LivePanel = () => {
                 style={{
                   width: "100%",
 
-                  height: 517,
+                  height: 562,
                   backgroundColor: "white",
                   borderTopRightRadius: 35,
                   borderTopLeftRadius: 35,
@@ -257,7 +373,10 @@ const LivePanel = () => {
                   teamA={teamA}
                   teamB={teamB}
                   event={newEvent}
-                  onClose={() => setModalVisible(false)}
+                  onClose={closeEventModal}
+                  onSubmit={(submitType, updatedEvent) =>
+                    addGoal(submitType, updatedEvent)
+                  }
                 />
               </View>
             </KeyboardAvoidingView>
