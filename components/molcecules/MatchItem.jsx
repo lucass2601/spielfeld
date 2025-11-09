@@ -74,7 +74,7 @@ const MatchItem = ({ match, index, onPress }) => {
           </Text>
         </View>
         <Text style={styles.matchLabel}>{`Match ${index + 1}`}</Text>
-        <Text style={styles.vsOrDash}>{shouldShowVs(match) ? "vs" : "—"}</Text>
+        <Text style={styles.vsOrDash}>{isFinished ? "-" : "vs"}</Text>
       </View>
 
       <View style={[styles.teamCol, teamBBYE && styles.dimmed]}>
@@ -113,12 +113,6 @@ const MatchItem = ({ match, index, onPress }) => {
 };
 
 export default MatchItem;
-
-const shouldShowVs = (match) => {
-  const a = Number(match.teamAScore ?? 0);
-  const b = Number(match.teamBScore ?? 0);
-  return a === 0 && b === 0;
-};
 
 const getStatusStyles = (status) => {
   switch (status) {
