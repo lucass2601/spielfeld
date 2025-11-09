@@ -1,27 +1,25 @@
 import { colors, typography } from "@/theme/theme";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 
-import IconClose from "@/assets/icons/icon-close.svg";
-
-const placeholderImage = require("@/assets/images/icon.png");
-
-const MatchEventTimelineItem = ({ icon, label, style, onPress }) => {
+const MatchEventTimelineItem = ({ team, player, minute, onPress }) => {
   return (
-    <View style={styles.timelineItemContainer}>
+    <TouchableOpacity onPress={onPress} style={styles.timelineItemContainer}>
       <View style={styles.timelineEventType}>
         <Text style={styles.timelineEventTypeTitle}>⚽</Text>
       </View>
       <View style={styles.timelineContent}>
         <Text style={styles.timelineEvent}>Goal!</Text>
         <View style={styles.timelinePlayer}>
-          <Image style={styles.playerImage} source={placeholderImage} />
-          <Text style={styles.playerName}>Lucas Fischer</Text>
+          <Image style={styles.playerImage} source={{ uri: team?.imageUri }} />
+          <Text style={styles.playerName}>
+            {player ? player?.name : "Unknown Player"}
+          </Text>
         </View>
       </View>
       <View>
-        <Text style={styles.timelineTimestamp}>'12</Text>
+        <Text style={styles.timelineTimestamp}>'{minute}</Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
