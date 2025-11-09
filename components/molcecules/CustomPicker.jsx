@@ -22,6 +22,7 @@ const CustomPicker = ({
   placeholder,
   title = "Custom Picker",
   options,
+  onSubmit,
 }) => {
   const [pickerModalVisible, setPickerModalVisible] = useState(false);
   const [tempSelectedOption, setTempSelectedOption] = useState(value || "null");
@@ -35,6 +36,7 @@ const CustomPicker = ({
   const confirmPickerModal = () => {
     setPickerModalVisible(false);
     setSelectedOption(tempSelectedOption);
+    onSubmit(tempSelectedOption);
   };
 
   return (
