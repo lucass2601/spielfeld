@@ -161,6 +161,8 @@ const styles = StyleSheet.create({
   avatarWrap: {
     padding: 2,
     borderRadius: 10,
+    borderWidth: 2,
+    borderColor: "transparent",
   },
   avatar: {
     height: 48,

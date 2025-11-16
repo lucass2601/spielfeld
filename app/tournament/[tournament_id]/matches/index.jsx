@@ -40,12 +40,12 @@ export default function MatchesTab() {
   const handleMatchPress = (match_id) => {
     const match = getMatch(tournament_id, match_id);
 
-    if (match.status === "finished") {
-      if (pathname !== `/tournament/${tournament_id}/matches/${match.id}`) {
-        router.push(`${pathname}/${match.id}`);
-      }
-      return;
-    }
+    // if (match.status === "finished") {
+    //   if (pathname !== `/tournament/${tournament_id}/matches/${match.id}`) {
+    //     router.push(`${pathname}/${match.id}`);
+    //   }
+    //   return;
+    // }
 
     setSelectedMatch(match);
     setModalOpen(true);
