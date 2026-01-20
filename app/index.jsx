@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { ScrollView, StyleSheet, View, Text, Image } from "react-native";
+import {
+  ScrollView,
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+} from "react-native";
 
 import { colors, typography } from "@/theme/theme";
 
@@ -53,9 +59,12 @@ const Index = () => {
             <Text style={styles.greeting}>{greeting}</Text>
           </View>
           <View>
-            <View style={styles.settings}>
+            <TouchableOpacity
+              onPress={() => router.push("/settings")}
+              style={styles.settings}
+            >
               <IconSettings color={colors["grey-900"]} width={24} height={24} />
-            </View>
+            </TouchableOpacity>
           </View>
         </View>
 
