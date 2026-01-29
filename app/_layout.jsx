@@ -12,6 +12,7 @@ import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 import { colors } from "@/theme/theme";
+import { KeyboardProvider } from "react-native-keyboard-controller";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -35,42 +36,44 @@ export default function RootLayout() {
   }
 
   return (
-    <SafeAreaProvider>
-      <SafeAreaView
-        style={{
-          flex: 1,
-          backgroundColor: colors.white,
-        }}
-        edges={["top"]}
-      >
-        <Stack>
-          <Stack.Screen
-            name="index"
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name="wizard"
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name="tournament/[tournament_id]"
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name="settings"
-            options={{
-              headerShown: false,
-            }}
-          />
-        </Stack>
-      </SafeAreaView>
-      <StatusBar style="dark" />
-    </SafeAreaProvider>
+    <KeyboardProvider>
+      <SafeAreaProvider>
+        <SafeAreaView
+          style={{
+            flex: 1,
+            backgroundColor: colors.white,
+          }}
+          edges={["top"]}
+        >
+          <Stack>
+            <Stack.Screen
+              name="index"
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="wizard"
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="tournament/[tournament_id]"
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="settings"
+              options={{
+                headerShown: false,
+              }}
+            />
+          </Stack>
+        </SafeAreaView>
+        <StatusBar style="dark" />
+      </SafeAreaProvider>
+    </KeyboardProvider>
   );
 }

@@ -94,6 +94,18 @@ export default function Wizard_Information() {
               )}
             </View>
           </View>
+          <Input
+            value={tournamentName}
+            onChangeText={(tournamentName) => setTournamentName(tournamentName)}
+            label={"Name"}
+            placeholder="Enter tournament name..."
+          />
+          <Input
+            value={tournamentName}
+            onChangeText={(tournamentName) => setTournamentName(tournamentName)}
+            label={"Name"}
+            placeholder="Enter tournament name..."
+          />
 
           <Input
             value={tournamentName}
