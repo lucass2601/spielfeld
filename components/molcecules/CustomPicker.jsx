@@ -84,6 +84,7 @@ const CustomPicker = ({
                 <View style={styles.pickerContainer}>
                   <Picker
                     style={styles.picker}
+                    itemStyle={{ color: colors["grey-900"] }}
                     selectedValue={tempSelectedOption}
                     onValueChange={(itemValue) =>
                       pickerModalVisible && setTempSelectedOption(itemValue)
@@ -94,6 +95,7 @@ const CustomPicker = ({
                         label={option.label}
                         value={option.value}
                         key={option.value}
+                        color={colors["grey-900"]}
                       />
                     ))}
                   </Picker>
