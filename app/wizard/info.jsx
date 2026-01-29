@@ -1,16 +1,9 @@
 import { colors, typography } from "@/theme/theme";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Pressable,
-  Image,
-  ScrollView,
-  KeyboardAvoidingView,
-  Platform,
-} from "react-native";
+import { View, Text, StyleSheet, Pressable, Image } from "react-native";
 import { router } from "expo-router";
 import { useState } from "react";
+
+import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 
 import * as ImagePicker from "expo-image-picker";
 
@@ -61,16 +54,8 @@ export default function Wizard_Information() {
       <View style={styles.wizard_header}>
         <Text style={styles.title}>Tournament Information</Text>
       </View>
-      <KeyboardAvoidingView
-        style={{ flex: 1, backgroundColor: "transparent" }}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={80}
-      >
-        <ScrollView
-          contentContainerStyle={styles.content}
-          keyboardShouldPersistTaps="handled" // Verhindert, dass Tastatur verschwindet bei Tippen auf ScrollView
-          showsVerticalScrollIndicator={false}
-        >
+      <KeyboardAwareScrollView bottomOffset={62}>
+        <View style={styles.content}>
           <View style={styles.imageContainer}>
             <Pressable onPress={pickImage} style={styles.imageWrapper}>
               <Image
@@ -94,7 +79,6 @@ export default function Wizard_Information() {
               )}
             </View>
           </View>
-
           <Input
             value={tournamentName}
             onChangeText={(tournamentName) => setTournamentName(tournamentName)}
@@ -109,8 +93,8 @@ export default function Wizard_Information() {
             placeholder="Select starting date"
             minDate={new Date()}
           />
-        </ScrollView>
-      </KeyboardAvoidingView>
+        </View>
+      </KeyboardAwareScrollView>
       <Button
         disabled={!tournamentName || !startDate}
         onPress={submitWizard}

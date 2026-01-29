@@ -1,17 +1,9 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  Modal,
-  KeyboardAvoidingView,
-  Platform,
-} from "react-native";
-import { router, useGlobalSearchParams, usePathname } from "expo-router";
+import { View, Text, StyleSheet, ScrollView, Modal } from "react-native";
+import { useGlobalSearchParams, usePathname } from "expo-router";
+
+import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 
 import { colors, typography } from "@/theme/theme";
-
-import ScreenContainer from "@/components/layouts/ScreenContainer";
 
 import useTournamentStore from "@/store/useTournamentStore";
 import Button from "@/components/atoms/Button";
@@ -90,11 +82,7 @@ export default function MatchesTab() {
               backgroundColor: "rgba(0,0,0,0.5)",
             }}
           >
-            <KeyboardAvoidingView
-              style={{ flex: 0, justifyContent: "flex-end" }}
-              behavior={Platform.OS === "ios" ? "padding" : "height"}
-              keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
-            >
+            <KeyboardAvoidingView behavior={"padding"}>
               <View
                 style={{
                   width: "100%",

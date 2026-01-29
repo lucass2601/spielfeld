@@ -5,9 +5,10 @@ import {
   Modal,
   ScrollView,
   Platform,
-  KeyboardAvoidingView,
 } from "react-native";
 import { useState } from "react";
+
+import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 
 import { colors, typography } from "@/theme/theme";
 
@@ -83,11 +84,7 @@ const ParticipantEdtior = ({ entity }) => {
               backgroundColor: "rgba(0,0,0,0.5)",
             }}
           >
-            <KeyboardAvoidingView
-              style={{ flex: 0, justifyContent: "flex-end" }}
-              behavior={Platform.OS === "ios" ? "padding" : "height"}
-              keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
-            >
+            <KeyboardAwareScrollView bottomOffset={62}>
               <View
                 style={{
                   width: "100%",
@@ -109,7 +106,7 @@ const ParticipantEdtior = ({ entity }) => {
                   onClose={() => setModalOpen(false)}
                 />
               </View>
-            </KeyboardAvoidingView>
+            </KeyboardAwareScrollView>
           </View>
         </Modal>
 

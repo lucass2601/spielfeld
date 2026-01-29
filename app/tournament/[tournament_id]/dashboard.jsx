@@ -1,18 +1,6 @@
 import { colors, typography } from "@/theme/theme";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Pressable,
-  Image,
-  ScrollView,
-  KeyboardAvoidingView,
-  Platform,
-} from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 import { router, useGlobalSearchParams } from "expo-router";
-import { useState } from "react";
-
-import * as ImagePicker from "expo-image-picker";
 
 import ScreenContainer from "@/components/layouts/ScreenContainer";
 
@@ -27,37 +15,27 @@ export default function DashboardTab() {
 
   return (
     <ScreenContainer>
-      <KeyboardAvoidingView
-        style={{ flex: 1, backgroundColor: "transparent" }}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={80}
-      >
-        <ScrollView
-          contentContainerStyle={styles.content}
-          keyboardShouldPersistTaps="handled" // Verhindert, dass Tastatur verschwindet bei Tippen auf ScrollView
-          showsVerticalScrollIndicator={false}
+      <View style={styles.content}>
+        <Pressable
+          onPress={() => {
+            deleteTournament(tournament_id);
+            router.replace("/(tabs)");
+            router.dismissAll();
+          }}
         >
-          <Pressable
-            onPress={() => {
-              deleteTournament(tournament_id);
-              router.replace("/(tabs)");
-              router.dismissAll();
+          <Text
+            style={{
+              ...typography.body.medium.bold,
+              color: colors["error-600"],
+              paddingHorizontal: 16,
+              paddingVertical: 8,
+              textAlign: "center",
             }}
           >
-            <Text
-              style={{
-                ...typography.body.medium.bold,
-                color: colors["error-600"],
-                paddingHorizontal: 16,
-                paddingVertical: 8,
-                textAlign: "center",
-              }}
-            >
-              Delete tournament
-            </Text>
-          </Pressable>
-        </ScrollView>
-      </KeyboardAvoidingView>
+            Delete tournament
+          </Text>
+        </Pressable>
+      </View>
     </ScreenContainer>
   );
 }
