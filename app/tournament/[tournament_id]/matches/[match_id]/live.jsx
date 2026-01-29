@@ -6,8 +6,6 @@ import {
   TouchableOpacity,
   View,
   ScrollView,
-  KeyboardAvoidingView,
-  Platform,
   Alert,
 } from "react-native";
 
@@ -353,32 +351,26 @@ const LivePanel = () => {
               backgroundColor: "rgba(0,0,0,0.5)",
             }}
           >
-            <KeyboardAvoidingView
-              style={{ flex: 0, justifyContent: "flex-end" }}
-              behavior={Platform.OS === "ios" ? "padding" : "height"}
-              keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
-            >
-              <View
-                style={{
-                  width: "100%",
+            <View
+              style={{
+                width: "100%",
 
-                  height: 562,
-                  backgroundColor: "white",
-                  borderTopRightRadius: 35,
-                  borderTopLeftRadius: 35,
-                }}
-              >
-                <MatchEventModal
-                  teamA={teamA}
-                  teamB={teamB}
-                  event={newEvent}
-                  onClose={closeEventModal}
-                  onSubmit={(submitType, updatedEvent) =>
-                    addGoal(submitType, updatedEvent)
-                  }
-                />
-              </View>
-            </KeyboardAvoidingView>
+                height: 562,
+                backgroundColor: "white",
+                borderTopRightRadius: 35,
+                borderTopLeftRadius: 35,
+              }}
+            >
+              <MatchEventModal
+                teamA={teamA}
+                teamB={teamB}
+                event={newEvent}
+                onClose={closeEventModal}
+                onSubmit={(submitType, updatedEvent) =>
+                  addGoal(submitType, updatedEvent)
+                }
+              />
+            </View>
           </View>
         </Modal>
       </SafeAreaView>
