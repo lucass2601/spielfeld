@@ -33,7 +33,7 @@ const Index = () => {
   };
 
   const clearNewTournament = useTournamentStore(
-    (state) => state.clearNewTournament,
+    (state) => state.clearNewTournament
   );
 
   const handleCreateTournament = () => {
@@ -128,7 +128,7 @@ const Index = () => {
         {tournaments.length > 0 && (
           <FabButton
             onPress={handleCreateTournament}
-            style={{ position: "absolute", bottom: 48, right: 24 }}
+            style={{ position: "absolute", bottom: 24, right: 0 }}
           />
         )}
       </View>
