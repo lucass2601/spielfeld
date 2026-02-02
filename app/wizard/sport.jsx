@@ -7,13 +7,16 @@ import { router } from "expo-router";
 import { useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 
+import IconSportSoccer from "@/assets/icons/icon-sport-soccer.svg";
+import IconSportNoSport from "@/assets/icons/icon-sport-no-sport.svg";
+
 export default function Wizard_Format() {
   const newTournament = useTournamentStore((state) => state.newTournament);
   const [selectedSport, setSelectedSport] = useState(
-    newTournament.sport || null
+    newTournament.sport || null,
   );
   const setNewTournamentInfo = useTournamentStore(
-    (state) => state.setNewTournamentInfo
+    (state) => state.setNewTournamentInfo,
   );
 
   const submitWizard = () => {
@@ -32,13 +35,25 @@ export default function Wizard_Format() {
       </View>
       <View style={styles.content}>
         <TournamentSportItem
-          icon="📋"
+          icon={
+            <IconSportNoSport
+              width={24}
+              height={24}
+              color={colors["grey-900"]}
+            />
+          }
           title="No Sport"
           onPress={() => setSelectedSport(null)}
           selected={selectedSport === null}
         />
         <TournamentSportItem
-          icon="⚽"
+          icon={
+            <IconSportSoccer
+              width={24}
+              height={24}
+              color={colors["grey-900"]}
+            />
+          }
           title="Football"
           onPress={() => setSelectedSport("football")}
           selected={selectedSport === "football"}
