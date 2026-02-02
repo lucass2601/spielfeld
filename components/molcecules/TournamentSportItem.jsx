@@ -20,9 +20,7 @@ const TournamentFormatItem = ({
       ]}
     >
       <View style={styles.content}>
-        <View>
-          <Text style={{ fontSize: 24 }}>{icon}</Text>
-        </View>
+        <View>{icon}</View>
         <View style={{ flex: 1 }}>
           <Text style={styles.title}>{title}</Text>
         </View>
