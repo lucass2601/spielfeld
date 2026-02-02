@@ -1,0 +1,15 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M12 9L14.8532 11.0729L13.7634 14.4271H10.2366L9.14683 11.0729L12 9Z" fill="currentColor"/>
+<path d="M12 9L14.8532 11.0729L13.7634 14.4271H10.2366L9.14683 11.0729L12 9Z" fill="currentColor"/>
+<path d="M6.15353 9.92058L3.12467 11.7272L2.43714 10.2246L4.16759 6.28693L5.37133 6.4817L6.15353 9.92058Z" fill="currentColor"/>
+<path d="M15.2614 17.0835L18.7803 16.8491L18.7106 18.5L15.5 21L14.3968 20.5026L15.2614 17.0835Z" fill="currentColor"/>
+<path d="M17.3909 10.1456L18.3415 6.74939L19.875 7.36468L21.3338 11.4109L20.3272 12.0991L17.3909 10.1456Z" fill="currentColor"/>
+<path d="M8.30315 16.8273L9.16523 20.2471L7.52865 20.4748L4.2526 17.6878L4.78441 16.5905L8.30315 16.8273Z" fill="currentColor"/>
+<path d="M12.0001 6L14.8533 3.92705L14 2.5H12H10L9.14697 3.92705L12.0001 6Z" fill="currentColor"/>
+<path d="M12 10V5" stroke="currentColor"/>
+<path d="M15.6468 17.767L13.5 14" stroke="currentColor"/>
+<path d="M18.5 9.5L14.0002 11.5002" stroke="currentColor"/>
+<path d="M10.3535 11.3573L5.65332 9.65204" stroke="currentColor"/>
+<path d="M7 19L11.0015 12.8428" stroke="currentColor"/>
+</svg>
