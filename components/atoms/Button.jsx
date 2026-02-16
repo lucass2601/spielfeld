@@ -15,6 +15,7 @@ const Button = ({
   label = "Button",
   onPress,
   disabled = false,
+  textColor,
   style,
   ...props
 }) => {
@@ -50,6 +51,10 @@ const Button = ({
       textStyles.push(styles[`${variant}DisabledLabel`]);
     } else if (pressed) {
       textStyles.push(styles[`${variant}PressedLabel`]);
+    }
+
+    if (textColor) {
+      textStyles.push({ color: textColor });
     }
 
     return textStyles;
