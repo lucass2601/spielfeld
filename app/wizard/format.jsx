@@ -10,10 +10,10 @@ import { View, Text, StyleSheet } from "react-native";
 export default function Wizard_Format() {
   const newTournament = useTournamentStore((state) => state.newTournament);
   const [selectedFormat, setSelectedFormat] = useState(
-    newTournament.format || "roundrobin"
+    newTournament.format || "roundrobin",
   );
   const setNewTournamentInfo = useTournamentStore(
-    (state) => state.setNewTournamentInfo
+    (state) => state.setNewTournamentInfo,
   );
 
   const submitWizard = () => {

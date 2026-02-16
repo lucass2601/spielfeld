@@ -14,6 +14,7 @@ import Button from "@/components/atoms/Button";
 import Input from "@/components/atoms/Input";
 
 import IconClose from "@/assets/icons/icon-close.svg";
+import IconCheck from "@/assets/icons/icon-check.svg";
 
 import { colors, typography } from "@/theme/theme";
 import useTournamentStore from "@/store/useTournamentStore";
@@ -22,7 +23,7 @@ const PlayerDetails = () => {
   const { tournament_id, team_id, player_id } = useLocalSearchParams();
 
   const player = useTournamentStore((state) =>
-    state.getPlayer(tournament_id, team_id, player_id)
+    state.getPlayer(tournament_id, team_id, player_id),
   );
 
   const deletePlayer = useTournamentStore((state) => state.deletePlayer);
@@ -80,8 +81,12 @@ const PlayerDetails = () => {
           iconLeft={
             <IconClose width={24} height={24} color={colors["grey-900"]} />
           }
+          iconRight={
+            <IconCheck width={24} height={24} color={colors["success-600"]} />
+          }
           title="Edit Player"
           backPress={() => router.dismiss()}
+          forwardPress={handleSubmit}
         />
         <ScreenContainer>
           <View style={styles.tabContainer}>
@@ -118,32 +123,16 @@ const PlayerDetails = () => {
                   label="Name"
                 />
               </View>
+            </View>
 
-              <View>
-                <Button label="Save" onPress={handleSubmit} />
-              </View>
-
-              <View>
-                <Pressable
-                  onPress={handleDelete}
-                  style={{
-                    width: "100%",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <Text
-                    style={[
-                      {
-                        ...typography.body.medium.bold,
-                        color: colors["error-600"],
-                      },
-                    ]}
-                  >
-                    Delete Player
-                  </Text>
-                </Pressable>
-              </View>
+            <View>
+              <Button
+                textColor={colors["error-600"]}
+                variant="secondary"
+                style={{ color: "red" }}
+                label="Delete Player"
+                onPress={handleDelete}
+              />
             </View>
           </View>
         </ScreenContainer>
@@ -183,6 +172,7 @@ const styles = StyleSheet.create({
     ...typography.body.medium.bold,
   },
   formContainer: {
+    flex: 1,
     marginTop: 32,
     gap: 24,
   },

@@ -1,7 +1,11 @@
 import { View, Text, StyleSheet, ScrollView, Modal } from "react-native";
 import { useGlobalSearchParams, usePathname } from "expo-router";
 
-import { KeyboardAvoidingView } from "react-native-keyboard-controller";
+import {
+  KeyboardAvoidingView,
+  KeyboardAwareScrollView,
+  KeyboardToolbar,
+} from "react-native-keyboard-controller";
 
 import { colors, typography } from "@/theme/theme";
 
@@ -20,13 +24,13 @@ export default function MatchesTab() {
   const [selectedMatch, setSelectedMatch] = useState({});
 
   const tournament = useTournamentStore((state) =>
-    state.getTournament(tournament_id)
+    state.getTournament(tournament_id),
   );
 
   const getMatch = useTournamentStore((state) => state.getMatch);
 
   const updateTournamentMatches = useTournamentStore(
-    (state) => state.updateTournamentMatches
+    (state) => state.updateTournamentMatches,
   );
 
   const handleMatchPress = (match_id) => {
@@ -82,7 +86,7 @@ export default function MatchesTab() {
               backgroundColor: "rgba(0,0,0,0.5)",
             }}
           >
-            <KeyboardAvoidingView behavior={"padding"}>
+            <KeyboardAvoidingView behavior="padding">
               <View
                 style={{
                   width: "100%",
@@ -117,7 +121,7 @@ export default function MatchesTab() {
                   (x, y) => {
                     scrollViewRef.current.scrollTo({ y, animated: true });
                   },
-                  (error) => console.warn(error)
+                  (error) => console.warn(error),
                 );
               }
             }}

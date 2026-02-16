@@ -512,6 +512,19 @@ const useTournamentStore = create((set, get) => ({
       }),
     }));
   },
+
+  updateTournamentSettings: (tournament_id, settings) => {
+    set((state) => ({
+      tournaments: state.tournaments.map((tournament) =>
+        tournament.id === tournament_id
+          ? {
+              ...tournament,
+              ...settings,
+            }
+          : tournament
+      ),
+    }));
+  },
 }));
 
 export default useTournamentStore;
