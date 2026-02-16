@@ -14,6 +14,7 @@ import OptionGroup from "@/components/molcecules/OptionGroup";
 const Settings = () => {
   const mainSettings = [
     {
+      id: 1.1,
       icon: <IconTrash color={colors["error-500"]} height={20} width={20} />,
       title: "Reset Data",
       onPress: () => {},
@@ -22,21 +23,25 @@ const Settings = () => {
 
   const subSettings = [
     {
+      id: 2.1,
       icon: <IconStar color={colors["grey-500"]} height={20} width={20} />,
       title: "Rate Us",
       onPress: () => {},
     },
     {
+      id: 2.2,
       icon: <IconHelp color={colors["grey-500"]} height={20} width={20} />,
       title: "Help",
       onPress: () => {},
     },
     {
+      id: 2.3,
       icon: <IconEdit color={colors["grey-500"]} height={20} width={20} />,
       title: "Feedback",
       onPress: () => {},
     },
     {
+      id: 2.4,
       icon: <IconInfo color={colors["grey-500"]} height={20} width={20} />,
       title: "Legal",
       onPress: () => {},

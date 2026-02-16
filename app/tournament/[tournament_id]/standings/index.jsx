@@ -8,7 +8,7 @@ export default function StandingsTab() {
   const { tournament_id } = useGlobalSearchParams();
 
   const updateTournamentStandings = useTournamentStore(
-    (state) => state.updateTournamentStandings
+    (state) => state.updateTournamentStandings,
   );
 
   const standingsData = updateTournamentStandings(tournament_id);

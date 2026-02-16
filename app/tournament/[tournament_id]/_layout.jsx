@@ -42,9 +42,9 @@ export default function TournamentLayout() {
       <MaterialTopTabs
         screenOptions={{
           swipeEnabled: !nestedHomePageOpened,
-          tabBarScrollEnabled: true,
+          tabBarScrollEnabled: false,
           tabBarItemStyle: {
-            width: "auto",
+            // width: "auto",
             paddingHorizontal: 16,
           },
           tabBarLabelStyle: {
@@ -55,15 +55,23 @@ export default function TournamentLayout() {
           },
         }}
       >
-        <MaterialTopTabs.Screen
-          name="dashboard"
-          options={{ title: "Dashboard" }}
-        />
-        <MaterialTopTabs.Screen name="format" options={{ title: "Format" }} />
+        {/* <MaterialTopTabs.Screen name="format" options={{ title: "Format" }} />
         <MaterialTopTabs.Screen
           name="teams"
           options={{
             title: "Teams",
+            headerShown: !nestedHomePageOpened && Platform.OS === "android",
+            tabBarStyle:
+              nestedHomePageOpened && Platform.OS === "android"
+                ? { display: "none" }
+                : {},
+          }}
+        /> */}
+
+        <MaterialTopTabs.Screen
+          name="manage"
+          options={{
+            title: "Manage",
             headerShown: !nestedHomePageOpened && Platform.OS === "android",
             tabBarStyle:
               nestedHomePageOpened && Platform.OS === "android"

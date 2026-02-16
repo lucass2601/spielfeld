@@ -8,7 +8,10 @@ import {
 } from "react-native";
 import { useState } from "react";
 
-import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
+import {
+  KeyboardAvoidingView,
+  KeyboardAwareScrollView,
+} from "react-native-keyboard-controller";
 
 import { colors, typography } from "@/theme/theme";
 
@@ -16,20 +19,21 @@ import useTournamentStore from "@/store/useTournamentStore";
 
 import { router, useGlobalSearchParams, usePathname } from "expo-router";
 
-import TeamItem from "@/components/molcecules/EntityItem";
+import TeamItem from "@/components/molcecules/TeamItem";
+
 import AddEntityModal from "@/components/molcecules/AddEntityModal";
 
-const ParticipantEdtior = ({ entity }) => {
+const EntityEditor = ({ entity }) => {
   const { tournament_id, team_id } = useGlobalSearchParams();
 
   const pathname = usePathname();
 
   const tournament = useTournamentStore((state) =>
-    state.getTournament(tournament_id)
+    state.getTournament(tournament_id),
   );
 
   const getTeam = useTournamentStore((state) =>
-    state.getTeam(tournament_id, team_id)
+    state.getTeam(tournament_id, team_id),
   );
 
   const entityLength = () => {
@@ -49,12 +53,12 @@ const ParticipantEdtior = ({ entity }) => {
 
   const handleEntityPress = (entity_id) => {
     if (entity === "teams") {
-      if (pathname !== `/tournament/${tournament_id}/teams/${entity_id}`)
+      if (pathname !== `/tournament/${tournament_id}/manage/teams/${entity_id}`)
         router.push(`${pathname}/${entity_id}`);
     } else if (entity === "players") {
       if (
         pathname !==
-        `/tournament/${tournament_id}/teams/${team_id}/roster/${entity_id}`
+        `/tournament/${tournament_id}/manage/teams/${team_id}/roster/${entity_id}`
       )
         router.push(`${pathname}/${entity_id}`);
     } else {
@@ -84,7 +88,7 @@ const ParticipantEdtior = ({ entity }) => {
               backgroundColor: "rgba(0,0,0,0.5)",
             }}
           >
-            <KeyboardAwareScrollView bottomOffset={62}>
+            <KeyboardAvoidingView behavior="padding">
               <View
                 style={{
                   width: "100%",
@@ -100,17 +104,17 @@ const ParticipantEdtior = ({ entity }) => {
                     names.forEach((name) =>
                       entity === "teams"
                         ? addTeam(tournament_id, name)
-                        : addPlayer(tournament_id, team_id, name)
+                        : addPlayer(tournament_id, team_id, name),
                     );
                   }}
                   onClose={() => setModalOpen(false)}
                 />
               </View>
-            </KeyboardAwareScrollView>
+            </KeyboardAvoidingView>
           </View>
         </Modal>
 
-        <Text style={typography.body.large.bold}>{`${
+        <Text style={typography.body.medium.semibold}>{`${
           entity === "teams" ? "Teams" : "Players"
         } (${entityLength()})`}</Text>
         <Pressable onPress={() => setModalOpen(true)}>
@@ -137,17 +141,22 @@ const ParticipantEdtior = ({ entity }) => {
         ]}
         showsVerticalScrollIndicator={true}
       >
-        {entityList.map((entity) => (
-          <TeamItem
-            onPress={() => handleEntityPress(entity.id)}
-            key={entity.id}
-            name={entity.name}
-            imageUri={entity.imageUri}
-          />
-        ))}
+        {entity === "teams" ? (
+          entityList.map((e) => (
+            <TeamItem
+              onPress={() => handleEntityPress(e.id)}
+              key={e.id}
+              name={e.name}
+              imageUri={e.imageUri}
+              size={e.roster.length}
+            />
+          ))
+        ) : (
+          <PlayerItem />
+        )}
       </ScrollView>
     </>
   );
 };
 
-export default ParticipantEdtior;
+export default EntityEditor;

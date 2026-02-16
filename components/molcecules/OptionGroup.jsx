@@ -9,6 +9,7 @@ const OptionGroup = ({ options }) => {
     <View style={styles.optionContainer}>
       {options.map((option, index) => (
         <TouchableOpacity
+          onPress={option.onPress}
           style={[
             styles.option,
             index === options.length - 1 && styles.hideBorder,
@@ -58,6 +59,8 @@ const styles = StyleSheet.create({
     width: 28,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: colors["grey-200"],
+    borderRadius: 6,
   },
   textContainer: {
     flex: 1,
