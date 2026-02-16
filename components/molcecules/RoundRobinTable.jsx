@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet } from "react-native";
 import React from "react";
 import { colors, typography } from "@/theme/theme";
 
@@ -30,9 +30,20 @@ const RoundRobinTable = ({ data }) => {
         <View key={index} style={[styles.row, { marginTop: 16 }]}>
           <Text style={styles.cell}>{index + 1}</Text>
 
-          <Text style={[styles.cell, { flex: 1, textAlign: "left" }]}>
-            {item.name}
-          </Text>
+          <View style={[styles.teamCell, { flex: 1 }]}>
+            <Image
+              style={styles.teamImage}
+              source={{ uri: item.imageUri }}
+              resizeMode="cover"
+            />
+            <Text
+              style={styles.teamName}
+              numberOfLines={1}
+              ellipsizeMode="tail"
+            >
+              {item.name}
+            </Text>
+          </View>
           <Text style={styles.cell}>{item.gp}</Text>
           <Text style={styles.cell}>{item.w}</Text>
           <Text style={styles.cell}>{item.t}</Text>
@@ -50,6 +61,7 @@ const styles = StyleSheet.create({
 
   row: {
     flexDirection: "row",
+    alignItems: "center",
   },
   cell: {
     width: 32,
@@ -59,6 +71,22 @@ const styles = StyleSheet.create({
   headerText: {
     color: colors["grey-500"],
     ...typography.body.small.bold,
+  },
+  teamCell: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+  },
+  teamImage: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: colors["grey-200"],
+  },
+  teamName: {
+    flex: 1,
+    textAlign: "left",
+    ...typography.body.medium.bold,
   },
 });
 

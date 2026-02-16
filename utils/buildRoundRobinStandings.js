@@ -8,6 +8,7 @@ export default function buildRoundRobinStandings(tournament) {
   const rows = [...tournament.teams].map((team) => ({
     id: team.id,
     name: team.name || "?",
+    imageUri: team.imageUri || null,
     gp: 0,
     w: 0,
     t: 0,
@@ -74,8 +75,9 @@ export default function buildRoundRobinStandings(tournament) {
     return x.name.localeCompare(y.name);
   });
 
-  return rows.map(({ name, gp, w, t, l, gd, pts }) => ({
+  return rows.map(({ name, imageUri, gp, w, t, l, gd, pts }) => ({
     name,
+    imageUri,
     gp,
     w,
     t,
