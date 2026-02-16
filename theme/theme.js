@@ -40,16 +40,16 @@ export const colors = {
   "success-600": "#12A58C",
 
   // Greyscale
-  "grey-50": "#F7F9FC",
-  "grey-100": "#E3E4E8",
-  "grey-200": "#C1C4CD",
-  "grey-300": "#9BA0AF",
-  "grey-400": "#83899B",
-  "grey-500": "#6A7187",
-  "grey-600": "#515973",
-  "grey-700": "#38415F",
-  "grey-800": "#1E2848",
-  "grey-900": "#061237",
+  "grey-50": "#F9FAFB",
+  "grey-100": "#F3F4F6",
+  "grey-200": "#E5E7EB",
+  "grey-300": "#D1D5DB",
+  "grey-400": "#9CA3AF",
+  "grey-500": "#6B7280",
+  "grey-600": "#4B5563",
+  "grey-700": "#374151",
+  "grey-800": "#1F2937",
+  "grey-900": "#111827",
 
   // Additional
   white: "#FFFFFF",
