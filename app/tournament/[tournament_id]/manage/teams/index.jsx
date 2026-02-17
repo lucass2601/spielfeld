@@ -27,7 +27,7 @@ const TeamsTab = () => {
           backPress={() => router.dismiss()}
         />
         <ScreenContainer>
-          <EntityEdtior entity="teams" />
+          <EntityEdtior />
         </ScreenContainer>
       </SafeAreaView>
     </SafeAreaProvider>
