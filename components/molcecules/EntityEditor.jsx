@@ -1,17 +1,7 @@
-import {
-  View,
-  Text,
-  Pressable,
-  Modal,
-  ScrollView,
-  Platform,
-} from "react-native";
+import { View, Text, Pressable, Modal, ScrollView } from "react-native";
 import { useState } from "react";
 
-import {
-  KeyboardAvoidingView,
-  KeyboardAwareScrollView,
-} from "react-native-keyboard-controller";
+import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 
 import { colors, typography } from "@/theme/theme";
 
@@ -23,8 +13,12 @@ import TeamItem from "@/components/molcecules/TeamItem";
 
 import AddEntityModal from "@/components/molcecules/AddEntityModal";
 
-const EntityEditor = ({ entity }) => {
-  const { tournament_id, team_id } = useGlobalSearchParams();
+import Button from "@/components/atoms/Button";
+
+import TeamsIllustration from "@/assets/images/teams-illustration.svg";
+
+const EntityEditor = () => {
+  const { tournament_id } = useGlobalSearchParams();
 
   const pathname = usePathname();
 
@@ -32,129 +26,131 @@ const EntityEditor = ({ entity }) => {
     state.getTournament(tournament_id),
   );
 
-  const getTeam = useTournamentStore((state) =>
-    state.getTeam(tournament_id, team_id),
-  );
-
-  const entityLength = () => {
-    if (entity === "teams") {
-      return tournament?.teams.length;
-    } else if (entity === "players") {
-      return getTeam.roster.length;
-    }
-  };
-
-  const entityList = entity === "teams" ? tournament?.teams : getTeam.roster;
+  const teams = tournament?.teams ?? [];
 
   const addTeam = useTournamentStore((state) => state.addTeam);
-  const addPlayer = useTournamentStore((state) => state.addPlayer);
 
   const [modalOpen, setModalOpen] = useState(false);
 
-  const handleEntityPress = (entity_id) => {
-    if (entity === "teams") {
-      if (pathname !== `/tournament/${tournament_id}/manage/teams/${entity_id}`)
-        router.push(`${pathname}/${entity_id}`);
-    } else if (entity === "players") {
-      if (
-        pathname !==
-        `/tournament/${tournament_id}/manage/teams/${team_id}/roster/${entity_id}`
-      )
-        router.push(`${pathname}/${entity_id}`);
-    } else {
-      console.error("No Entity matched");
-    }
+  const handleTeamPress = (team_id) => {
+    if (pathname !== `/tournament/${tournament_id}/manage/teams/${team_id}`)
+      router.push(`${pathname}/${team_id}`);
   };
 
   return (
     <>
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <Modal
-          visible={modalOpen}
-          transparent
-          animationType="fade"
-          onRequestClose={() => setModalOpen(false)}
+      {teams.length === 0 ? (
+        <View
+          style={{
+            flex: 1,
+            marginTop: 128,
+            alignItems: "center",
+            gap: 32,
+          }}
         >
+          <TeamsIllustration width={120} height={120} />
+          <View style={{ gap: 8 }}>
+            <Text style={{ ...typography.headings.h3, textAlign: "center" }}>
+              Teams
+            </Text>
+            <Text
+              style={{
+                ...typography.body.large.regular,
+                textAlign: "center",
+                color: colors["grey-500"],
+              }}
+            >
+              Looks empty here. Add your first team!
+            </Text>
+          </View>
+          <View style={{ width: "100%" }}>
+            <Button
+              onPress={() => setModalOpen(true)}
+              size="large"
+              label="Add Teams"
+            />
+          </View>
+        </View>
+      ) : (
+        <View>
           <View
             style={{
-              flex: 1,
-              justifyContent: "flex-end",
-              backgroundColor: "rgba(0,0,0,0.5)",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
             }}
           >
-            <KeyboardAvoidingView behavior="padding">
-              <View
-                style={{
-                  width: "100%",
-                  height: 400,
-                  backgroundColor: "white",
-                  borderTopRightRadius: 35,
-                  borderTopLeftRadius: 35,
-                }}
+            <Text style={typography.body.medium.semibold}>
+              {`Teams (${teams.length})`}
+            </Text>
+            <Pressable onPress={() => setModalOpen(true)}>
+              <Text
+                style={[
+                  typography.body.medium.semibold,
+                  { color: colors["primary-600"] },
+                ]}
               >
-                <AddEntityModal
-                  entity={entity}
-                  onAddEntities={(names) => {
-                    names.forEach((name) =>
-                      entity === "teams"
-                        ? addTeam(tournament_id, name)
-                        : addPlayer(tournament_id, team_id, name),
-                    );
-                  }}
-                  onClose={() => setModalOpen(false)}
-                />
-              </View>
-            </KeyboardAvoidingView>
+                Add teams
+              </Text>
+            </Pressable>
           </View>
-        </Modal>
-
-        <Text style={typography.body.medium.semibold}>{`${
-          entity === "teams" ? "Teams" : "Players"
-        } (${entityLength()})`}</Text>
-        <Pressable onPress={() => setModalOpen(true)}>
-          <Text
-            style={[
-              typography.body.medium.semibold,
-              { color: colors["primary-600"] },
+          <ScrollView
+            contentContainerStyle={[
+              {
+                marginTop: 20,
+              },
+              {
+                borderBottomWidth: 1,
+                borderBottomColor: colors["grey-100"],
+              },
             ]}
+            showsVerticalScrollIndicator={true}
           >
-            Add {`${entity === "teams" ? "teams" : "players"}`}
-          </Text>
-        </Pressable>
-      </View>
-
-      <ScrollView
-        contentContainerStyle={[
-          {
-            marginTop: 20,
-          },
-          entityList.length > 0 && {
-            borderBottomWidth: 1,
-            borderBottomColor: colors["grey-100"],
-          },
-        ]}
-        showsVerticalScrollIndicator={true}
+            {teams.map((team) => (
+              <TeamItem
+                onPress={() => handleTeamPress(team.id)}
+                key={team.id}
+                name={team.name}
+                imageUri={team.imageUri}
+                size={team.roster.length}
+              />
+            ))}
+          </ScrollView>
+        </View>
+      )}
+      <Modal
+        visible={modalOpen}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setModalOpen(false)}
       >
-        {entity === "teams" ? (
-          entityList.map((e) => (
-            <TeamItem
-              onPress={() => handleEntityPress(e.id)}
-              key={e.id}
-              name={e.name}
-              imageUri={e.imageUri}
-              size={e.roster.length}
-            />
-          ))
-        ) : (
-          <PlayerItem />
-        )}
-      </ScrollView>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "flex-end",
+            backgroundColor: "rgba(0,0,0,0.5)",
+          }}
+        >
+          <KeyboardAvoidingView behavior="padding">
+            <View
+              style={{
+                width: "100%",
+                height: 400,
+                backgroundColor: "white",
+                borderTopRightRadius: 35,
+                borderTopLeftRadius: 35,
+              }}
+            >
+              <AddEntityModal
+                onAddEntities={(names) => {
+                  names.forEach((name) => addTeam(tournament_id, name));
+                }}
+                onClose={() => setModalOpen(false)}
+              />
+            </View>
+          </KeyboardAvoidingView>
+        </View>
+      </Modal>
     </>
   );
 };

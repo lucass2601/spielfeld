@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, Modal } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Modal, Alert } from "react-native";
 import { useGlobalSearchParams, usePathname } from "expo-router";
 
 import {
@@ -15,6 +15,8 @@ import MatchItem from "@/components/molcecules/MatchItem";
 import MatchDetailsModal from "@/components/molcecules/MatchDetailsModal";
 
 import { useRef, useState } from "react";
+
+import MatchesIllustration from "@/assets/images/matches-illustration.svg";
 
 export default function MatchesTab() {
   const { tournament_id } = useGlobalSearchParams();
@@ -61,123 +63,164 @@ export default function MatchesTab() {
 
   const isKnockout = tournament.format === "knockout";
 
+  const handleGenerateMatches = () => {
+    if ((tournament.teams?.length ?? 0) < 3) {
+      Alert.alert(
+        "Not enough teams",
+        "You need at least 3 teams to generate matches. Add more teams first.",
+      );
+      return;
+    }
+    updateTournamentMatches(tournament_id);
+  };
+
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
-      <ScrollView
-        horizontal={true}
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{
-          gap: 12,
-          marginVertical: 24,
-          paddingHorizontal: 24,
-          flexDirection: "row",
-        }}
-      >
-        <Modal
-          visible={modalOpen}
-          transparent
-          animationType="fade"
-          onRequestClose={() => setModalOpen(false)}
+      {tournament.matchdays && !tournament.matchdays.length ? (
+        <View
+          style={{
+            flex: 1,
+            marginTop: 128,
+            alignItems: "center",
+            gap: 32,
+          }}
         >
-          <View
-            style={{
-              flex: 1,
-              justifyContent: "flex-end",
-              backgroundColor: "rgba(0,0,0,0.5)",
+          <MatchesIllustration width={120} height={120} />
+          <View style={{ gap: 8 }}>
+            <Text style={{ ...typography.headings.h3, textAlign: "center" }}>
+              Matches
+            </Text>
+            <Text
+              style={{
+                ...typography.body.large.regular,
+                textAlign: "center",
+                color: colors["grey-500"],
+              }}
+            >
+              No matches yet. Generate your matches to get started
+            </Text>
+          </View>
+          <View style={{ width: "100%", paddingHorizontal: 24 }}>
+            <Button
+              onPress={handleGenerateMatches}
+              size="large"
+              label="Generate Matches"
+            />
+          </View>
+        </View>
+      ) : (
+        <View>
+          <ScrollView
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{
+              gap: 12,
+              marginVertical: 24,
+              paddingHorizontal: 24,
+              flexDirection: "row",
             }}
           >
-            <KeyboardAvoidingView behavior="padding">
+            <Modal
+              visible={modalOpen}
+              transparent
+              animationType="fade"
+              onRequestClose={() => setModalOpen(false)}
+            >
               <View
                 style={{
-                  width: "100%",
-                  height: 400,
-                  backgroundColor: "white",
-                  borderTopRightRadius: 35,
-                  borderTopLeftRadius: 35,
+                  flex: 1,
+                  justifyContent: "flex-end",
+                  backgroundColor: "rgba(0,0,0,0.5)",
                 }}
               >
-                <MatchDetailsModal
-                  match={selectedMatch}
-                  onClose={() => setModalOpen(false)}
-                />
-              </View>
-            </KeyboardAvoidingView>
-          </View>
-        </Modal>
-        {tournament.matchdays.map((matchday, index) => (
-          <Button
-            key={matchday.id}
-            variant="tertiary"
-            size="small"
-            label={
-              isKnockout ? labelForKnockout(matchday) : `Matchday ${index + 1}`
-            }
-            onPress={() => {
-              const ref = matchdayRefs.current[index];
-
-              if (ref && scrollViewRef.current) {
-                ref.measureLayout(
-                  scrollViewRef.current,
-                  (x, y) => {
-                    scrollViewRef.current.scrollTo({ y, animated: true });
-                  },
-                  (error) => console.warn(error),
-                );
-              }
-            }}
-          />
-        ))}
-      </ScrollView>
-      <ScrollView
-        ref={scrollViewRef}
-        horizontal={false}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{
-          padding: 24,
-          flexBasis: "auto",
-          backgroundColor: "white",
-        }}
-      >
-        {tournament.matchdays && !tournament.matchdays.length && (
-          <Button
-            variant="tertiary"
-            label="Generate Matches"
-            onPress={() => updateTournamentMatches(tournament_id)}
-          />
-        )}
-
-        {tournament.matchdays.map((matchday, matchday_index) => (
-          <View
-            ref={(el) => (matchdayRefs.current[matchday_index] = el)}
-            style={{ marginBottom: 24 }}
-            key={matchday.id}
-          >
-            <Text
-              style={[
-                typography.body.medium.semibold,
-                { color: colors["grey-500"] },
-              ]}
-            >
-              {isKnockout
-                ? labelForKnockout(matchday)
-                : `Matchday ${matchday_index + 1}`}
-            </Text>
-            {matchday.matches
-              .filter((match) => match.teamA && match.teamB)
-              .map((match, match_index) => {
-                return (
-                  <View key={match.id} style={{ marginTop: 12 }}>
-                    <MatchItem
-                      index={match_index}
-                      match={match}
-                      onPress={() => handleMatchPress(match.id)}
+                <KeyboardAvoidingView behavior="padding">
+                  <View
+                    style={{
+                      width: "100%",
+                      height: 400,
+                      backgroundColor: "white",
+                      borderTopRightRadius: 35,
+                      borderTopLeftRadius: 35,
+                    }}
+                  >
+                    <MatchDetailsModal
+                      match={selectedMatch}
+                      onClose={() => setModalOpen(false)}
                     />
                   </View>
-                );
-              })}
-          </View>
-        ))}
-      </ScrollView>
+                </KeyboardAvoidingView>
+              </View>
+            </Modal>
+            {tournament.matchdays.map((matchday, index) => (
+              <Button
+                key={matchday.id}
+                variant="tertiary"
+                size="small"
+                label={
+                  isKnockout
+                    ? labelForKnockout(matchday)
+                    : `Matchday ${index + 1}`
+                }
+                onPress={() => {
+                  const ref = matchdayRefs.current[index];
+
+                  if (ref && scrollViewRef.current) {
+                    ref.measureLayout(
+                      scrollViewRef.current,
+                      (x, y) => {
+                        scrollViewRef.current.scrollTo({ y, animated: true });
+                      },
+                      (error) => console.warn(error),
+                    );
+                  }
+                }}
+              />
+            ))}
+          </ScrollView>
+          <ScrollView
+            ref={scrollViewRef}
+            horizontal={false}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{
+              padding: 24,
+              flexBasis: "auto",
+              backgroundColor: "white",
+            }}
+          >
+            {tournament.matchdays.map((matchday, matchday_index) => (
+              <View
+                ref={(el) => (matchdayRefs.current[matchday_index] = el)}
+                style={{ marginBottom: 24 }}
+                key={matchday.id}
+              >
+                <Text
+                  style={[
+                    typography.body.medium.semibold,
+                    { color: colors["grey-500"] },
+                  ]}
+                >
+                  {isKnockout
+                    ? labelForKnockout(matchday)
+                    : `Matchday ${matchday_index + 1}`}
+                </Text>
+                {matchday.matches
+                  .filter((match) => match.teamA && match.teamB)
+                  .map((match, match_index) => {
+                    return (
+                      <View key={match.id} style={{ marginTop: 12 }}>
+                        <MatchItem
+                          index={match_index}
+                          match={match}
+                          onPress={() => handleMatchPress(match.id)}
+                        />
+                      </View>
+                    );
+                  })}
+              </View>
+            ))}
+          </ScrollView>
+        </View>
+      )}
     </View>
   );
 }
