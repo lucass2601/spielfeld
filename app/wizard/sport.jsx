@@ -29,8 +29,7 @@ export default function Wizard_Format() {
       <View style={styles.wizard_header}>
         <Text style={styles.title}>Choose a Sport</Text>
         <Text style={styles.subtitle}>
-          Pick a sport to unlock sport-specific stats and features. Football
-          enables the Live Panel. No sport keeps it generic.
+          Select a sport to use live match tracking tailored to your game
         </Text>
       </View>
       <View style={styles.content}>
