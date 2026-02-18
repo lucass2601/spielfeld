@@ -14,6 +14,9 @@ const useTournamentStore = create((set, get) => ({
     startDate: "",
     teams: [],
     matchdays: [],
+    pointsWin: 3,
+    pointsTie: 1,
+    pointsLose: 0,
   },
   tournaments: [
     {
@@ -197,6 +200,9 @@ const useTournamentStore = create((set, get) => ({
         startDate: "",
         teams: [],
         matchdays: [],
+        pointsWin: 3,
+        pointsTie: 1,
+        pointsLose: 0,
       },
     }));
   },

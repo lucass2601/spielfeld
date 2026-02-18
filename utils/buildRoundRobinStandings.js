@@ -2,8 +2,9 @@ export default function buildRoundRobinStandings(tournament) {
   if (!tournament || tournament.format !== "roundrobin") return [];
   if (!tournament.teams || tournament.teams.length === 0) return [];
 
-  const options = { pointsWin: 3, pointsDraw: 1, pointsLoss: 0 };
-  const { pointsWin, pointsDraw, pointsLoss } = options;
+  const pointsWin = tournament.pointsWin ?? 3;
+  const pointsDraw = tournament.pointsTie ?? 1;
+  const pointsLoss = tournament.pointsLose ?? 0;
 
   const rows = [...tournament.teams].map((team) => ({
     id: team.id,
