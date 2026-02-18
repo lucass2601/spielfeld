@@ -11,6 +11,7 @@ import IconGroup from "@/assets/icons/icon-group.svg";
 import IconBracket from "@/assets/icons/icon-bracket.svg";
 import IconSettings from "@/assets/icons/icon-settings.svg";
 import IconTrash from "@/assets/icons/icon-trash.svg";
+import IconCalendarEvent from "@/assets/icons/icon-calendar-event.svg";
 import TournamentItem from "@/components/molcecules/TournamentItem";
 
 export default function ManageTab() {
@@ -24,6 +25,10 @@ export default function ManageTab() {
 
   const deleteTournament = useTournamentStore(
     (state) => state.deleteTournament,
+  );
+
+  const deleteTournamentMatches = useTournamentStore(
+    (state) => state.deleteTournamentMatches,
   );
 
   const dateString = new Date(tournament.startDate).toISOString();
@@ -51,6 +56,30 @@ export default function ManageTab() {
       title: "Tournament Settings",
       onPress: () => {
         router.push(`${pathname}/settings`);
+      },
+    },
+    {
+      id: 1.4,
+      icon: <IconCalendarEvent color={colors["error-500"]} height={20} width={20} />,
+      title: "Delete Matches",
+      onPress: () => {
+        Alert.alert(
+          "Delete Matches?",
+          "Are you sure you want to delete all matches? This action cannot be undone.",
+          [
+            {
+              text: "Cancel",
+              style: "cancel",
+            },
+            {
+              text: "Delete",
+              style: "destructive",
+              onPress: () => {
+                deleteTournamentMatches(tournament_id);
+              },
+            },
+          ],
+        );
       },
     },
     {
