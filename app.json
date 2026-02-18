@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "tournal",
-    "slug": "tournal",
+    "name": "spielfeld",
+    "slug": "spielfeld",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -10,7 +10,7 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.lucass2601.tournal",
+      "bundleIdentifier": "com.lucass2601.spielfeld",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
@@ -20,7 +20,7 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.lucass2601.tournal"
+      "package": "com.lucass2601.spielfeld"
     },
     "web": {
       "bundler": "metro",
@@ -41,7 +41,7 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "tournal needs access to your photos to upload tournament images."
+          "photosPermission": "spielfeld needs access to your photos to upload tournament images."
         }
       ],
       "expo-font"
@@ -54,7 +54,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "a8132c06-7a2c-47af-ba8f-2db2f41a00ac"
+        "projectId": "71550b36-b982-49a8-991e-b6b3f4625180"
       }
     }
   }
