@@ -1,74 +1,76 @@
 import { colors, typography } from "@/theme/theme";
-import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
-const MatchEventTimelineItem = ({ team, player, minute, onPress }) => {
-  return (
-    <TouchableOpacity onPress={onPress} style={styles.timelineItemContainer}>
-      <View style={styles.timelineEventType}>
-        <Text style={styles.timelineEventTypeTitle}>⚽</Text>
-      </View>
-      <View style={styles.timelineContent}>
-        <Text style={styles.timelineEvent}>Goal!</Text>
-        <View style={styles.timelinePlayer}>
-          <Image style={styles.playerImage} source={{ uri: team?.imageUri }} />
-          <Text style={styles.playerName}>
-            {player ? player?.name : "Unknown Player"}
-          </Text>
-        </View>
-      </View>
-      <View>
-        <Text style={styles.timelineTimestamp}>'{minute}</Text>
-      </View>
+const MatchEventTimelineItem = ({ player, minute, onPress, isHome }) => {
+  const eventContent = (
+    <TouchableOpacity
+      onPress={onPress}
+      style={[styles.card, isHome ? styles.cardHome : styles.cardAway]}
+    >
+      <Text
+        style={[styles.playerName, isHome && styles.textRight]}
+        numberOfLines={1}
+      >
+        {player ? player.name : "Unknown Player"}
+      </Text>
+      <Text style={[styles.eventMeta, isHome && styles.textRight]}>
+        ⚽ Goal ({minute}')
+      </Text>
     </TouchableOpacity>
+  );
+
+  return (
+    <View style={styles.row}>
+      <View style={styles.side}>{isHome ? eventContent : null}</View>
+      <View style={styles.centerColumn}>
+        <View style={styles.line} />
+      </View>
+      <View style={styles.side}>{!isHome ? eventContent : null}</View>
+    </View>
   );
 };
 
 export default MatchEventTimelineItem;
 
 const styles = StyleSheet.create({
-  timelineItemContainer: {
-    borderWidth: 1,
-    borderColor: colors["grey-200"],
-    borderRadius: 12,
+  row: {
     flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: 8,
-    gap: 12,
+    alignItems: "stretch",
+    minHeight: 64,
   },
-  timelineEventType: {
-    borderRadius: 12,
-    height: 44,
-    width: 44,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: colors["grey-50"],
-  },
-  timelineEventTypeTitle: {
-    ...typography.headings.h6,
-  },
-  timelineContent: {
+  side: {
     flex: 1,
-    gap: 4,
+    justifyContent: "center",
+    paddingVertical: 8,
   },
-  timelineTimestamp: {
-    ...typography.body.medium.bold,
+  card: {
+    gap: 2,
   },
-  timelineEvent: {
-    ...typography.body.small.bold,
-    color: colors["grey-400"],
+  cardHome: {
+    paddingRight: 12,
+    alignItems: "flex-end",
   },
-  timelinePlayer: {
-    flexDirection: "row",
+  cardAway: {
+    paddingLeft: 12,
+    alignItems: "flex-start",
+  },
+  centerColumn: {
+    width: 40,
     alignItems: "center",
-    gap: 4,
   },
-  playerImage: {
-    width: 20,
-    height: 20,
-    borderRadius: 50,
+  line: {
+    flex: 1,
+    width: 1,
+    backgroundColor: colors["grey-200"],
+  },
+  textRight: {
+    textAlign: "right",
   },
   playerName: {
     ...typography.body.small.bold,
+  },
+  eventMeta: {
+    ...typography.body.small.regular,
+    color: colors["grey-400"],
   },
 });

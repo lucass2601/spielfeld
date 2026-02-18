@@ -49,7 +49,7 @@ const LivePanel = () => {
   const [tempEvents, setTempEvents] = useState([]);
 
   const match = useTournamentStore((state) =>
-    state.getMatch(tournament_id, match_id)
+    state.getMatch(tournament_id, match_id),
   );
 
   const getTeam = useTournamentStore((state) => state.getTeam);
@@ -57,11 +57,11 @@ const LivePanel = () => {
   const getPlayer = useTournamentStore((state) => state.getPlayer);
 
   const updateTournamentMatchWinner = useTournamentStore(
-    (state) => state.updateTournamentMatchWinner
+    (state) => state.updateTournamentMatchWinner,
   );
 
   const updateTournamentMatchEvents = useTournamentStore(
-    (state) => state.updateTournamentMatchEvents
+    (state) => state.updateTournamentMatchEvents,
   );
 
   const getTeamData = (team_id) => {
@@ -106,7 +106,7 @@ const LivePanel = () => {
             router.back();
           },
         },
-      ]
+      ],
     );
   };
 
@@ -124,7 +124,7 @@ const LivePanel = () => {
       winner_id,
       isDraw,
       scoreA,
-      scoreB
+      scoreB,
     );
 
     router.back();
@@ -162,12 +162,12 @@ const LivePanel = () => {
 
       setTempEvents(
         tempEvents.map((tempEvent) =>
-          tempEvent.id === updatedEvent.id ? { ...matchEvent } : tempEvent
-        )
+          tempEvent.id === updatedEvent.id ? { ...matchEvent } : tempEvent,
+        ),
       );
     } else if (submitType === "delete") {
       setTempEvents(
-        tempEvents.filter((tempEvent) => tempEvent.id !== updatedEvent.id)
+        tempEvents.filter((tempEvent) => tempEvent.id !== updatedEvent.id),
       );
     } else {
       matchEvent = {
@@ -193,7 +193,7 @@ const LivePanel = () => {
   };
 
   const recentEvents = () => {
-    return tempEvents.sort((a, b) => b.minute - a.minute);
+    return [...tempEvents].reverse().sort((a, b) => b.minute - a.minute);
   };
 
   const editTimelineItem = (event) => {
@@ -326,7 +326,7 @@ const LivePanel = () => {
               <MatchEventTimelineItem
                 onPress={() => editTimelineItem(event)}
                 key={event.id}
-                team={getTeamData(event.team_id)}
+                isHome={event.team_id === teamA.id}
                 player={
                   event.player_id
                     ? getPlayerData(event.team_id, event.player_id)
@@ -479,9 +479,6 @@ const styles = StyleSheet.create({
   timelineTitle: {
     ...typography.body.medium.semibold,
     paddingBottom: 16,
-  },
-  timeline: {
-    gap: 8,
   },
 
   centeredView: {
