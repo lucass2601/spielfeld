@@ -14,12 +14,19 @@ const MatchDetailsModal = ({ match, onClose }) => {
   const pathname = usePathname();
 
   const tournament = useTournamentStore((state) =>
-    state.getTournament(tournament_id)
+    state.getTournament(tournament_id),
   );
 
   const updateTournamentMatchWinner = useTournamentStore(
-    (state) => state.updateTournamentMatchWinner
+    (state) => state.updateTournamentMatchWinner,
   );
+
+  const resetTournamentMatch = useTournamentStore(
+    (state) => state.resetTournamentMatch,
+  );
+
+  const isFinished = match.status === "finished";
+  const isFootball = tournament.sport === "football";
 
   const openLiveMatch = () => {
     if (pathname !== `/tournament/${tournament_id}/matches/${match.id}/live`) {
@@ -54,7 +61,7 @@ const MatchDetailsModal = ({ match, onClose }) => {
       winner_id,
       isDraw,
       scoreA,
-      scoreB
+      scoreB,
     );
 
     onClose();
@@ -154,12 +161,23 @@ const MatchDetailsModal = ({ match, onClose }) => {
         </View>
 
         <View style={{ gap: 12, marginTop: 16 }}>
-          {tournament.sport === "football" && (
+          {isFootball && !isFinished && (
             <Button
               style={{ borderColor: colors["primary-600"] }}
               variant="tertiary"
               label="Go Live"
               onPress={openLiveMatch}
+            />
+          )}
+          {isFinished && (
+            <Button
+              textColor={colors["error-500"]}
+              variant="secondary"
+              label="Reset Score"
+              onPress={() => {
+                resetTournamentMatch(tournament_id, match.id);
+                onClose();
+              }}
             />
           )}
           <Button

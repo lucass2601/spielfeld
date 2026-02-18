@@ -268,6 +268,31 @@ const useTournamentStore = create((set, get) => ({
       ),
     })),
 
+  resetTournamentMatch: (tournament_id, match_id) =>
+    set((state) => ({
+      tournaments: state.tournaments.map((tournament) => {
+        if (tournament.id !== tournament_id) return tournament;
+        return {
+          ...tournament,
+          matchdays: tournament.matchdays.map((md) => ({
+            ...md,
+            matches: md.matches.map((match) =>
+              match.id === match_id
+                ? {
+                    ...match,
+                    winnerId: null,
+                    isDraw: false,
+                    teamAScore: 0,
+                    teamBScore: 0,
+                    status: "scheduled",
+                  }
+                : match
+            ),
+          })),
+        };
+      }),
+    })),
+
   updateTournamentMatchWinner: (
     tournament_id,
     match_id,
