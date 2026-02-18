@@ -47,13 +47,12 @@ const FormatTab = () => {
 
   const handleSave = () => {
     const applyChanges = () => {
-      // TODO: Implement points for win, tie and lose in the store!
-      // updateTournamentSettings(tournament_id, {
-      //   format: selectedFormat,
-      //   pointsWin,
-      //   pointsTie,
-      //   pointsLose,
-      // });
+      updateTournamentSettings(tournament_id, {
+        format: selectedFormat,
+        pointsWin,
+        pointsTie,
+        pointsLose,
+      });
       router.dismiss();
     };
 
