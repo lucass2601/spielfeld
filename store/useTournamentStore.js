@@ -238,6 +238,15 @@ const useTournamentStore = create((set, get) => ({
       ),
     })),
 
+  deleteTournamentMatches: (tournament_id) =>
+    set((state) => ({
+      tournaments: state.tournaments.map((tournament) =>
+        tournament.id === tournament_id
+          ? { ...tournament, matchdays: [] }
+          : tournament
+      ),
+    })),
+
   updateTournamentMatches: (tournament_id) =>
     set((state) => ({
       tournaments: state.tournaments.map((tournament) =>
