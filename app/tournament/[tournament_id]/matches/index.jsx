@@ -109,7 +109,7 @@ export default function MatchesTab() {
           </View>
         </View>
       ) : (
-        <View>
+        <View style={{ flex: 1 }}>
           <ScrollView
             horizontal={true}
             showsHorizontalScrollIndicator={false}
