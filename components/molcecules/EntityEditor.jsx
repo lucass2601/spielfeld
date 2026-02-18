@@ -1,4 +1,4 @@
-import { View, Text, Pressable, Modal, ScrollView } from "react-native";
+import { View, Text, Pressable, Modal, ScrollView, Alert } from "react-native";
 import { useState } from "react";
 
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
@@ -29,6 +29,10 @@ const EntityEditor = () => {
   const teams = tournament?.teams ?? [];
 
   const addTeam = useTournamentStore((state) => state.addTeam);
+
+  const deleteTournamentMatches = useTournamentStore(
+    (state) => state.deleteTournamentMatches,
+  );
 
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -143,7 +147,28 @@ const EntityEditor = () => {
             >
               <AddEntityModal
                 onAddEntities={(names) => {
-                  names.forEach((name) => addTeam(tournament_id, name));
+                  const applyAdd = () =>
+                    names.forEach((name) => addTeam(tournament_id, name));
+
+                  if ((tournament?.matchdays?.length ?? 0) > 0) {
+                    Alert.alert(
+                      "Your Schedule Will Be Invalidated",
+                      "Adding new teams will break your existing match schedule. You'll need to generate a fresh one after this change. Want to continue?",
+                      [
+                        { text: "Cancel", style: "cancel" },
+                        {
+                          text: "Continue",
+                          style: "destructive",
+                          onPress: () => {
+                            deleteTournamentMatches(tournament_id);
+                            applyAdd();
+                          },
+                        },
+                      ],
+                    );
+                  } else {
+                    applyAdd();
+                  }
                 }}
                 onClose={() => setModalOpen(false)}
               />

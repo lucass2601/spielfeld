@@ -1,5 +1,5 @@
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Alert } from "react-native";
 import { router, useGlobalSearchParams } from "expo-router";
 import { useState } from "react";
 
@@ -22,15 +22,61 @@ const FormatTab = () => {
     state.getTournament(tournament_id),
   );
 
+  const updateTournamentSettings = useTournamentStore(
+    (state) => state.updateTournamentSettings,
+  );
+
+  const deleteTournamentMatches = useTournamentStore(
+    (state) => state.deleteTournamentMatches,
+  );
+
   const [selectedFormat, setSelectedFormat] = useState(
     tournament?.format || "roundrobin",
   );
 
-  const [pointsWin, setPointsWin] = useState(3);
-  const [pointsTie, setPointsTie] = useState(1);
-  const [pointsLose, setPointsLose] = useState(0);
+  const [pointsWin, setPointsWin] = useState(tournament?.pointsWin ?? 3);
+  const [pointsTie, setPointsTie] = useState(tournament?.pointsTie ?? 1);
+  const [pointsLose, setPointsLose] = useState(tournament?.pointsLose ?? 0);
 
-  const handleSave = () => {};
+  const hasSchedule = (tournament?.matchdays?.length ?? 0) > 0;
+  const hasChanges =
+    selectedFormat !== tournament?.format ||
+    pointsWin !== (tournament?.pointsWin ?? 3) ||
+    pointsTie !== (tournament?.pointsTie ?? 1) ||
+    pointsLose !== (tournament?.pointsLose ?? 0);
+
+  const handleSave = () => {
+    const applyChanges = () => {
+      // TODO: Implement points for win, tie and lose in the store!
+      // updateTournamentSettings(tournament_id, {
+      //   format: selectedFormat,
+      //   pointsWin,
+      //   pointsTie,
+      //   pointsLose,
+      // });
+      router.dismiss();
+    };
+
+    if (hasSchedule && hasChanges) {
+      Alert.alert(
+        "This Will Reset Your Schedule",
+        "Heads up — your current match schedule was built around the previous format. Switching now means it won't be valid anymore and you'll have to generate a new one. Still want to change it?",
+        [
+          { text: "Cancel", style: "cancel" },
+          {
+            text: "Change Format",
+            style: "destructive",
+            onPress: () => {
+              deleteTournamentMatches(tournament_id);
+              applyChanges();
+            },
+          },
+        ],
+      );
+    } else {
+      applyChanges();
+    }
+  };
 
   return (
     <SafeAreaProvider>
