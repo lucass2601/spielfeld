@@ -1,6 +1,7 @@
-import { View, Text, Image, StyleSheet } from "react-native";
-import React from "react";
+import { View, Text, StyleSheet } from "react-native";
 import { colors, typography } from "@/theme/theme";
+
+import Avatar from "@/components/atoms/Avatar";
 
 const RoundRobinTable = ({ data }) => {
   return (
@@ -31,11 +32,7 @@ const RoundRobinTable = ({ data }) => {
           <Text style={styles.cell}>{index + 1}</Text>
 
           <View style={[styles.teamCell, { flex: 1 }]}>
-            <Image
-              style={styles.teamImage}
-              source={{ uri: item.imageUri }}
-              resizeMode="cover"
-            />
+            <Avatar uri={item.imageUri} type="team" style={styles.teamImage} />
             <Text
               style={styles.teamName}
               numberOfLines={1}

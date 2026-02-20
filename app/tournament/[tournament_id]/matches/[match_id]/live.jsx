@@ -1,5 +1,4 @@
 import {
-  Image,
   Modal,
   StyleSheet,
   Text,
@@ -34,7 +33,7 @@ import MatchEventTimelineItem from "@/components/molcecules/MatchEventTimelineIt
 
 import MatchEventModal from "@/components/molcecules/MatchEventModal";
 
-const placeholderImage = require("@/assets/images/icon.png");
+import Avatar from "@/components/atoms/Avatar";
 
 const LivePanel = () => {
   const { tournament_id, match_id } = useGlobalSearchParams();
@@ -268,10 +267,7 @@ const LivePanel = () => {
         {/* Score Container */}
         <View style={styles.scoreContainer}>
           <View style={styles.playerContainer}>
-            <Image
-              style={styles.playerImage}
-              source={{ uri: teamA.imageUri }}
-            />
+            <Avatar uri={teamA.imageUri} type="team" style={styles.playerImage} />
             <View style={styles.playerText}>
               <Text style={styles.playerName}>{teamA.name}</Text>
               <Text style={styles.side}>Home</Text>
@@ -285,10 +281,7 @@ const LivePanel = () => {
           </View>
 
           <View style={styles.playerContainer}>
-            <Image
-              style={styles.playerImage}
-              source={{ uri: teamB.imageUri }}
-            />
+            <Avatar uri={teamB.imageUri} type="team" style={styles.playerImage} />
             <View style={styles.playerText}>
               <Text style={styles.playerName}>{teamB.name}</Text>
               <Text style={styles.side}>Away</Text>

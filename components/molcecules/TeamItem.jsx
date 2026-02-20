@@ -1,7 +1,6 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-import defaultImage from "@/assets/images/icon.png";
-
+import Avatar from "@/components/atoms/Avatar";
 import IconChevronRight from "@/assets/icons/icon-chevron-right.svg";
 
 import { colors, typography } from "@/theme/theme";
@@ -17,12 +16,7 @@ const TeamItem = ({ onPress, imageUri, name, size }) => {
           gap: 16,
         }}
       >
-        <View>
-          <Image
-            style={styles.entityIcon}
-            source={imageUri ? { uri: imageUri } : defaultImage}
-          />
-        </View>
+        <Avatar uri={imageUri} type="team" style={styles.entityIcon} />
         <View style={{ flex: 1, gap: 4 }}>
           <Text
             style={[
