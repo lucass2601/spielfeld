@@ -4,7 +4,6 @@ import { router, useGlobalSearchParams } from "expo-router";
 import { useState } from "react";
 
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
-import * as ImagePicker from "expo-image-picker";
 
 import { colors, typography } from "@/theme/theme";
 
@@ -13,6 +12,7 @@ import AppBar from "@/components/molcecules/AppBar";
 import Input from "@/components/atoms/Input";
 import DateTimePickerInput from "@/components/molcecules/DateTimePickerInput";
 import TournamentSportItem from "@/components/molcecules/TournamentSportItem";
+import AvatarPicker from "@/components/molcecules/AvatarPicker";
 
 import useTournamentStore from "@/store/useTournamentStore";
 
@@ -36,19 +36,6 @@ const SettingsTab = () => {
   const [tournamentName, setTournamentName] = useState(tournament?.name || "");
   const [startDate, setStartDate] = useState(tournament?.startDate || null);
   const [selectedSport, setSelectedSport] = useState(tournament?.sport || null);
-
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ["images"],
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    if (!result.canceled) {
-      setImageUri(result.assets[0].uri);
-    }
-  };
 
   const handleSave = () => {
     updateTournamentSettings(tournament_id, {
@@ -82,29 +69,7 @@ const SettingsTab = () => {
         <ScreenContainer>
           <KeyboardAwareScrollView bottomOffset={62}>
             <View style={styles.content}>
-              <View style={styles.imageContainer}>
-                <Pressable onPress={pickImage} style={styles.imageWrapper}>
-                  <Image
-                    style={styles.image}
-                    source={{ uri: imageUri }}
-                    resizeMode="cover"
-                  />
-                </Pressable>
-                <View style={styles.imageOptions}>
-                  {imageUri ? (
-                    <Text
-                      onPress={() => setImageUri(null)}
-                      style={styles.removeText}
-                    >
-                      Remove Image
-                    </Text>
-                  ) : (
-                    <Text onPress={pickImage} style={styles.uploadText}>
-                      Upload Image
-                    </Text>
-                  )}
-                </View>
-              </View>
+              <AvatarPicker value={imageUri} onChange={setImageUri} />
               <Input
                 value={tournamentName}
                 onChangeText={(name) => setTournamentName(name)}
@@ -160,38 +125,6 @@ const styles = StyleSheet.create({
   content: {
     gap: 24,
     width: "100%",
-  },
-  imageContainer: {
-    margin: "auto",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  imageWrapper: {
-    height: 88,
-    width: 88,
-    borderRadius: 44,
-  },
-  image: {
-    height: 88,
-    width: 88,
-    borderRadius: 44,
-    overflow: "hidden",
-    backgroundColor: colors["grey-200"],
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  uploadText: {
-    marginTop: 12,
-    color: colors["primary-600"],
-    ...typography.body.medium.bold,
-  },
-  removeText: {
-    marginTop: 12,
-    color: colors["error-600"],
-    ...typography.body.medium.bold,
-  },
-  sportSection: {
-    marginTop: 8,
   },
   label: {
     marginBottom: 12,
