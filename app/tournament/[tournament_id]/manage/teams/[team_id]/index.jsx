@@ -1,17 +1,7 @@
-import {
-  Image,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-  Alert,
-  Modal,
-} from "react-native";
+import { StyleSheet, Text, View, Alert, Modal } from "react-native";
 import { useState } from "react";
 
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-
-import * as ImagePicker from "expo-image-picker";
 
 import { router, useLocalSearchParams, usePathname } from "expo-router";
 
@@ -19,6 +9,7 @@ import ScreenContainer from "@/components/layouts/ScreenContainer";
 import AppBar from "@/components/molcecules/AppBar";
 import Button from "@/components/atoms/Button";
 import Input from "@/components/atoms/Input";
+import AvatarPicker from "@/components/molcecules/AvatarPicker";
 
 import IconClose from "@/assets/icons/icon-close.svg";
 import IconCheck from "@/assets/icons/icon-check.svg";
@@ -81,19 +72,6 @@ const TeamDetails = () => {
     ]);
   };
 
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ["images"],
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    if (!result.canceled) {
-      setImageUri(result.assets[0].uri);
-    }
-  };
-
   return (
     <SafeAreaProvider>
       <SafeAreaView
@@ -151,23 +129,7 @@ const TeamDetails = () => {
             </View>
           </Modal>
 
-          <View style={styles.imageContainer}>
-            <Pressable onPress={pickImage} style={styles.imageWrapper}>
-              <Image
-                style={styles.image}
-                source={{ uri: imageUri }}
-                resizeMode="cover"
-              />
-            </Pressable>
-            <View style={styles.imageOptions}>
-              <Text
-                onPress={imageUri ? () => setImageUri(null) : pickImage}
-                style={styles.imageText}
-              >
-                {imageUri ? "Change Photo" : "Add Photo"}
-              </Text>
-            </View>
-          </View>
+          <AvatarPicker value={imageUri} onChange={setImageUri} size={80} />
 
           <View style={styles.formContainer}>
             <View>
@@ -210,29 +172,6 @@ const TeamDetails = () => {
 export default TeamDetails;
 
 const styles = StyleSheet.create({
-  imageContainer: {
-    paddingTop: 32,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  imageWrapper: {
-    height: 80,
-    width: 80,
-  },
-  image: {
-    height: 80,
-    width: 80,
-    borderRadius: 40,
-    overflow: "hidden",
-    backgroundColor: colors["grey-200"],
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  imageText: {
-    marginTop: 8,
-    color: colors["primary-600"],
-    ...typography.body.medium.bold,
-  },
   formContainer: {
     marginTop: 24,
     gap: 24,

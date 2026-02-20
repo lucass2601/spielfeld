@@ -1,14 +1,13 @@
 import { colors, typography } from "@/theme/theme";
-import { View, Text, StyleSheet, Pressable, Image } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import { router } from "expo-router";
 import { useState } from "react";
 
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 
-import * as ImagePicker from "expo-image-picker";
-
 import Button from "@/components/atoms/Button";
 import Input from "@/components/atoms/Input";
+import AvatarPicker from "@/components/molcecules/AvatarPicker";
 import DateTimePickerInput from "@/components/molcecules/DateTimePickerInput";
 import ScreenContainer from "@/components/layouts/ScreenContainer";
 
@@ -18,27 +17,14 @@ export default function Wizard_Information() {
   const newTournament = useTournamentStore((state) => state.newTournament);
 
   const setNewTournamentInfo = useTournamentStore(
-    (state) => state.setNewTournamentInfo
+    (state) => state.setNewTournamentInfo,
   );
 
   const [tournamentName, setTournamentName] = useState(
-    newTournament.name || ""
+    newTournament.name || "",
   );
   const [imageUri, setImageUri] = useState(newTournament.imageUri || null);
   const [startDate, setStartDate] = useState(newTournament.startDate || null);
-
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ["images"],
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    if (!result.canceled) {
-      setImageUri(result.assets[0].uri);
-    }
-  };
 
   const submitWizard = () => {
     if (!tournamentName || !startDate) return;
@@ -56,29 +42,7 @@ export default function Wizard_Information() {
       </View>
       <KeyboardAwareScrollView bottomOffset={62}>
         <View style={styles.content}>
-          <View style={styles.imageContainer}>
-            <Pressable onPress={pickImage} style={styles.imageWrapper}>
-              <Image
-                style={styles.image}
-                source={{ uri: imageUri }}
-                resizeMode="cover"
-              />
-            </Pressable>
-            <View style={styles.imageOptions}>
-              {imageUri ? (
-                <Text
-                  onPress={() => setImageUri(null)}
-                  style={styles.removeText}
-                >
-                  Remove Image
-                </Text>
-              ) : (
-                <Text onPress={pickImage} style={styles.uploadText}>
-                  Upload Image
-                </Text>
-              )}
-            </View>
-          </View>
+          <AvatarPicker value={imageUri} onChange={setImageUri} />
           <Input
             value={tournamentName}
             onChangeText={(tournamentName) => setTournamentName(tournamentName)}
@@ -117,34 +81,5 @@ const styles = StyleSheet.create({
     marginTop: 32,
     gap: 24,
     width: "100%",
-  },
-  imageContainer: {
-    margin: "auto",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  imageWrapper: {
-    height: 88,
-    width: 88,
-    borderRadius: 44,
-  },
-  image: {
-    height: 88,
-    width: 88,
-    borderRadius: 44,
-    overflow: "hidden",
-    backgroundColor: colors["grey-200"],
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  uploadText: {
-    marginTop: 12,
-    color: colors["primary-600"],
-    ...typography.body.medium.bold,
-  },
-  removeText: {
-    marginTop: 12,
-    color: colors["error-600"],
-    ...typography.body.medium.bold,
   },
 });
