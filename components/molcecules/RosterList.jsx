@@ -3,14 +3,12 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  Image,
   ScrollView,
 } from "react-native";
 import React from "react";
 
 import IconAdd from "@/assets/icons/icon-add.svg";
-
-import defaultImage from "@/assets/images/icon.png";
+import Avatar from "@/components/atoms/Avatar";
 
 import { colors, typography } from "@/theme/theme";
 
@@ -38,10 +36,7 @@ const RosterList = ({ roster, onPlayerAdd, onPlayerPress }) => {
           style={styles.player}
           key={player.id}
         >
-          <Image
-            style={styles.cover}
-            source={player.imageUri ? { uri: player.imageUri } : defaultImage}
-          />
+          <Avatar uri={player.imageUri} type="player" style={styles.cover} />
 
           <Text style={styles.playerName}>{player.name}</Text>
         </TouchableOpacity>

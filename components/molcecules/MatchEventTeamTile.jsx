@@ -1,5 +1,6 @@
 import { colors, typography } from "@/theme/theme";
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import Avatar from "@/components/atoms/Avatar";
 
 const MatchEventTeamTile = ({ team, onPress, active = false }) => {
   return (
@@ -7,7 +8,7 @@ const MatchEventTeamTile = ({ team, onPress, active = false }) => {
       onPress={onPress}
       style={[styles.tileContainer, active && styles.tileActive]}
     >
-      <Image style={styles.tileImage} source={{ uri: team.imageUri }} />
+      <Avatar uri={team.imageUri} type="team" style={styles.tileImage} />
       <View style={styles.tileContent}>
         <Text style={styles.tileText}>{team.name}</Text>
         <Text style={styles.tileSubtext}>Home</Text>

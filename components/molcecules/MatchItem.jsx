@@ -1,5 +1,6 @@
-import { View, Text, StyleSheet, Image, Pressable } from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 import { colors, typography } from "@/theme/theme";
+import Avatar from "@/components/atoms/Avatar";
 import useTournamentStore from "@/store/useTournamentStore";
 import { useGlobalSearchParams } from "expo-router";
 
@@ -16,8 +17,6 @@ const MatchItem = ({ match, index, onPress }) => {
 
   const isDraw = Boolean(match.isDraw);
   const isFinished = match.status === "finished";
-
-  const placeholderImage = require("@/assets/images/icon.png");
 
   const statusStyles = getStatusStyles(match.status);
 
@@ -37,12 +36,7 @@ const MatchItem = ({ match, index, onPress }) => {
     >
       <View style={[styles.teamCol, teamABYE && styles.dimmed]}>
         <View style={[styles.avatarWrap, winnerA && styles.winnerRing]}>
-          <Image
-            style={styles.avatar}
-            source={
-              teamA?.imageUri ? { uri: teamA.imageUri } : placeholderImage
-            }
-          />
+          <Avatar uri={teamA?.imageUri} type="team" style={styles.avatar} />
         </View>
         <Text
           style={[
@@ -79,12 +73,7 @@ const MatchItem = ({ match, index, onPress }) => {
 
       <View style={[styles.teamCol, teamBBYE && styles.dimmed]}>
         <View style={[styles.avatarWrap, winnerB && styles.winnerRing]}>
-          <Image
-            style={styles.avatar}
-            source={
-              teamB?.imageUri ? { uri: teamB.imageUri } : placeholderImage
-            }
-          />
+          <Avatar uri={teamB?.imageUri} type="team" style={styles.avatar} />
         </View>
         <Text
           style={[
