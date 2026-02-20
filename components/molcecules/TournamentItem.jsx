@@ -1,6 +1,8 @@
 import { StyleSheet, Text, View, Pressable, Image } from "react-native";
 import { colors, typography } from "@/theme/theme";
 
+import tournamentPlaceholder from "@/assets/images/tournament-placeholder.png";
+
 const tournamentSportDefinitions = {
   null: "No Sport",
   football: "Football",
@@ -27,9 +29,7 @@ const TournamentItem = ({
       <View style={styles.imageContainer}>
         <Image
           style={styles.cover}
-          source={
-            imageUri ? { uri: imageUri } : require("@/assets/images/icon.png")
-          }
+          source={imageUri ? { uri: imageUri } : tournamentPlaceholder}
         />
       </View>
       <View style={styles.infoContainer}>
