@@ -1,12 +1,18 @@
 import { colors, typography } from "@/theme/theme";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import Avatar from "@/components/atoms/Avatar";
 
 const MatchEventTimelineItem = ({ player, minute, onPress, isHome }) => {
-  const eventContent = (
-    <TouchableOpacity
-      onPress={onPress}
-      style={[styles.card, isHome ? styles.cardHome : styles.cardAway]}
-    >
+  const avatar = (
+    <Avatar
+      uri={player?.imageUri}
+      type="player"
+      style={styles.avatar}
+    />
+  );
+
+  const textBlock = (
+    <View style={styles.textBlock}>
       <Text
         style={[styles.playerName, isHome && styles.textRight]}
         numberOfLines={1}
@@ -16,6 +22,25 @@ const MatchEventTimelineItem = ({ player, minute, onPress, isHome }) => {
       <Text style={[styles.eventMeta, isHome && styles.textRight]}>
         ⚽ Goal ({minute}')
       </Text>
+    </View>
+  );
+
+  const eventContent = (
+    <TouchableOpacity
+      onPress={onPress}
+      style={[styles.card, isHome ? styles.cardHome : styles.cardAway]}
+    >
+      {isHome ? (
+        <>
+          {textBlock}
+          {avatar}
+        </>
+      ) : (
+        <>
+          {avatar}
+          {textBlock}
+        </>
+      )}
     </TouchableOpacity>
   );
 
@@ -44,15 +69,27 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
   },
   card: {
-    gap: 2,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
   },
   cardHome: {
     paddingRight: 12,
-    alignItems: "flex-end",
+    justifyContent: "flex-end",
   },
   cardAway: {
     paddingLeft: 12,
-    alignItems: "flex-start",
+    justifyContent: "flex-start",
+  },
+  avatar: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    flexShrink: 0,
+  },
+  textBlock: {
+    gap: 2,
+    flexShrink: 1,
   },
   centerColumn: {
     width: 40,
