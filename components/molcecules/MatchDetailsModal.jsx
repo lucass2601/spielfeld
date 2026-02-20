@@ -3,6 +3,7 @@ import { View, Text, Pressable } from "react-native";
 import { colors, typography } from "@/theme/theme";
 import Button from "../atoms/Button";
 import Input from "../atoms/Input";
+import Avatar from "../atoms/Avatar";
 
 import IconClose from "@/assets/icons/icon-close.svg";
 import useTournamentStore from "@/store/useTournamentStore";
@@ -89,7 +90,7 @@ const MatchDetailsModal = ({ match, onClose }) => {
             color: colors["grey-900"],
           }}
         >
-          {teamA.name} vs {teamB.name}
+          {isFinished ? "Edit Score" : "Enter Score"}
         </Text>
         <View style={{ height: 24, width: 24 }} />
       </View>
@@ -102,24 +103,57 @@ const MatchDetailsModal = ({ match, onClose }) => {
           flex: 1,
         }}
       >
-        <View style={{ gap: 8, flex: 1 }}>
-          <View
-            style={{
-              gap: 12,
-              flex: 1,
-              justifyContent: "center",
-            }}
-          >
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <View style={{ flex: 1, justifyContent: "center", gap: 24 }}>
+          {/* Team avatars + names */}
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <View style={{ flex: 1, alignItems: "center", gap: 8 }}>
+              <Avatar
+                uri={teamA.imageUri}
+                type="team"
+                style={{ width: 64, height: 64, borderRadius: 32 }}
+              />
               <Text
                 style={{
-                  flex: 1,
-                  ...typography.body.large.medium,
+                  ...typography.body.medium.semibold,
                   color: colors["grey-900"],
+                  textAlign: "center",
                 }}
+                numberOfLines={2}
               >
                 {teamA.name}
               </Text>
+            </View>
+            <Text
+              style={{
+                ...typography.body.medium.regular,
+                color: colors["grey-400"],
+                paddingHorizontal: 8,
+              }}
+            >
+              vs
+            </Text>
+            <View style={{ flex: 1, alignItems: "center", gap: 8 }}>
+              <Avatar
+                uri={teamB.imageUri}
+                type="team"
+                style={{ width: 64, height: 64, borderRadius: 32 }}
+              />
+              <Text
+                style={{
+                  ...typography.body.medium.semibold,
+                  color: colors["grey-900"],
+                  textAlign: "center",
+                }}
+                numberOfLines={2}
+              >
+                {teamB.name}
+              </Text>
+            </View>
+          </View>
+
+          {/* Score inputs */}
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <View style={{ flex: 1, alignItems: "center" }}>
               <Input
                 value={scoreA}
                 onChangeText={(t) => setScoreA(t)}
@@ -133,17 +167,8 @@ const MatchDetailsModal = ({ match, onClose }) => {
                 style={{ width: 80 }}
               />
             </View>
-
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <Text
-                style={{
-                  flex: 1,
-                  ...typography.body.large.medium,
-                  color: colors["grey-900"],
-                }}
-              >
-                {teamB.name}
-              </Text>
+            <View style={{ width: 32 }} />
+            <View style={{ flex: 1, alignItems: "center" }}>
               <Input
                 value={scoreB}
                 onChangeText={(t) => setScoreB(t)}
