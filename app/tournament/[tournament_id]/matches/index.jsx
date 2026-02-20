@@ -137,7 +137,7 @@ export default function MatchesTab() {
                   <View
                     style={{
                       width: "100%",
-                      height: 400,
+                      height: 480,
                       backgroundColor: "white",
                       borderTopRightRadius: 35,
                       borderTopLeftRadius: 35,
