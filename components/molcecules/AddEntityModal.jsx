@@ -74,6 +74,7 @@ const AddTeamsModal = ({ entity, onAddEntities, onClose }) => {
               placeholder={`Enter ${entity === "teams" ? "team" : "player"}`}
               value={singleName}
               onChangeText={(newName) => setSingleName(newName)}
+              maxLength={32}
             />
           ) : (
             <Textarea
