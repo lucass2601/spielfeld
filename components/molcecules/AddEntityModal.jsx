@@ -23,7 +23,7 @@ const AddTeamsModal = ({ entity, onAddEntities, onClose }) => {
     if (mode === "bulk" && bulkNames.trim()) {
       const names = bulkNames
         .split(/\n|,/)
-        .map((n) => n.trim())
+        .map((n) => n.trim().slice(0, 32))
         .filter(Boolean);
 
       if (names.length > 0) {

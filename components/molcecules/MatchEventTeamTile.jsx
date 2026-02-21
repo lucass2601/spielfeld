@@ -10,7 +10,7 @@ const MatchEventTeamTile = ({ team, onPress, active = false }) => {
     >
       <Avatar uri={team.imageUri} type="team" style={styles.tileImage} />
       <View style={styles.tileContent}>
-        <Text style={styles.tileText}>{team.name}</Text>
+        <Text style={styles.tileText} numberOfLines={1}>{team.name}</Text>
         <Text style={styles.tileSubtext}>Home</Text>
       </View>
     </TouchableOpacity>
@@ -42,9 +42,11 @@ const styles = new StyleSheet.create({
   tileContent: {
     justifyContent: "center",
     alignItems: "center",
+    width: "100%",
   },
   tileText: {
     ...typography.body.medium.bold,
+    textAlign: "center",
   },
   tileSubtext: {
     ...typography.body.small.medium,

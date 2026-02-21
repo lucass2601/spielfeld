@@ -34,7 +34,7 @@ const TournamentItem = ({
       </View>
       <View style={styles.infoContainer}>
         <Text style={styles.sport}>{tournamentSportDefinitions[sport]}</Text>
-        <Text style={styles.name}>{name}</Text>
+        <Text style={styles.name} numberOfLines={1}>{name}</Text>
         <Text style={styles.time}>{`${formattedDate} ${formattedTime}`}</Text>
       </View>
     </Pressable>
@@ -61,6 +61,7 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 12,
   },
   infoContainer: {
+    flex: 1,
     paddingHorizontal: 16,
     justifyContent: "center",
   },

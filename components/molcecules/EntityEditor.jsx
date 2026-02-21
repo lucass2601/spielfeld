@@ -146,6 +146,7 @@ const EntityEditor = () => {
               }}
             >
               <AddEntityModal
+                entity="teams"
                 onAddEntities={(names) => {
                   const applyAdd = () =>
                     names.forEach((name) => addTeam(tournament_id, name));
