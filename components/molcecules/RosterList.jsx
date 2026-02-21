@@ -38,7 +38,7 @@ const RosterList = ({ roster, onPlayerAdd, onPlayerPress }) => {
         >
           <Avatar uri={player.imageUri} type="player" style={styles.cover} />
 
-          <Text style={styles.playerName}>{player.name}</Text>
+          <Text style={styles.playerName} numberOfLines={1}>{player.name}</Text>
         </TouchableOpacity>
       ))}
     </ScrollView>
@@ -80,6 +80,8 @@ const styles = new StyleSheet.create({
   playerName: {
     marginTop: 12,
     ...typography.body.medium.medium,
+    width: "100%",
+    textAlign: "center",
   },
 });
 

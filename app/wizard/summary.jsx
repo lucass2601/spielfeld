@@ -143,6 +143,7 @@ const styles = StyleSheet.create({
     color: colors["grey-900"],
     ...typography.body.medium.bold,
   },
+  header_item__button: {},
   header_item__buttonText: {
     color: colors["primary-600"],
     ...typography.body.medium.semibold,
@@ -150,9 +151,12 @@ const styles = StyleSheet.create({
   content_item__label: {
     color: colors["grey-500"],
     ...typography.body.small.medium,
+    flexShrink: 0,
   },
   content_item__value: {
     color: colors["grey-900"],
     ...typography.body.small.medium,
+    flex: 1,
+    textAlign: "right",
   },
 });

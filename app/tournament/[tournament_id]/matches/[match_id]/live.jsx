@@ -269,7 +269,7 @@ const LivePanel = () => {
           <View style={styles.playerContainer}>
             <Avatar uri={teamA.imageUri} type="team" style={styles.playerImage} />
             <View style={styles.playerText}>
-              <Text style={styles.playerName}>{teamA.name}</Text>
+              <Text style={styles.playerName} numberOfLines={1}>{teamA.name}</Text>
               <Text style={styles.side}>Home</Text>
             </View>
           </View>
@@ -283,7 +283,7 @@ const LivePanel = () => {
           <View style={styles.playerContainer}>
             <Avatar uri={teamB.imageUri} type="team" style={styles.playerImage} />
             <View style={styles.playerText}>
-              <Text style={styles.playerName}>{teamB.name}</Text>
+              <Text style={styles.playerName} numberOfLines={1}>{teamB.name}</Text>
               <Text style={styles.side}>Away</Text>
             </View>
           </View>
@@ -419,9 +419,11 @@ const styles = StyleSheet.create({
   playerText: {
     justifyContent: "center",
     alignItems: "center",
+    width: "100%",
   },
   playerName: {
     ...typography.body.medium.bold,
+    textAlign: "center",
   },
   side: {
     ...typography.body.small.medium,

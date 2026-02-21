@@ -117,8 +117,9 @@ const MatchDetailsModal = ({ match, onClose }) => {
                   ...typography.body.medium.semibold,
                   color: colors["grey-900"],
                   textAlign: "center",
+                  width: "100%",
                 }}
-                numberOfLines={2}
+                numberOfLines={1}
               >
                 {teamA.name}
               </Text>
@@ -143,8 +144,9 @@ const MatchDetailsModal = ({ match, onClose }) => {
                   ...typography.body.medium.semibold,
                   color: colors["grey-900"],
                   textAlign: "center",
+                  width: "100%",
                 }}
-                numberOfLines={2}
+                numberOfLines={1}
               >
                 {teamB.name}
               </Text>
