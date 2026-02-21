@@ -1,7 +1,7 @@
 import { colors, typography } from "@/theme/theme";
 import { View, Text, StyleSheet } from "react-native";
 import { router } from "expo-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 
@@ -26,12 +26,20 @@ export default function Wizard_Information() {
   const [imageUri, setImageUri] = useState(newTournament.imageUri || null);
   const [startDate, setStartDate] = useState(newTournament.startDate || null);
 
+  useEffect(() => {
+    setNewTournamentInfo("imageUri", imageUri);
+  }, [imageUri]);
+
+  useEffect(() => {
+    setNewTournamentInfo("name", tournamentName);
+  }, [tournamentName]);
+
+  useEffect(() => {
+    setNewTournamentInfo("startDate", startDate);
+  }, [startDate]);
+
   const submitWizard = () => {
     if (!tournamentName || !startDate) return;
-
-    setNewTournamentInfo("imageUri", imageUri);
-    setNewTournamentInfo("name", tournamentName);
-    setNewTournamentInfo("startDate", startDate);
     router.push("/wizard/summary");
   };
 
