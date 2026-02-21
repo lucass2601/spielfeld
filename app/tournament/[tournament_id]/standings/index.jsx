@@ -17,9 +17,7 @@ export default function StandingsTab() {
     <ScreenContainer>
       <View style={{ flex: 1 }}>
         <ScrollView contentContainerStyle={{ flex: 1 }}>
-          {standingsData && standingsData.length > 0 && (
-            <RoundRobinTable data={standingsData} />
-          )}
+          <RoundRobinTable data={standingsData} />
         </ScrollView>
       </View>
     </ScreenContainer>
