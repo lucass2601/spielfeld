@@ -137,6 +137,7 @@ const TeamDetails = () => {
                 value={name}
                 onChangeText={(val) => setName(val)}
                 label="Name"
+                maxLength={32}
               />
             </View>
 

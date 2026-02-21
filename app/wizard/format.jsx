@@ -4,7 +4,7 @@ import TournamentFormatItem from "@/components/molcecules/TournamentFormatItem";
 import useTournamentStore from "@/store/useTournamentStore";
 import { colors, typography } from "@/theme/theme";
 import { router } from "expo-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { View, Text, StyleSheet } from "react-native";
 
 export default function Wizard_Format() {
@@ -16,8 +16,11 @@ export default function Wizard_Format() {
     (state) => state.setNewTournamentInfo,
   );
 
-  const submitWizard = () => {
+  useEffect(() => {
     setNewTournamentInfo("format", selectedFormat);
+  }, [selectedFormat]);
+
+  const submitWizard = () => {
     router.push("/wizard/sport");
   };
 

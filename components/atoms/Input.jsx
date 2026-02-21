@@ -8,6 +8,7 @@ import { useState } from "react";
  *   - placeholder: string
  *   - value: string
  *   - onChangeText: function
+ *   - maxLength: number (optional, maximum number of characters)
  *
  * Each state can have a unique style.
  */
@@ -18,6 +19,7 @@ const Input = ({
   onChangeText,
   style,
   label,
+  maxLength = 64,
   ...props
 }) => {
   const [isFocused, setIsFocused] = useState(false);
@@ -38,6 +40,7 @@ const Input = ({
           selectionColor={colors["grey-900"]}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
+          maxLength={maxLength}
           {...props}
         />
       </View>

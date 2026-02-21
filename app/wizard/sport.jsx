@@ -4,7 +4,7 @@ import TournamentSportItem from "@/components/molcecules/TournamentSportItem";
 import useTournamentStore from "@/store/useTournamentStore";
 import { colors, typography } from "@/theme/theme";
 import { router } from "expo-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { View, Text, StyleSheet } from "react-native";
 
 import IconSportSoccer from "@/assets/icons/icon-sport-soccer.svg";
@@ -19,8 +19,11 @@ export default function Wizard_Format() {
     (state) => state.setNewTournamentInfo,
   );
 
-  const submitWizard = () => {
+  useEffect(() => {
     setNewTournamentInfo("sport", selectedSport);
+  }, [selectedSport]);
+
+  const submitWizard = () => {
     router.push("/wizard/info");
   };
 

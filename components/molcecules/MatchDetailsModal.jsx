@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View, Text, Pressable } from "react-native";
+import { View, Text, Pressable, Alert } from "react-native";
 import { colors, typography } from "@/theme/theme";
 import Button from "../atoms/Button";
 import Input from "../atoms/Input";
@@ -155,12 +155,15 @@ const MatchDetailsModal = ({ match, onClose }) => {
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <View style={{ flex: 1, alignItems: "center" }}>
               <Input
-                value={scoreA}
-                onChangeText={(t) => setScoreA(t)}
+                value={isFinished ? String(scoreA) : null}
+                onChangeText={(t) => {
+                  const n = t.replace(/[^0-9]/g, "");
+                  setScoreA(Math.min(99, Math.max(0, Number(n) || 0)));
+                }}
                 placeholder={String(scoreA)}
                 inputMode="numeric"
                 keyboardType="number-pad"
-                maxLength={3}
+                maxLength={2}
                 textAlign="center"
                 placeholderTextColor={colors["grey-400"]}
                 selectionColor={colors["grey-900"]}
@@ -170,12 +173,15 @@ const MatchDetailsModal = ({ match, onClose }) => {
             <View style={{ width: 32 }} />
             <View style={{ flex: 1, alignItems: "center" }}>
               <Input
-                value={scoreB}
-                onChangeText={(t) => setScoreB(t)}
+                value={isFinished ? String(scoreB) : null}
+                onChangeText={(t) => {
+                  const n = t.replace(/[^0-9]/g, "");
+                  setScoreB(Math.min(99, Math.max(0, Number(n) || 0)));
+                }}
                 placeholder={String(scoreB)}
                 inputMode="numeric"
                 keyboardType="number-pad"
-                maxLength={3}
+                maxLength={2}
                 textAlign="center"
                 placeholderTextColor={colors["grey-400"]}
                 selectionColor={colors["grey-900"]}
@@ -200,8 +206,21 @@ const MatchDetailsModal = ({ match, onClose }) => {
               variant="secondary"
               label="Reset Score"
               onPress={() => {
-                resetTournamentMatch(tournament_id, match.id);
-                onClose();
+                Alert.alert(
+                  "Reset Score?",
+                  "This will clear the result and mark the match as unplayed.",
+                  [
+                    { text: "Cancel", style: "cancel" },
+                    {
+                      text: "Reset",
+                      style: "destructive",
+                      onPress: () => {
+                        resetTournamentMatch(tournament_id, match.id);
+                        onClose();
+                      },
+                    },
+                  ],
+                );
               }}
             />
           )}

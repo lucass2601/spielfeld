@@ -124,16 +124,19 @@ const FormatTab = () => {
                     label="Points per win"
                     value={pointsWin}
                     onChange={setPointsWin}
+                    max={10}
                   />
                   <NumericStepper
                     label="Points per tie"
                     value={pointsTie}
                     onChange={setPointsTie}
+                    max={10}
                   />
                   <NumericStepper
                     label="Points per lose"
                     value={pointsLose}
                     onChange={setPointsLose}
+                    max={10}
                   />
                 </View>
               </View>
