@@ -24,6 +24,11 @@ const Input = ({
 }) => {
   const [isFocused, setIsFocused] = useState(false);
 
+  const handleChangeText = (text) => {
+    if (!onChangeText) return;
+    onChangeText(maxLength ? text.slice(0, maxLength) : text);
+  };
+
   return (
     <View>
       {label && <Text style={styles.label}>{label}</Text>}
@@ -35,7 +40,7 @@ const Input = ({
           style={styles.input}
           placeholder={placeholder}
           value={value}
-          onChangeText={onChangeText}
+          onChangeText={handleChangeText}
           placeholderTextColor={colors["grey-400"]}
           selectionColor={colors["grey-900"]}
           onFocus={() => setIsFocused(true)}
