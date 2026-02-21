@@ -10,9 +10,10 @@ import { Stack } from "expo-router";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { colors } from "@/theme/theme";
 import { KeyboardProvider } from "react-native-keyboard-controller";
+import useTournamentStore from "@/store/useTournamentStore";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -25,13 +26,26 @@ export default function RootLayout() {
     Manrope_700Bold,
   });
 
+  const [storeHydrated, setStoreHydrated] = useState(
+    useTournamentStore.persist.hasHydrated()
+  );
+
   useEffect(() => {
-    if (loaded || error) {
+    const unsub = useTournamentStore.persist.onFinishHydration(() => {
+      setStoreHydrated(true);
+    });
+    return unsub;
+  }, []);
+
+  const ready = (loaded || error) && storeHydrated;
+
+  useEffect(() => {
+    if (ready) {
       SplashScreen.hideAsync();
     }
-  }, [loaded, error]);
+  }, [ready]);
 
-  if (!loaded && !error) {
+  if (!ready) {
     return null;
   }
 
