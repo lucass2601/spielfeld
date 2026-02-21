@@ -1,11 +1,15 @@
 import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
 
 import generateMatches from "@/utils/generateMatches";
 import buildRoundRobinStandings from "@/utils/buildRoundRobinStandings";
 
-const useTournamentStore = create((set, get) => ({
+const useTournamentStore = create(
+  persist(
+    (set, get) => ({
   newTournament: {
     imageUri: "",
     format: "roundrobin",
@@ -565,6 +569,13 @@ const useTournamentStore = create((set, get) => ({
       ),
     }));
   },
-}));
+    }),
+    {
+      name: "tournament-storage",
+      storage: createJSONStorage(() => AsyncStorage),
+      partialize: (state) => ({ tournaments: state.tournaments }),
+    },
+  ),
+);
 
 export default useTournamentStore;
