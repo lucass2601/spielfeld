@@ -61,6 +61,8 @@ export default function MatchesTab() {
     return `match of ${m * 2}`;
   };
 
+  if (!tournament) return null;
+
   const isKnockout = tournament.format === "knockout";
 
   const handleGenerateMatches = () => {

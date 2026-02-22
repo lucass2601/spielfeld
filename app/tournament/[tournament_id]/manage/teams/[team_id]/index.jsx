@@ -3,7 +3,7 @@ import { useState } from "react";
 
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
-import { router, useLocalSearchParams, usePathname } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 
 import ScreenContainer from "@/components/layouts/ScreenContainer";
 import AppBar from "@/components/molcecules/AppBar";
@@ -25,8 +25,6 @@ import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 const TeamDetails = () => {
   const { tournament_id, team_id } = useLocalSearchParams();
 
-  const pathname = usePathname();
-
   const team = useTournamentStore((state) =>
     state.getTeam(tournament_id, team_id),
   );
@@ -36,8 +34,8 @@ const TeamDetails = () => {
   const deleteTeam = useTournamentStore((state) => state.deleteTeam);
   const editTeam = useTournamentStore((state) => state.editTeam);
 
-  const [imageUri, setImageUri] = useState(team.imageUri || null);
-  const [name, setName] = useState(team.name || "");
+  const [imageUri, setImageUri] = useState(team?.imageUri || null);
+  const [name, setName] = useState(team?.name || "");
   const [modalOpen, setModalOpen] = useState(false);
 
   const handleSubmit = () => {
@@ -49,8 +47,10 @@ const TeamDetails = () => {
     setModalOpen(true);
   };
 
+  if (!team) return null;
+
   const viewPlayer = (player_id) => {
-    router.push(`${pathname}/roster/${player_id}`);
+    router.push(`/tournament/${tournament_id}/manage/teams/${team_id}/roster/${player_id}`);
   };
 
   const handleDelete = () => {
@@ -65,8 +65,8 @@ const TeamDetails = () => {
       {
         text: "OK",
         onPress: () => {
-          deleteTeam(tournament_id, team_id);
           router.back();
+          deleteTeam(tournament_id, team_id);
         },
       },
     ]);
