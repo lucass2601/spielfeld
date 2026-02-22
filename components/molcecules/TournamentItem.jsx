@@ -21,7 +21,11 @@ const TournamentItem = ({
   style,
   ...props
 }) => {
-  const formattedDate = formatDateTime(startDate, "LLL d");
+  const tournamentYear = startDate ? new Date(startDate).getFullYear() : null;
+  const currentYear = new Date().getFullYear();
+  const dateFormat = tournamentYear && tournamentYear !== currentYear ? "LLL d, yyyy" : "LLL d";
+
+  const formattedDate = formatDateTime(startDate, dateFormat);
   const formattedTime = formatDateTime(startDate, "t");
 
   return (
