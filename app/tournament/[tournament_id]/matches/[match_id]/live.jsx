@@ -241,35 +241,41 @@ const LivePanel = () => {
 
         {/* Timer Container */}
         <View style={styles.timerContainer}>
-          <View style={styles.timerButton}>
-            <TouchableOpacity onPress={() => setGameIsRunning(!gameIsRunning)}>
+          <View style={styles.timerSide}>
+            <TouchableOpacity
+              style={styles.timerButton}
+              onPress={() => setGameIsRunning(!gameIsRunning)}
+            >
               {gameIsRunning ? (
-                <IconPause width={24} height={24} color={colors["grey-900"]} />
+                <IconPause width={20} height={20} color={colors["grey-700"]} />
               ) : (
-                <IconPlay width={24} height={24} color={colors["grey-900"]} />
+                <IconPlay width={20} height={20} color={colors["grey-700"]} />
               )}
             </TouchableOpacity>
           </View>
-          <View style={styles.timer}>
-            <Text
-              style={styles.timerText}
-            >{`${gameMinutes}:${gameSeconds}`}</Text>
-          </View>
-          <View style={styles.timerStatus}>
-            <TouchableOpacity onPress={() => setGameIsRunning(!gameIsRunning)}>
-              <View style={styles.liveIndicator}>
-                <Text style={styles.liveIndicatorText}>Live</Text>
-              </View>
-            </TouchableOpacity>
+
+          <Text style={styles.timerText}>{`${gameMinutes}:${gameSeconds}`}</Text>
+
+          <View style={[styles.timerSide, styles.timerSideRight]}>
+            <View style={[styles.liveIndicator, { opacity: gameIsRunning ? 1 : 0 }]}>
+              <View style={styles.liveDot} />
+              <Text style={styles.liveIndicatorText}>Live</Text>
+            </View>
           </View>
         </View>
 
         {/* Score Container */}
         <View style={styles.scoreContainer}>
           <View style={styles.playerContainer}>
-            <Avatar uri={teamA.imageUri} type="team" style={styles.playerImage} />
+            <Avatar
+              uri={teamA.imageUri}
+              type="team"
+              style={styles.playerImage}
+            />
             <View style={styles.playerText}>
-              <Text style={styles.playerName} numberOfLines={1}>{teamA.name}</Text>
+              <Text style={styles.playerName} numberOfLines={1}>
+                {teamA.name}
+              </Text>
               <Text style={styles.side}>Home</Text>
             </View>
           </View>
@@ -281,9 +287,15 @@ const LivePanel = () => {
           </View>
 
           <View style={styles.playerContainer}>
-            <Avatar uri={teamB.imageUri} type="team" style={styles.playerImage} />
+            <Avatar
+              uri={teamB.imageUri}
+              type="team"
+              style={styles.playerImage}
+            />
             <View style={styles.playerText}>
-              <Text style={styles.playerName} numberOfLines={1}>{teamB.name}</Text>
+              <Text style={styles.playerName} numberOfLines={1}>
+                {teamB.name}
+              </Text>
               <Text style={styles.side}>Away</Text>
             </View>
           </View>
@@ -315,19 +327,23 @@ const LivePanel = () => {
         <View style={styles.timelineContainer}>
           <Text style={styles.timelineTitle}>Recent Events</Text>
           <ScrollView contentContainerStyle={styles.timeline}>
-            {recentEvents().map((event) => (
-              <MatchEventTimelineItem
-                onPress={() => editTimelineItem(event)}
-                key={event.id}
-                isHome={event.team_id === teamA.id}
-                player={
-                  event.player_id
-                    ? getPlayerData(event.team_id, event.player_id)
-                    : null
-                }
-                minute={event.minute}
-              />
-            ))}
+            {recentEvents().length === 0 ? (
+              <Text style={styles.emptyTimeline}>No events yet</Text>
+            ) : (
+              recentEvents().map((event) => (
+                <MatchEventTimelineItem
+                  onPress={() => editTimelineItem(event)}
+                  key={event.id}
+                  isHome={event.team_id === teamA.id}
+                  player={
+                    event.player_id
+                      ? getPlayerData(event.team_id, event.player_id)
+                      : null
+                  }
+                  minute={event.minute}
+                />
+              ))
+            )}
           </ScrollView>
         </View>
 
@@ -375,36 +391,51 @@ export default LivePanel;
 
 const styles = StyleSheet.create({
   timerContainer: {
-    justifyContent: "center",
-    alignItems: "center",
     flexDirection: "row",
-    gap: 16,
-    paddingVertical: 10,
+    alignItems: "center",
+    paddingHorizontal: 24,
+    paddingVertical: 12,
     borderBottomWidth: 1,
     borderBottomColor: colors["grey-200"],
   },
+  timerSide: {
+    flex: 1,
+  },
+  timerSideRight: {
+    alignItems: "flex-end",
+  },
   timerButton: {
-    height: 44,
-    width: 44,
-    backgroundColor: colors["grey-50"],
-    borderWidth: 1,
-    borderColor: colors["grey-100"],
+    height: 40,
+    width: 40,
+    backgroundColor: colors["grey-100"],
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 50,
   },
   timerText: {
     ...typography.headings.h3,
+    color: colors["grey-900"],
+    flex: 1,
+    textAlign: "center",
   },
   liveIndicator: {
-    borderRadius: 4,
-    paddingHorizontal: 8,
-    backgroundColor: "#FF3030",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+    backgroundColor: colors["error-100"],
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 20,
+  },
+  liveDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: colors["error-500"],
   },
   liveIndicatorText: {
-    ...typography.body.medium.bold,
-    textTransform: "uppercase",
-    color: colors.white,
+    ...typography.body.small.semibold,
+    color: colors["error-600"],
   },
   scoreContainer: {
     paddingVertical: 20,
@@ -474,6 +505,12 @@ const styles = StyleSheet.create({
   timelineTitle: {
     ...typography.body.medium.semibold,
     paddingBottom: 16,
+  },
+  emptyTimeline: {
+    ...typography.body.medium.regular,
+    color: colors["grey-400"],
+    textAlign: "center",
+    marginTop: 24,
   },
 
   centeredView: {
