@@ -51,7 +51,9 @@
     "react-native-webview": "13.12.5",
     "uuid": "^11.1.0",
     "zustand": "^5.0.3",
-    "@react-native-async-storage/async-storage": "1.23.1"
+    "@react-native-async-storage/async-storage": "1.23.1",
+    "expo-store-review": "~8.0.1",
+    "expo-mail-composer": "~14.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
