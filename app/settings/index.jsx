@@ -78,7 +78,7 @@ const Settings = () => {
   };
 
   const handleLegal = () => {
-    Linking.openURL("https://spielfeldapp.com/legal");
+    Linking.openURL("https://spielfeldapp.com/legal.html");
   };
 
   const mainSettings = [
