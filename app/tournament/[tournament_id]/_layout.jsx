@@ -24,8 +24,10 @@ export default function TournamentLayout() {
           <AppBar
             title="Tournament Details"
             backPress={() => {
-              router.replace("/(tabs)");
-              router.dismissAll();
+              // router.replace("/(tabs)");
+              // if (router.canDismiss()) router.dismissAll();
+              // router.back();
+              router.dismiss();
             }}
           />
         )
@@ -33,8 +35,10 @@ export default function TournamentLayout() {
         <AppBar
           title="Tournament Details"
           backPress={() => {
-            router.replace("/(tabs)");
-            router.dismissAll();
+            // router.replace("/(tabs)");
+            // if (router.canDismiss()) router.dismissAll();
+            // router.back();
+            router.dismiss();
           }}
         />
       )}

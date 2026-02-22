@@ -28,13 +28,15 @@ const PlayerDetails = () => {
   const deletePlayer = useTournamentStore((state) => state.deletePlayer);
   const editPlayer = useTournamentStore((state) => state.editPlayer);
 
-  const [imageUri, setImageUri] = useState(player.imageUri || null);
-  const [name, setName] = useState(player.name || "");
+  const [imageUri, setImageUri] = useState(player?.imageUri || null);
+  const [name, setName] = useState(player?.name || "");
 
   const handleSubmit = () => {
     editPlayer(tournament_id, team_id, player_id, imageUri, name);
     router.back();
   };
+
+  if (!player) return null;
 
   const handleDelete = () => {
     Alert.alert("Delete Player?", "", [
@@ -48,8 +50,8 @@ const PlayerDetails = () => {
       {
         text: "OK",
         onPress: () => {
-          deletePlayer(tournament_id, team_id, player_id);
           router.back();
+          deletePlayer(tournament_id, team_id, player_id);
         },
       },
     ]);

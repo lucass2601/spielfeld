@@ -1,6 +1,6 @@
 import { colors } from "@/theme/theme";
 import { View, Text, StyleSheet, Pressable, Alert } from "react-native";
-import { router, useGlobalSearchParams, usePathname } from "expo-router";
+import { router, useGlobalSearchParams } from "expo-router";
 
 import ScreenContainer from "@/components/layouts/ScreenContainer";
 
@@ -17,8 +17,6 @@ import TournamentItem from "@/components/molcecules/TournamentItem";
 export default function ManageTab() {
   const { tournament_id } = useGlobalSearchParams();
 
-  const pathname = usePathname();
-
   const tournament = useTournamentStore((state) =>
     state.getTournament(tournament_id),
   );
@@ -31,6 +29,8 @@ export default function ManageTab() {
     (state) => state.deleteTournamentMatches,
   );
 
+  if (!tournament) return null;
+
   const dateString = new Date(tournament.startDate).toISOString();
 
   const managementOptions = [
@@ -39,7 +39,7 @@ export default function ManageTab() {
       icon: <IconGroup color={colors["grey-500"]} height={20} width={20} />,
       title: "Manage Teams",
       onPress: () => {
-        router.push(`${pathname}/teams`);
+        router.push(`/tournament/${tournament_id}/manage/teams`);
       },
     },
     {
@@ -47,7 +47,7 @@ export default function ManageTab() {
       icon: <IconBracket color={colors["grey-500"]} height={20} width={20} />,
       title: "Manage Format",
       onPress: () => {
-        router.push(`${pathname}/format`);
+        router.push(`/tournament/${tournament_id}/manage/format`);
       },
     },
     {
@@ -55,12 +55,14 @@ export default function ManageTab() {
       icon: <IconSettings color={colors["grey-500"]} width={20} height={20} />,
       title: "Tournament Settings",
       onPress: () => {
-        router.push(`${pathname}/settings`);
+        router.push(`/tournament/${tournament_id}/manage/settings`);
       },
     },
     {
       id: 1.4,
-      icon: <IconCalendarEvent color={colors["error-500"]} height={20} width={20} />,
+      icon: (
+        <IconCalendarEvent color={colors["error-500"]} height={20} width={20} />
+      ),
       title: "Delete Matches",
       onPress: () => {
         Alert.alert(
@@ -99,9 +101,8 @@ export default function ManageTab() {
               text: "Delete",
               style: "destructive",
               onPress: () => {
+                router.dismiss();
                 deleteTournament(tournament_id);
-                router.replace("/(tabs)");
-                router.dismissAll();
               },
             },
           ],

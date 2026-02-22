@@ -13,6 +13,8 @@ export default function StandingsTab() {
 
   const standingsData = updateTournamentStandings(tournament_id);
 
+  if (!standingsData) return null;
+
   return (
     <ScreenContainer>
       <View style={{ flex: 1 }}>
