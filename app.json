@@ -31,7 +31,8 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash.png"
+          "image": "./assets/images/splash.png",
+          "imageWidth": 200
         }
       ],
       [
