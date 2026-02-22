@@ -327,19 +327,23 @@ const LivePanel = () => {
         <View style={styles.timelineContainer}>
           <Text style={styles.timelineTitle}>Recent Events</Text>
           <ScrollView contentContainerStyle={styles.timeline}>
-            {recentEvents().map((event) => (
-              <MatchEventTimelineItem
-                onPress={() => editTimelineItem(event)}
-                key={event.id}
-                isHome={event.team_id === teamA.id}
-                player={
-                  event.player_id
-                    ? getPlayerData(event.team_id, event.player_id)
-                    : null
-                }
-                minute={event.minute}
-              />
-            ))}
+            {recentEvents().length === 0 ? (
+              <Text style={styles.emptyTimeline}>No events yet</Text>
+            ) : (
+              recentEvents().map((event) => (
+                <MatchEventTimelineItem
+                  onPress={() => editTimelineItem(event)}
+                  key={event.id}
+                  isHome={event.team_id === teamA.id}
+                  player={
+                    event.player_id
+                      ? getPlayerData(event.team_id, event.player_id)
+                      : null
+                  }
+                  minute={event.minute}
+                />
+              ))
+            )}
           </ScrollView>
         </View>
 
@@ -501,6 +505,12 @@ const styles = StyleSheet.create({
   timelineTitle: {
     ...typography.body.medium.semibold,
     paddingBottom: 16,
+  },
+  emptyTimeline: {
+    ...typography.body.medium.regular,
+    color: colors["grey-400"],
+    textAlign: "center",
+    marginTop: 24,
   },
 
   centeredView: {
