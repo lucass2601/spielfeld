@@ -569,6 +569,10 @@ const useTournamentStore = create(
       ),
     }));
   },
+
+  resetAllData: () => {
+    set(() => ({ tournaments: [] }));
+  },
     }),
     {
       name: "tournament-storage",
