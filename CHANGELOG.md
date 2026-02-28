@@ -1,6 +1,16 @@
 # Changelog
 
+### Added
+
+### Changed
+
+### Removed
+
 ## [Unreleased]
+
+### Changed
+
+- Changed setup from javascript to typescript (file changes still need to happen over time)
 
 ## [1.0.1] - 2026-02-25
 
