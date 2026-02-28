@@ -6,17 +6,5 @@
       "@/*": ["./*"]
     }
   },
-  "include": [
-    "**/*.js",
-    "**/*.jsx",
-    ".expo/types/**/*.ts",
-    "expo-env.d.ts",
-    "app/_layout.jsx",
-    "app/index.jsx",
-    "app/(tabs)/customize.jsx",
-    "app/(tabs)/_layout.jsx",
-    "app/_layout.jsx",
-    "app/(tabs)/customize.jsx",
-    "app/(tabs)/_layout.jsx"
-  ]
+  "include": ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx"]
 }
