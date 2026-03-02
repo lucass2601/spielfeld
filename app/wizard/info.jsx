@@ -63,7 +63,6 @@ export default function Wizard_Information() {
             onChange={(newStartDate) => setStartDate(newStartDate)}
             label="Start Date"
             placeholder="Select starting date"
-            minDate={new Date()}
           />
         </View>
       </KeyboardAwareScrollView>
