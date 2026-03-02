@@ -1,4 +1,5 @@
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { View, Text, StyleSheet, Pressable, Image } from "react-native";
 import { router, useGlobalSearchParams } from "expo-router";
 import { useState } from "react";
@@ -48,74 +49,76 @@ const SettingsTab = () => {
   };
 
   return (
-    <SafeAreaProvider>
-      <SafeAreaView
-        style={{
-          flex: 1,
-          backgroundColor: colors.white,
-        }}
-      >
-        <AppBar
-          iconLeft={
-            <IconClose width={24} height={24} color={colors["grey-900"]} />
-          }
-          iconRight={
-            <IconCheck width={24} height={24} color={colors["success-500"]} />
-          }
-          title="Tournament Settings"
-          backPress={() => router.dismiss()}
-          forwardPress={handleSave}
-        />
-        <ScreenContainer>
-          <KeyboardAwareScrollView bottomOffset={62}>
-            <View style={styles.content}>
-              <AvatarPicker value={imageUri} onChange={setImageUri} />
-              <Input
-                value={tournamentName}
-                onChangeText={(name) => setTournamentName(name)}
-                label="Name"
-                placeholder="Enter tournament name..."
-              />
-              <DateTimePickerInput
-                value={new Date(startDate)}
-                onChange={(newStartDate) => setStartDate(newStartDate)}
-                label="Start Date"
-                placeholder="Select starting date"
-              />
-              <View style={styles.sportSection}>
-                <Text style={styles.label}>Sport</Text>
-                <View style={styles.sportOptions}>
-                  <TournamentSportItem
-                    icon={
-                      <IconSportNoSport
-                        width={24}
-                        height={24}
-                        color={colors["grey-900"]}
-                      />
-                    }
-                    title="No Sport"
-                    onPress={() => setSelectedSport(null)}
-                    selected={selectedSport === null}
-                  />
-                  <TournamentSportItem
-                    icon={
-                      <IconSportSoccer
-                        width={24}
-                        height={24}
-                        color={colors["grey-900"]}
-                      />
-                    }
-                    title="Football"
-                    onPress={() => setSelectedSport("football")}
-                    selected={selectedSport === "football"}
-                  />
+    <BottomSheetModalProvider>
+      <SafeAreaProvider>
+        <SafeAreaView
+          style={{
+            flex: 1,
+            backgroundColor: colors.white,
+          }}
+        >
+          <AppBar
+            iconLeft={
+              <IconClose width={24} height={24} color={colors["grey-900"]} />
+            }
+            iconRight={
+              <IconCheck width={24} height={24} color={colors["success-500"]} />
+            }
+            title="Tournament Settings"
+            backPress={() => router.dismiss()}
+            forwardPress={handleSave}
+          />
+          <ScreenContainer>
+            <KeyboardAwareScrollView bottomOffset={62}>
+              <View style={styles.content}>
+                <AvatarPicker value={imageUri} onChange={setImageUri} />
+                <Input
+                  value={tournamentName}
+                  onChangeText={(name) => setTournamentName(name)}
+                  label="Name"
+                  placeholder="Enter tournament name..."
+                />
+                <DateTimePickerInput
+                  value={new Date(startDate)}
+                  onChange={(newStartDate) => setStartDate(newStartDate)}
+                  label="Start Date"
+                  placeholder="Select starting date"
+                />
+                <View style={styles.sportSection}>
+                  <Text style={styles.label}>Sport</Text>
+                  <View style={styles.sportOptions}>
+                    <TournamentSportItem
+                      icon={
+                        <IconSportNoSport
+                          width={24}
+                          height={24}
+                          color={colors["grey-900"]}
+                        />
+                      }
+                      title="No Sport"
+                      onPress={() => setSelectedSport(null)}
+                      selected={selectedSport === null}
+                    />
+                    <TournamentSportItem
+                      icon={
+                        <IconSportSoccer
+                          width={24}
+                          height={24}
+                          color={colors["grey-900"]}
+                        />
+                      }
+                      title="Football"
+                      onPress={() => setSelectedSport("football")}
+                      selected={selectedSport === "football"}
+                    />
+                  </View>
                 </View>
               </View>
-            </View>
-          </KeyboardAwareScrollView>
-        </ScreenContainer>
-      </SafeAreaView>
-    </SafeAreaProvider>
+            </KeyboardAwareScrollView>
+          </ScreenContainer>
+        </SafeAreaView>
+      </SafeAreaProvider>
+    </BottomSheetModalProvider>
   );
 };
 
