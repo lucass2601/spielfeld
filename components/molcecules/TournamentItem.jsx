@@ -23,10 +23,8 @@ const TournamentItem = ({
 }) => {
   const tournamentYear = startDate ? new Date(startDate).getFullYear() : null;
   const currentYear = new Date().getFullYear();
-  const dateFormat = tournamentYear && tournamentYear !== currentYear ? "LLL d, yyyy" : "LLL d";
-
-  const formattedDate = formatDateTime(startDate, dateFormat);
-  const formattedTime = formatDateTime(startDate, "t");
+  const dateFormat =
+    tournamentYear && tournamentYear !== currentYear ? "LLL d, yyyy" : "LLL d";
 
   return (
     <Pressable onPress={onPress} style={[styles.container, style]} {...props}>
@@ -38,8 +36,10 @@ const TournamentItem = ({
       </View>
       <View style={styles.infoContainer}>
         <Text style={styles.sport}>{tournamentSportDefinitions[sport]}</Text>
-        <Text style={styles.name} numberOfLines={1}>{name}</Text>
-        <Text style={styles.time}>{`${formattedDate} ${formattedTime}`}</Text>
+        <Text style={styles.name} numberOfLines={1}>
+          {name}
+        </Text>
+        <Text style={styles.time}>{formatDateTime(startDate, dateFormat)}</Text>
       </View>
     </Pressable>
   );

@@ -11,13 +11,13 @@ import { View, Text, StyleSheet, Pressable } from "react-native";
 export default function Wizard_Summary() {
   const newTournament = useTournamentStore((state) => state.newTournament);
   const submitNewTournament = useTournamentStore(
-    (state) => state.submitNewTournament
+    (state) => state.submitNewTournament,
   );
 
   const { imageUri, name, startDate, format, sport } = newTournament;
 
   const dateString = new Date(startDate).toISOString();
-  const formattedDate = formatDateTime(dateString, "LLL d, yyyy t");
+  const formattedDate = formatDateTime(dateString);
 
   const submitWizard = () => {
     const newTournament = submitNewTournament();
