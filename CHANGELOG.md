@@ -8,15 +8,20 @@
 
 ## [Unreleased]
 
+### Added
+
+- Add `@gorhom/bottom-sheet` package
+
 ### Changed
 
-- Changed setup from javascript to typescript (file changes still need to happen over time)
+- Change setup from javascript to typescript (file changes still need to happen over time)
+- Replace native modal with `@gorhom/bottom-sheet` in `DateTimePickerInput.tsx`
 
 ## [1.0.1] - 2026-02-25
 
 ### Added
 
-- Fix animation bug by updating @react-native-keyboard-controller package
+- Fix animation bug by updating `@react-native-keyboard-controller` package
 
 ## [1.0.0] - 2026-02-25
 
