@@ -1,7 +1,16 @@
 import { StyleSheet, TextInput, View, Text } from "react-native";
 import { colors, typography } from "@/theme/theme";
-import { useState } from "react";
+import React, { useState } from "react";
 
+interface InputProps {
+  icon?: React.ReactElement;
+  placeholder: string;
+  value: string | null;
+  onChangeText: (text: string) => void;
+  maxLength?: number;
+  label?: string;
+  inputMode?: "text" | "numeric";
+}
 /**
  * Input component that supports:
  *   - icon: JSX.Element (optional, left-side icon)
@@ -13,18 +22,17 @@ import { useState } from "react";
  * Each state can have a unique style.
  */
 const Input = ({
-  icon = null,
-  placeholder = "Enter text",
-  value = "",
+  icon,
+  placeholder,
+  value,
   onChangeText,
-  style,
+  maxLength,
   label,
-  maxLength = 64,
-  ...props
-}) => {
+  inputMode,
+}: InputProps) => {
   const [isFocused, setIsFocused] = useState(false);
 
-  const handleChangeText = (text) => {
+  const handleChangeText = (text: string) => {
     if (!onChangeText) return;
     onChangeText(maxLength ? text.slice(0, maxLength) : text);
   };
@@ -33,20 +41,24 @@ const Input = ({
     <View>
       {label && <Text style={styles.label}>{label}</Text>}
       <View
-        style={[styles.container, isFocused && styles.activeContainer, style]}
+        style={[
+          styles.container,
+          isFocused && styles.activeContainer,
+          inputMode === "numeric" && { width: 80 },
+        ]}
       >
         {icon && <View style={styles.iconContainer}>{icon}</View>}
         <TextInput
           style={styles.input}
           placeholder={placeholder}
-          value={value}
+          value={value ? value.toString() : ""}
           onChangeText={handleChangeText}
           placeholderTextColor={colors["grey-400"]}
           selectionColor={colors["grey-900"]}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
           maxLength={maxLength}
-          {...props}
+          textAlign={inputMode === "numeric" ? "center" : undefined}
         />
       </View>
     </View>
