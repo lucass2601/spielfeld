@@ -306,19 +306,21 @@ const LivePanel = () => {
           <View style={styles.scoreButtons}>
             <View style={styles.scoreEvent}>
               <Text style={styles.scoreEventText}>Home Score</Text>
-              <Button
-                onPress={() => addGoalModal(teamA)}
-                style={styles.scoreEventAdd}
-                label={<IconAdd width={24} height={24} color={colors.white} />}
-              />
+              <View style={styles.scoreEventAdd}>
+                <Button
+                  onPress={() => addGoalModal(teamA)}
+                  label={<IconAdd width={24} height={24} color={colors.white} />}
+                />
+              </View>
             </View>
             <View style={styles.scoreEvent}>
               <Text style={styles.scoreEventText}>Away Score</Text>
-              <Button
-                onPress={() => addGoalModal(teamB)}
-                style={styles.scoreEventAdd}
-                label={<IconAdd width={24} height={24} color={colors.white} />}
-              />
+              <View style={styles.scoreEventAdd}>
+                <Button
+                  onPress={() => addGoalModal(teamB)}
+                  label={<IconAdd width={24} height={24} color={colors.white} />}
+                />
+              </View>
             </View>
           </View>
         </View>

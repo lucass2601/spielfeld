@@ -95,7 +95,6 @@ const PlayerDetails = () => {
               <Button
                 textColor={colors["error-600"]}
                 variant="secondary"
-                style={{ color: "red" }}
                 label="Delete Player"
                 onPress={handleDelete}
               />

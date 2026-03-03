@@ -61,11 +61,12 @@ export default function Wizard_Format() {
           selected={selectedSport === "football"}
         />
       </View>
-      <Button
-        onPress={submitWizard}
-        label="Next"
-        style={{ marginTop: "auto", marginBottom: 24 }}
-      />
+      <View style={{ marginTop: "auto", marginBottom: 24 }}>
+        <Button
+          onPress={submitWizard}
+          label="Next"
+        />
+      </View>
     </ScreenContainer>
   );
 }
