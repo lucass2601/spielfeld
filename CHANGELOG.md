@@ -11,15 +11,21 @@
 ### Added
 
 - Add `@gorhom/bottom-sheet` package
+- Add AppStore review prompt after finishing all tournament matches
 
 ### Changed
 
 - Change setup from javascript to typescript (file changes still need to happen over time)
 - Replace native modal with `@gorhom/bottom-sheet` in `DateTimePickerInput.tsx`
+- Change option "Rate Us" from using `StoreReview` to opening AppStore URL in web
+
+### Removed
+
+- Remove time option from `DateTimePickerInput.tsx` (it caused a bug & had no use either)
 
 ## [1.0.1] - 2026-02-25
 
-### Added
+### Fixed
 
 - Fix animation bug by updating `@react-native-keyboard-controller` package
 

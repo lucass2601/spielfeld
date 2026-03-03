@@ -8,9 +8,17 @@ import Avatar from "../atoms/Avatar";
 import IconClose from "@/assets/icons/icon-close.svg";
 import useTournamentStore from "@/store/useTournamentStore";
 
+import { Match } from "@/types/match";
+
 import { router, useGlobalSearchParams, usePathname } from "expo-router";
 
-const MatchDetailsModal = ({ match, onClose }) => {
+const MatchDetailsModal = ({
+  match,
+  onClose,
+}: {
+  match: Match;
+  onClose: () => void;
+}) => {
   const { tournament_id } = useGlobalSearchParams();
   const pathname = usePathname();
 
@@ -26,7 +34,7 @@ const MatchDetailsModal = ({ match, onClose }) => {
     (state) => state.resetTournamentMatch,
   );
 
-  const isFinished = match.status === "finished";
+  const isFinished = match?.status === "finished";
   const isFootball = tournament.sport === "football";
 
   const openLiveMatch = () => {
@@ -44,7 +52,7 @@ const MatchDetailsModal = ({ match, onClose }) => {
   const [scoreA, setScoreA] = useState(match.teamAScore || 0);
   const [scoreB, setScoreB] = useState(match.teamBScore || 0);
 
-  const handlePickWinner = (scoreA, scoreB) => {
+  const handlePickWinner = (scoreA: number, scoreB: number) => {
     let winner_id = null;
     let isDraw = false;
 
@@ -157,37 +165,27 @@ const MatchDetailsModal = ({ match, onClose }) => {
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <View style={{ flex: 1, alignItems: "center" }}>
               <Input
-                value={isFinished ? String(scoreA) : null}
+                value={scoreA ? String(scoreA) : isFinished ? "0" : null}
                 onChangeText={(t) => {
                   const n = t.replace(/[^0-9]/g, "");
                   setScoreA(Math.min(99, Math.max(0, Number(n) || 0)));
                 }}
                 placeholder={String(scoreA)}
                 inputMode="numeric"
-                keyboardType="number-pad"
                 maxLength={2}
-                textAlign="center"
-                placeholderTextColor={colors["grey-400"]}
-                selectionColor={colors["grey-900"]}
-                style={{ width: 80 }}
               />
             </View>
             <View style={{ width: 32 }} />
             <View style={{ flex: 1, alignItems: "center" }}>
               <Input
-                value={isFinished ? String(scoreB) : null}
+                value={scoreB ? String(scoreB) : isFinished ? "0" : null}
                 onChangeText={(t) => {
                   const n = t.replace(/[^0-9]/g, "");
                   setScoreB(Math.min(99, Math.max(0, Number(n) || 0)));
                 }}
                 placeholder={String(scoreB)}
                 inputMode="numeric"
-                keyboardType="number-pad"
                 maxLength={2}
-                textAlign="center"
-                placeholderTextColor={colors["grey-400"]}
-                selectionColor={colors["grey-900"]}
-                style={{ width: 80 }}
               />
             </View>
           </View>
@@ -196,8 +194,8 @@ const MatchDetailsModal = ({ match, onClose }) => {
         <View style={{ gap: 12, marginTop: 16 }}>
           {isFootball && !isFinished && (
             <Button
-              style={{ borderColor: colors["primary-600"] }}
-              variant="tertiary"
+              textColor={colors["primary-600"]}
+              variant="secondary"
               label="Go Live"
               onPress={openLiveMatch}
             />

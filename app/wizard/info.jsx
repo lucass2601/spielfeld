@@ -66,12 +66,13 @@ export default function Wizard_Information() {
           />
         </View>
       </KeyboardAwareScrollView>
-      <Button
-        disabled={!tournamentName || !startDate}
-        onPress={submitWizard}
-        label="Next"
-        style={{ marginTop: "auto", marginBottom: 24 }}
-      />
+      <View style={{ marginTop: "auto", marginBottom: 24 }}>
+        <Button
+          disabled={!tournamentName || !startDate}
+          onPress={submitWizard}
+          label="Next"
+        />
+      </View>
     </ScreenContainer>
   );
 }

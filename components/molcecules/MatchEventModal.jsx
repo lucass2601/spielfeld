@@ -154,13 +154,14 @@ const MatchEventModal = ({ teamA, teamB, event, onClose, onSubmit }) => {
             <></>
           )}
 
-          <Button
-            style={{ marginTop: "auto" }}
-            label={modalEvent.id !== null ? "Edit Goal" : "Add Goal"}
-            onPress={() =>
-              onSubmit(modalEvent.id !== null ? "edit" : "new", modalEvent)
-            }
-          />
+          <View style={{ marginTop: "auto" }}>
+            <Button
+              label={modalEvent.id !== null ? "Edit Goal" : "Add Goal"}
+              onPress={() =>
+                onSubmit(modalEvent.id !== null ? "edit" : "new", modalEvent)
+              }
+            />
+          </View>
         </View>
       </View>
     </View>

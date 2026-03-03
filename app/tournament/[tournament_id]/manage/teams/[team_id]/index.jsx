@@ -159,7 +159,6 @@ const TeamDetails = () => {
             <Button
               textColor={colors["error-600"]}
               variant="secondary"
-              style={{ color: "red" }}
               label="Delete Team"
               onPress={handleDelete}
             />

@@ -9,9 +9,9 @@ export default function generateMatches(tournamentTeams, tournamentFormat) {
     id: uuidv4(),
     teamA: a,
     teamB: b,
-    teamAScore: 0,
-    teamBScore: 0,
-    status: "scheduled", // "scheduled" | "finished"
+    teamAScore: null,
+    teamBScore: null,
+    status: !a || !b ? "finished" : "scheduled",
     events: [],
     winnerId: null,
     isDraw: false,
@@ -53,55 +53,6 @@ export default function generateMatches(tournamentTeams, tournamentFormat) {
       });
       matches = [];
       arr = rotate(arr);
-    }
-
-    return matchdays;
-  }
-
-  if (tournamentFormat === "knockout") {
-    const nextPow2 = (n) => {
-      const power = Math.ceil(Math.log2(n));
-      return 2 ** power;
-    };
-
-    // [A, B, C, D, E] = len 5
-    // da die nächst höhere 2er Potenz 8 ist, wird aufgefüllt
-    // [A, B, C, D, E, null, null, null] = len 8
-
-    const arr = [...teams];
-    const p = nextPow2(arr.length);
-    while (arr.length < p) arr.push(null);
-
-    const makePairs = (teamsParam) => {
-      const teamsLength = teamsParam.length;
-      pairMatches = [];
-
-      for (let i = 0; i < teamsLength / 2; i++) {
-        const m = makeMatch(teamsParam[i], teamsParam[teamsLength - 1 - i]);
-
-        if (m.teamA && !m.teamB) {
-          m.status = "finished";
-          m.winnerId = m.teamA.id;
-        } else if (!m.teamA && m.teamB) {
-          m.status = "finished";
-          m.winnerId = m.teamB.id;
-        }
-
-        pairMatches.push(m);
-      }
-      return pairMatches;
-    };
-
-    const firstMatch = makePairs(arr);
-    matchdays.push({ id: uuidv4(), matches: [...firstMatch] });
-
-    let matches = firstMatch.length;
-    while (matches > 1) {
-      matches = Math.floor(matches / 2);
-      const emptyMatch = Array.from({ length: matches }, () =>
-        makeMatch(null, null)
-      );
-      matchdays.push({ id: uuidv4(), matches: [...emptyMatch] });
     }
 
     return matchdays;

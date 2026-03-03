@@ -105,8 +105,6 @@ export default MatchItem;
 
 const getStatusStyles = (status) => {
   switch (status) {
-    case "live":
-      return { label: "Live", bg: colors["error-500"], fg: colors.white };
     case "finished":
       return {
         label: "Completed",

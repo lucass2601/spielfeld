@@ -105,11 +105,12 @@ export default function Wizard_Summary() {
           </View>
         </View>
       </View>
-      <Button
-        onPress={submitWizard}
-        label="Create Tournament"
-        style={{ marginTop: "auto", marginBottom: 24 }}
-      />
+      <View style={{ marginTop: "auto", marginBottom: 24 }}>
+        <Button
+          onPress={submitWizard}
+          label="Create Tournament"
+        />
+      </View>
     </ScreenContainer>
   );
 }

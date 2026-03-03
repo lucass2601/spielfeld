@@ -1,31 +1,29 @@
 import { StyleSheet, Text, Pressable } from "react-native";
 import { colors, typography } from "@/theme/theme";
 
-/**
- * Button component that supports:
- *   - variant: 'primary' | 'secondary' | 'tertiary'
- *   - size: 'large' | 'medium' | 'small'
- *   - disabled: boolean
- *
- * Each variant can have a unique style for the disabled/pressed states.
- */
+interface ButtonProps {
+  variant?: "primary" | "secondary" | "tertiary";
+  size?: "large" | "medium" | "small";
+  label: string;
+  onPress?: () => void;
+  disabled?: boolean;
+  textColor?: string;
+}
+
 const Button = ({
-  variant = "primary", // e.g. 'primary', 'secondary', 'tertiary'
-  size = "medium", // 'large', 'medium', 'small'
-  label = "Button",
+  variant = "primary",
+  size = "medium",
+  label,
   onPress,
   disabled = false,
   textColor,
-  style,
-  ...props
-}) => {
+}: ButtonProps) => {
   // Container style callback
-  const getContainerStyle = ({ pressed }) => {
+  const getContainerStyle = ({ pressed }: { pressed: boolean }) => {
     const containerStyles = [
       styles.container,
       styles[`${variant}Container`],
       styles[`${size}Container`],
-      style,
     ];
 
     if (disabled) {
@@ -40,22 +38,13 @@ const Button = ({
   };
 
   // Text style callback
-  const getTextStyle = ({ pressed }) => {
+  const getTextStyle = () => {
     const textStyles = [
       styles.label,
       styles[`${variant}Label`],
       styles[`${size}Label`],
+      textColor && { color: textColor },
     ];
-
-    if (disabled) {
-      textStyles.push(styles[`${variant}DisabledLabel`]);
-    } else if (pressed) {
-      textStyles.push(styles[`${variant}PressedLabel`]);
-    }
-
-    if (textColor) {
-      textStyles.push({ color: textColor });
-    }
 
     return textStyles;
   };
@@ -71,9 +60,8 @@ const Button = ({
       onPress={handlePress}
       disabled={disabled}
       style={(pressState) => getContainerStyle(pressState)}
-      {...props}
     >
-      {({ pressed }) => <Text style={getTextStyle({ pressed })}>{label}</Text>}
+      <Text style={getTextStyle()}>{label}</Text>
     </Pressable>
   );
 };

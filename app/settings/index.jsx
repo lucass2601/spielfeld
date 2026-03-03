@@ -1,7 +1,6 @@
 import ScreenContainer from "@/components/layouts/ScreenContainer";
 import { Alert, Linking, StyleSheet, Text, View } from "react-native";
 import { useRouter } from "expo-router";
-import * as StoreReview from "expo-store-review";
 import * as MailComposer from "expo-mail-composer";
 import Constants from "expo-constants";
 
@@ -16,9 +15,7 @@ import IconInfo from "@/assets/icons/icon-info.svg";
 import OptionGroup from "@/components/molcecules/OptionGroup";
 import useTournamentStore from "@/store/useTournamentStore";
 
-// TODO: Replace with the actual App Store ID once the app is live
-const APP_STORE_ID = null;
-
+const APP_STORE_ID = "6759353234";
 const HELP_EMAIL = "info@spielfeldapp.com";
 const FEEDBACK_EMAIL = "info@spielfeldapp.com";
 
@@ -46,18 +43,11 @@ const Settings = () => {
     );
   };
 
-  const handleRateUs = async () => {
-    const available = await StoreReview.isAvailableAsync();
-    if (available) {
-      await StoreReview.requestReview();
-    } else if (APP_STORE_ID) {
-      const url = `https://apps.apple.com/app/id${APP_STORE_ID}?action=write-review`;
-      Linking.openURL(url);
-    } else {
-      Alert.alert(
-        "Rate Us",
-        "The app isn't on the App Store yet — check back soon!",
-      );
+  const handleRateUs = () => {
+    if (APP_STORE_ID) {
+      Linking.openURL(
+        `https://apps.apple.com/app/id${APP_STORE_ID}?action=write-review`,
+      ).catch(() => Alert.alert("Error", "Could not open the App Store."));
     }
   };
 

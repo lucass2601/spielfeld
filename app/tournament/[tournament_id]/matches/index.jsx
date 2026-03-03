@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet, ScrollView, Modal, Alert } from "react-native";
 import { useGlobalSearchParams, usePathname } from "expo-router";
+import * as StoreReview from "expo-store-review";
 
 import {
   KeyboardAvoidingView,
@@ -14,7 +15,7 @@ import Button from "@/components/atoms/Button";
 import MatchItem from "@/components/molcecules/MatchItem";
 import MatchDetailsModal from "@/components/molcecules/MatchDetailsModal";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import MatchesIllustration from "@/assets/images/matches-illustration.svg";
 
@@ -34,6 +35,28 @@ export default function MatchesTab() {
   const updateTournamentMatches = useTournamentStore(
     (state) => state.updateTournamentMatches,
   );
+
+  const prevStatus = useRef(tournament?.status);
+  useEffect(() => {
+    if (
+      tournament?.status === "completed" &&
+      prevStatus.current !== "completed"
+    ) {
+      const handleStoreReview = async () => {
+        if (!(await StoreReview.isAvailableAsync())) {
+          return;
+        }
+
+        if (!(await StoreReview.hasAction())) {
+          return;
+        }
+
+        await StoreReview.requestReview();
+      };
+      handleStoreReview();
+    }
+    prevStatus.current = tournament?.status;
+  }, [tournament?.status]);
 
   const handleMatchPress = (match_id) => {
     const match = getMatch(tournament_id, match_id);
