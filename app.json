@@ -38,7 +38,8 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "spielfeld needs access to your photos to upload tournament images."
+          "photosPermission": "spielfeld needs access to your photos to upload tournament images.",
+          "cameraPermission": "spielfeld needs access to your camera to take photos for tournament images."
         }
       ],
       "expo-font",

@@ -50,7 +50,9 @@ const TeamDetails = () => {
   if (!team) return null;
 
   const viewPlayer = (player_id) => {
-    router.push(`/tournament/${tournament_id}/manage/teams/${team_id}/roster/${player_id}`);
+    router.push(
+      `/tournament/${tournament_id}/manage/teams/${team_id}/roster/${player_id}`,
+    );
   };
 
   const handleDelete = () => {
@@ -129,7 +131,7 @@ const TeamDetails = () => {
             </View>
           </Modal>
 
-          <AvatarPicker value={imageUri} onChange={setImageUri} size={80} />
+          <AvatarPicker imageUri={imageUri} onChange={setImageUri} size={80} />
 
           <View style={styles.formContainer}>
             <View>
