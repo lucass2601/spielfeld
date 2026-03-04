@@ -78,7 +78,7 @@ const PlayerDetails = () => {
         />
         <ScreenContainer>
           <View style={styles.tabContainer}>
-            <AvatarPicker value={imageUri} onChange={setImageUri} />
+            <AvatarPicker imageUri={imageUri} onChange={setImageUri} />
 
             <View style={styles.formContainer}>
               <View>

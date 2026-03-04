@@ -50,7 +50,7 @@ export default function Wizard_Information() {
       </View>
       <KeyboardAwareScrollView bottomOffset={62}>
         <View style={styles.content}>
-          <AvatarPicker value={imageUri} onChange={setImageUri} />
+          <AvatarPicker imageUri={imageUri} onChange={setImageUri} />
           <Input
             value={tournamentName}
             onChangeText={(tournamentName) => setTournamentName(tournamentName)}

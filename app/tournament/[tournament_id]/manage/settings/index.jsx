@@ -71,7 +71,7 @@ const SettingsTab = () => {
           <ScreenContainer>
             <KeyboardAwareScrollView bottomOffset={62}>
               <View style={styles.content}>
-                <AvatarPicker value={imageUri} onChange={setImageUri} />
+                <AvatarPicker imageUri={imageUri} onChange={setImageUri} />
                 <Input
                   value={tournamentName}
                   onChangeText={(name) => setTournamentName(name)}
