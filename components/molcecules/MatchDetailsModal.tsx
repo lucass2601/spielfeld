@@ -16,7 +16,7 @@ const MatchDetailsModal = ({
   match,
   onClose,
 }: {
-  match: Match;
+  match: Match | null;
   onClose: () => void;
 }) => {
   const { tournament_id } = useGlobalSearchParams();
@@ -38,19 +38,19 @@ const MatchDetailsModal = ({
   const isFootball = tournament.sport === "football";
 
   const openLiveMatch = () => {
-    if (pathname !== `/tournament/${tournament_id}/matches/${match.id}/live`) {
+    if (pathname !== `/tournament/${tournament_id}/matches/${match?.id}/live`) {
       onClose();
-      router.push(`${pathname}/${match.id}/live`);
+      router.push(`${pathname}/${match?.id}/live`);
     }
   };
 
   const getTeam = useTournamentStore((state) => state.getTeam);
 
-  const teamA = getTeam(tournament_id, match.teamA);
-  const teamB = getTeam(tournament_id, match.teamB);
+  const teamA = getTeam(tournament_id, match?.teamA);
+  const teamB = getTeam(tournament_id, match?.teamB);
 
-  const [scoreA, setScoreA] = useState(match.teamAScore || 0);
-  const [scoreB, setScoreB] = useState(match.teamBScore || 0);
+  const [scoreA, setScoreA] = useState(match?.teamAScore || 0);
+  const [scoreB, setScoreB] = useState(match?.teamBScore || 0);
 
   const handlePickWinner = (scoreA: number, scoreB: number) => {
     let winner_id = null;
@@ -66,7 +66,7 @@ const MatchDetailsModal = ({
 
     updateTournamentMatchWinner(
       tournament_id,
-      match.id,
+      match?.id,
       winner_id,
       isDraw,
       scoreA,
