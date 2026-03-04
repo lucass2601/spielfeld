@@ -12,6 +12,7 @@
 
 - Add `@gorhom/bottom-sheet` package
 - Add AppStore review prompt after finishing all tournament matches
+- Add `expo-keep-awake` to keep screen on during live matches
 
 ### Changed
 

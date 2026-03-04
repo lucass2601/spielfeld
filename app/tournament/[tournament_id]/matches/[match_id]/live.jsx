@@ -9,7 +9,9 @@ import {
 } from "react-native";
 
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+
+import { activateKeepAwakeAsync, deactivateKeepAwake } from "expo-keep-awake";
 
 import AppBar from "@/components/molcecules/AppBar";
 
@@ -39,6 +41,8 @@ const LivePanel = () => {
   const { tournament_id, match_id } = useGlobalSearchParams();
   const [gameIsRunning, setGameIsRunning] = useState(false);
   const [gameTimer, setGameTimer] = useState(0);
+  const startTimeRef = useRef(null);
+  const accumulatedRef = useRef(0);
   const [modalVisible, setModalVisible] = useState(false);
   const [newEvent, setNewEvent] = useState({
     team: null,
@@ -79,11 +83,31 @@ const LivePanel = () => {
   const scoreA = goals.filter((e) => e.team_id === teamA.id).length;
   const scoreB = goals.filter((e) => e.team_id === teamB.id).length;
 
-  useEffect(() => {
-    if (!gameIsRunning) return;
+  const toggleTimer = () => {
+    if (gameIsRunning) {
+      accumulatedRef.current += Math.floor(
+        (Date.now() - startTimeRef.current) / 1000,
+      );
+      startTimeRef.current = null;
+      setGameIsRunning(false);
+    } else {
+      startTimeRef.current = Date.now();
+      setGameIsRunning(true);
+    }
+  };
 
+  useEffect(() => {
+    if (!gameIsRunning) {
+      deactivateKeepAwake();
+      return;
+    }
+
+    activateKeepAwakeAsync();
     const id = setInterval(() => {
-      setGameTimer((s) => s + 1);
+      setGameTimer(
+        accumulatedRef.current +
+          Math.floor((Date.now() - startTimeRef.current) / 1000),
+      );
     }, 1000);
 
     return () => clearInterval(id);
@@ -242,10 +266,7 @@ const LivePanel = () => {
         {/* Timer Container */}
         <View style={styles.timerContainer}>
           <View style={styles.timerSide}>
-            <TouchableOpacity
-              style={styles.timerButton}
-              onPress={() => setGameIsRunning(!gameIsRunning)}
-            >
+            <TouchableOpacity style={styles.timerButton} onPress={toggleTimer}>
               {gameIsRunning ? (
                 <IconPause width={20} height={20} color={colors["grey-700"]} />
               ) : (
@@ -254,10 +275,14 @@ const LivePanel = () => {
             </TouchableOpacity>
           </View>
 
-          <Text style={styles.timerText}>{`${gameMinutes}:${gameSeconds}`}</Text>
+          <Text
+            style={styles.timerText}
+          >{`${gameMinutes}:${gameSeconds}`}</Text>
 
           <View style={[styles.timerSide, styles.timerSideRight]}>
-            <View style={[styles.liveIndicator, { opacity: gameIsRunning ? 1 : 0 }]}>
+            <View
+              style={[styles.liveIndicator, { opacity: gameIsRunning ? 1 : 0 }]}
+            >
               <View style={styles.liveDot} />
               <Text style={styles.liveIndicatorText}>Live</Text>
             </View>
@@ -309,7 +334,9 @@ const LivePanel = () => {
               <View style={styles.scoreEventAdd}>
                 <Button
                   onPress={() => addGoalModal(teamA)}
-                  label={<IconAdd width={24} height={24} color={colors.white} />}
+                  label={
+                    <IconAdd width={24} height={24} color={colors.white} />
+                  }
                 />
               </View>
             </View>
@@ -318,7 +345,9 @@ const LivePanel = () => {
               <View style={styles.scoreEventAdd}>
                 <Button
                   onPress={() => addGoalModal(teamB)}
-                  label={<IconAdd width={24} height={24} color={colors.white} />}
+                  label={
+                    <IconAdd width={24} height={24} color={colors.white} />
+                  }
                 />
               </View>
             </View>
