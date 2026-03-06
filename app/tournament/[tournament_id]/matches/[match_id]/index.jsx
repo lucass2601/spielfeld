@@ -13,6 +13,8 @@ import useTournamentStore from "@/store/useTournamentStore";
 
 import { router, useGlobalSearchParams } from "expo-router";
 
+import IconClose from "@/assets/icons/icon-close.svg";
+
 const MatchDetails = () => {
   const { tournament_id, match_id } = useGlobalSearchParams();
 
@@ -63,7 +65,12 @@ const MatchDetails = () => {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={{ flex: 1, backgroundColor: colors.white }}>
-        <AppBar title="Match Details" />
+        <AppBar
+          iconLeft={
+            <IconClose width={24} height={24} color={colors["grey-900"]} />
+          }
+          title="Match Details"
+        />
 
         <MatchScorePanel
           teamA={teamA}
