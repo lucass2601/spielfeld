@@ -15,6 +15,7 @@
 - Add `expo-keep-awake` to keep screen on during live matches
 - Add `RoundSelector` component & add auto-centering on selection
 - Add option for taking photos directly using device camera
+- Add screen for match details
 
 ### Changed
 

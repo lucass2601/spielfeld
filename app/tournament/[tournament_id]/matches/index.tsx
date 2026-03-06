@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, Modal, Alert } from "react-native";
-import { useGlobalSearchParams } from "expo-router";
+import { useGlobalSearchParams, router } from "expo-router";
 import * as StoreReview from "expo-store-review";
 
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
@@ -56,8 +56,14 @@ export default function MatchesTab() {
 
   const handleMatchPress = (match_id: string) => {
     const match = getMatch(tournament_id, match_id);
-    setSelectedMatch(match);
-    setModalOpen(true);
+    if (match?.status === "finished") {
+      router.push(
+        `/tournament/${tournament_id}/matches/${match_id}`,
+      );
+    } else {
+      setSelectedMatch(match);
+      setModalOpen(true);
+    }
   };
 
   const scrollViewRef = useRef<ScrollView>(null);
