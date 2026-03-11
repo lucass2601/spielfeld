@@ -12,6 +12,7 @@ import {
   TournamentFormat,
   NewTournament,
   Tournament,
+  TournamentSettings,
 } from "@/types/tournament";
 
 import { Team } from "@/types/team";
@@ -64,6 +65,8 @@ const useTournamentStore = create<TournamentStore>()(
             ...state.tournaments,
             {
               id: tournament_id,
+              teams: [],
+              matchdays: [],
               ...state.newTournament,
             },
           ],
@@ -480,7 +483,7 @@ const useTournamentStore = create<TournamentStore>()(
 
       updateTournamentSettings: (
         tournament_id: string,
-        settings: Partial<Tournament>,
+        settings: TournamentSettings,
       ) => {
         set((state) => ({
           tournaments: state.tournaments.map((tournament) =>

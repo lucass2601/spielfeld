@@ -20,24 +20,18 @@ export type NewTournament = {
   sport: Sport | null;
   name: string;
   startDate: string;
-  teams: Team[];
-  matchdays: Matchday[];
   pointsWin: number;
   pointsTie: number;
   pointsLose: number;
 };
 
-export type Tournament = {
+export type Tournament = NewTournament & {
   id: string;
-  status: StatusType;
-  imageUri: string | null;
-  format: TournamentFormat;
-  sport: Sport | null;
-  name: string;
-  startDate: string;
   teams: Team[];
   matchdays: Matchday[];
-  pointsWin: number;
-  pointsTie: number;
-  pointsLose: number;
 };
+
+export type TournamentSettings = Pick<
+  Tournament,
+  "name" | "imageUri" | "startDate" | "sport"
+>;
