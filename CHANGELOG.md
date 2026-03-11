@@ -8,6 +8,8 @@
 
 ### Fixed
 
+- Fix score inputs to be numeric instead of text
+
 ### Removed
 
 ## [1.1.0] - 2026-03-08
