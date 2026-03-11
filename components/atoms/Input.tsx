@@ -58,6 +58,7 @@ const Input = ({
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
           maxLength={maxLength}
+          inputMode={inputMode}
           textAlign={inputMode === "numeric" ? "center" : undefined}
         />
       </View>
