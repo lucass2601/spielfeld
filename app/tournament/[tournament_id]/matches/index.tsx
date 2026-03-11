@@ -15,12 +15,14 @@ import RoundSelector from "@/components/molcecules/RoundSelector";
 import { useEffect, useRef, useState } from "react";
 
 import MatchesIllustration from "@/assets/images/matches-illustration.svg";
+import { Match, Matchday, MatchStatus } from "@/types/match";
+import { TournamentFormat } from "@/types/tournament";
 
 export default function MatchesTab() {
-  const { tournament_id } = useGlobalSearchParams();
+  const { tournament_id } = useGlobalSearchParams<{ tournament_id: string }>();
 
   const [modalOpen, setModalOpen] = useState(false);
-  const [selectedMatch, setSelectedMatch] = useState(null);
+  const [selectedMatch, setSelectedMatch] = useState<Match | null>(null);
 
   const tournament = useTournamentStore((state) =>
     state.getTournament(tournament_id),
@@ -56,10 +58,13 @@ export default function MatchesTab() {
 
   const handleMatchPress = (match_id: string) => {
     const match = getMatch(tournament_id, match_id);
-    if (match?.status === "finished") {
-      router.push(
-        `/tournament/${tournament_id}/matches/${match_id}`,
-      );
+
+    if (!match) {
+      return;
+    }
+
+    if (match?.status === MatchStatus.FINISHED) {
+      router.push(`/tournament/${tournament_id}/matches/${match_id}`);
     } else {
       setSelectedMatch(match);
       setModalOpen(true);
@@ -180,7 +185,7 @@ export default function MatchesTab() {
             }}
           >
             {tournament.matchdays.map(
-              (matchday: any, matchday_index: number) => (
+              (matchday: Matchday, matchday_index: number) => (
                 <View
                   ref={(el: View) => {
                     roundRefs.current[matchday_index] = el;
@@ -196,8 +201,13 @@ export default function MatchesTab() {
                   >
                     {`Matchday ${matchday_index + 1}`}
                   </Text>
+
                   {matchday.matches
-                    .filter((match: any) => match.teamA && match.teamB)
+                    .filter((match: any) =>
+                      tournament.format === TournamentFormat.ROUND_ROBIN
+                        ? match.teamA && match.teamB
+                        : true,
+                    )
                     .map((match: any, match_index: number) => {
                       return (
                         <View key={match.id} style={{ marginTop: 12 }}>

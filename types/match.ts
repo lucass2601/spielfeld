@@ -1,17 +1,27 @@
-export type MatchStatus = "scheduled" | "finished";
+import { SportEvent } from "./sport";
+
+export enum MatchStatus {
+  SCHEDULED = "scheduled",
+  FINISHED = "finished",
+}
+
+export type Matchday = {
+  id: string;
+  matches: Match[];
+};
 
 export type MatchEvent = {
   id: string;
-  event: "goal";
+  event: SportEvent;
   team_id: string;
   player_id: string | null;
-  minute: string | number;
+  minute: number;
 };
 
 export type Match = {
   id: string;
-  teamA: string;
-  teamB: string;
+  teamA: string | null;
+  teamB: string | null;
   teamAScore: number;
   teamBScore: number;
   status: MatchStatus;

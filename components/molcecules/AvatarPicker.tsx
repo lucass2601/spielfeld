@@ -11,7 +11,7 @@ export default function AvatarPicker({
   size = 88,
 }: {
   imageUri: string | null;
-  onChange: any;
+  onChange: (uri: string | null) => void;
   size: number;
 }) {
   const radius = size / 2;
