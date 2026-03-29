@@ -16,17 +16,27 @@ import { useEffect, useRef, useState } from "react";
 
 import MatchesIllustration from "@/assets/images/matches-illustration.svg";
 import { Match, Matchday, MatchStatus } from "@/types/match";
-import { TournamentFormat } from "@/types/tournament";
+import { Tournament, TournamentFormat } from "@/types/tournament";
+import getKnockoutRoundAbbrev from "@/utils/getKnockoutRoundAbbrev";
+import getKnockoutRoundLabel from "@/utils/getKnockoutRoundLabel";
 
 export default function MatchesTab() {
-  const { tournament_id } = useGlobalSearchParams<{ tournament_id: string }>();
+  const { tournament_id } = useGlobalSearchParams<{
+    tournament_id: Tournament["id"];
+  }>();
 
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedMatch, setSelectedMatch] = useState<Match | null>(null);
+  const scrollViewRef = useRef<ScrollView>(null);
+  const roundRefs = useRef<Record<number, View | null>>({});
 
   const tournament = useTournamentStore((state) =>
     state.getTournament(tournament_id),
   );
+
+  const totalRounds = tournament?.matchdays.length || 0;
+
+  const prevStatus = useRef(tournament?.status);
 
   const getMatch = useTournamentStore((state) => state.getMatch);
 
@@ -34,7 +44,6 @@ export default function MatchesTab() {
     (state) => state.updateTournamentMatches,
   );
 
-  const prevStatus = useRef(tournament?.status);
   useEffect(() => {
     if (
       tournament?.status === "completed" &&
@@ -56,12 +65,11 @@ export default function MatchesTab() {
     prevStatus.current = tournament?.status;
   }, [tournament?.status]);
 
-  const handleMatchPress = (match_id: string) => {
-    const match = getMatch(tournament_id, match_id);
+  const handleMatchPress = (match_id: Match["id"]) => {
+    if (!match_id) return;
 
-    if (!match) {
-      return;
-    }
+    const match = getMatch(tournament_id, match_id);
+    if (!match) return;
 
     if (match?.status === MatchStatus.FINISHED) {
       router.push(`/tournament/${tournament_id}/matches/${match_id}`);
@@ -71,13 +79,8 @@ export default function MatchesTab() {
     }
   };
 
-  const scrollViewRef = useRef<ScrollView>(null);
-  const roundRefs = useRef<Record<number, View | null>>({});
-
-  if (!tournament) return null;
-
   const handleGenerateMatches = () => {
-    if ((tournament.teams?.length ?? 0) < 3) {
+    if (tournament?.teams && tournament?.teams?.length < 3) {
       Alert.alert(
         "Not enough teams",
         "You need at least 3 teams to generate matches. Add more teams first.",
@@ -103,8 +106,8 @@ export default function MatchesTab() {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: "white" }}>
-      {tournament.matchdays && !tournament.matchdays.length ? (
+    <View style={{ flex: 1, backgroundColor: colors.white }}>
+      {!tournament?.matchdays.length ? (
         <View
           style={{
             flex: 1,
@@ -138,11 +141,17 @@ export default function MatchesTab() {
         </View>
       ) : (
         <View style={{ flex: 1 }}>
-          <RoundSelector
-            rounds={tournament.matchdays}
-            getLabel={(index) => `Matchday ${index + 1}`}
-            onSelect={handleRoundSelect}
-          />
+          <View>
+            <RoundSelector
+              rounds={tournament?.matchdays}
+              getLabel={(index) =>
+                tournament?.format === TournamentFormat.KNOCKOUT
+                  ? getKnockoutRoundLabel(index, tournament.matchdays.length)
+                  : `Matchday ${index + 1}`
+              }
+              onSelect={handleRoundSelect}
+            />
+          </View>
           <Modal
             visible={modalOpen && selectedMatch !== null}
             transparent
@@ -179,9 +188,7 @@ export default function MatchesTab() {
             horizontal={false}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{
-              padding: 24,
-              flexBasis: "auto",
-              backgroundColor: "white",
+              paddingHorizontal: 24,
             }}
           >
             {tournament.matchdays.map(
@@ -199,22 +206,46 @@ export default function MatchesTab() {
                       { color: colors["grey-500"] },
                     ]}
                   >
-                    {`Matchday ${matchday_index + 1}`}
+                    {tournament.format === TournamentFormat.KNOCKOUT
+                      ? getKnockoutRoundLabel(
+                          matchday_index,
+                          tournament.matchdays.length,
+                        )
+                      : `Matchday ${matchday_index + 1}`}
                   </Text>
 
                   {matchday.matches
-                    .filter((match: any) =>
+                    .filter((match: Match) =>
                       tournament.format === TournamentFormat.ROUND_ROBIN
                         ? match.teamA && match.teamB
-                        : true,
+                        : tournament.format === TournamentFormat.KNOCKOUT
+                          ? matchday_index === 0
+                            ? match.teamA && match.teamB
+                            : true
+                          : false,
                     )
-                    .map((match: any, match_index: number) => {
+                    .map((match: Match, match_index: number) => {
+                      const isValidForFallbackName =
+                        tournament.format === TournamentFormat.KNOCKOUT &&
+                        totalRounds > 0 &&
+                        matchday_index > 0;
+
                       return (
                         <View key={match.id} style={{ marginTop: 12 }}>
                           <MatchItem
-                            index={match_index}
                             match={match}
+                            title={`Match ${match_index + 1}`}
                             onPress={() => handleMatchPress(match.id)}
+                            teamAFallbackName={
+                              isValidForFallbackName
+                                ? `Winner of ${getKnockoutRoundAbbrev(matchday_index - 1, totalRounds)}${match_index * 2 + 1}`
+                                : `BYE`
+                            }
+                            teamBFallbackName={
+                              isValidForFallbackName
+                                ? `Winner of ${getKnockoutRoundAbbrev(matchday_index - 1, totalRounds)}${match_index * 2 + 2}`
+                                : `BYE`
+                            }
                           />
                         </View>
                       );

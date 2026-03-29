@@ -8,19 +8,26 @@ import Avatar from "../atoms/Avatar";
 import IconClose from "@/assets/icons/icon-close.svg";
 import useTournamentStore from "@/store/useTournamentStore";
 
-import { Match } from "@/types/match";
+import { Match, MatchStatus } from "@/types/match";
+import { Tournament, TournamentFormat } from "@/types/tournament";
 
 import { router, useGlobalSearchParams, usePathname } from "expo-router";
+import { Sport } from "@/types/sport";
+import { Team } from "@/types/team";
 
 const MatchDetailsModal = ({
   match,
   onClose,
 }: {
-  match: Match | null;
+  match: Match;
   onClose: () => void;
 }) => {
-  const { tournament_id } = useGlobalSearchParams();
+  const { tournament_id } = useGlobalSearchParams<{
+    tournament_id?: Tournament["id"];
+  }>();
   const pathname = usePathname();
+
+  if (!tournament_id) return;
 
   const tournament = useTournamentStore((state) =>
     state.getTournament(tournament_id),
@@ -34,8 +41,8 @@ const MatchDetailsModal = ({
     (state) => state.resetTournamentMatch,
   );
 
-  const isFinished = match?.status === "finished";
-  const isFootball = tournament.sport === "football";
+  const isFinished = match?.status === MatchStatus.FINISHED;
+  const isFootball = tournament?.sport === Sport.FOOTBALL;
 
   const openLiveMatch = () => {
     if (pathname !== `/tournament/${tournament_id}/matches/${match?.id}/live`) {
@@ -46,21 +53,32 @@ const MatchDetailsModal = ({
 
   const getTeam = useTournamentStore((state) => state.getTeam);
 
-  const teamA = getTeam(tournament_id, match?.teamA);
-  const teamB = getTeam(tournament_id, match?.teamB);
+  const teamA = match?.teamA && getTeam(tournament_id, match?.teamA);
+  const teamB = match?.teamB && getTeam(tournament_id, match?.teamB);
 
   const [scoreA, setScoreA] = useState(match?.teamAScore || 0);
   const [scoreB, setScoreB] = useState(match?.teamBScore || 0);
 
+  const isKnockout = tournament?.format === TournamentFormat.KNOCKOUT;
+
   const handlePickWinner = (scoreA: number, scoreB: number) => {
-    let winner_id = null;
+    if (isKnockout && scoreA === scoreB) {
+      Alert.alert(
+        "Draw not allowed",
+        "Knockout matches must have a winner. Please enter different scores.",
+      );
+      return;
+    }
+
+    let winner_id: Team["id"] | null;
     let isDraw = false;
 
     if (scoreA > scoreB) {
-      winner_id = teamA.id;
+      winner_id = teamA ? teamA?.id : null;
     } else if (scoreA < scoreB) {
-      winner_id = teamB.id;
+      winner_id = teamB ? teamB?.id : null;
     } else {
+      winner_id = null;
       isDraw = true;
     }
 
@@ -116,7 +134,7 @@ const MatchDetailsModal = ({
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <View style={{ flex: 1, alignItems: "center", gap: 8 }}>
               <Avatar
-                uri={teamA.imageUri}
+                uri={teamA && teamA?.imageUri}
                 type="team"
                 style={{ width: 64, height: 64, borderRadius: 32 }}
               />
@@ -129,7 +147,7 @@ const MatchDetailsModal = ({
                 }}
                 numberOfLines={1}
               >
-                {teamA.name}
+                {teamA && teamA?.name}
               </Text>
             </View>
             <Text
@@ -143,7 +161,7 @@ const MatchDetailsModal = ({
             </Text>
             <View style={{ flex: 1, alignItems: "center", gap: 8 }}>
               <Avatar
-                uri={teamB.imageUri}
+                uri={teamB && teamB?.imageUri}
                 type="team"
                 style={{ width: 64, height: 64, borderRadius: 32 }}
               />
@@ -156,7 +174,7 @@ const MatchDetailsModal = ({
                 }}
                 numberOfLines={1}
               >
-                {teamB.name}
+                {teamB && teamB?.name}
               </Text>
             </View>
           </View>

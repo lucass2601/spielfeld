@@ -22,8 +22,8 @@ export type Match = {
   id: string;
   teamA: string | null;
   teamB: string | null;
-  teamAScore: number;
-  teamBScore: number;
+  teamAScore: number | null;
+  teamBScore: number | null;
   status: MatchStatus;
   events: MatchEvent[];
   winnerId: string | null;

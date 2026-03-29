@@ -47,7 +47,7 @@ const MatchDetails = () => {
   const handleReset = () => {
     Alert.alert(
       "Reset Match?",
-      "This will clear all scores and events for this match.",
+      "This will clear all scores and events for this match. In knockout tournaments, this may also reset subsequent matches that depend on the result of this game.",
       [
         { text: "Cancel", style: "cancel" },
         {

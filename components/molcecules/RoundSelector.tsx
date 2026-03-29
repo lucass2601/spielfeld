@@ -2,15 +2,10 @@ import { useRef } from "react";
 import { ScrollView, View } from "react-native";
 import Button from "@/components/atoms/Button";
 
-import { Match } from "@/types/match";
-
-interface Round {
-  id: string;
-  matches: Match[];
-}
+import { Matchday } from "@/types/match";
 
 interface RoundSelectorProps {
-  rounds: Round[];
+  rounds: Matchday[];
   getLabel: (index: number) => string;
   onSelect: (index: number) => void;
 }

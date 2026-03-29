@@ -20,6 +20,7 @@ import { v4 as uuidv4 } from "uuid";
 import { colors, typography } from "@/theme/theme";
 
 import useTournamentStore from "@/store/useTournamentStore";
+import { TournamentFormat } from "@/types/tournament";
 
 import { router, useGlobalSearchParams } from "expo-router";
 
@@ -48,9 +49,15 @@ const LivePanel = () => {
   });
   const [tempEvents, setTempEvents] = useState([]);
 
+  const tournament = useTournamentStore((state) =>
+    state.getTournament(tournament_id),
+  );
+
   const match = useTournamentStore((state) =>
     state.getMatch(tournament_id, match_id),
   );
+
+  const isKnockout = tournament?.format === TournamentFormat.KNOCKOUT;
 
   const getTeam = useTournamentStore((state) => state.getTeam);
 
@@ -131,6 +138,14 @@ const LivePanel = () => {
   };
 
   const submitMatch = () => {
+    if (isKnockout && scoreA === scoreB) {
+      Alert.alert(
+        "Draw not allowed",
+        "Knockout matches must have a winner. Please enter different scores.",
+      );
+      return;
+    }
+
     const winner_id =
       scoreA > scoreB ? teamA.id : scoreB > scoreA ? teamB.id : null;
 
