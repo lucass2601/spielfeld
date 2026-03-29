@@ -4,6 +4,8 @@
 
 ### Added
 
+- Add single-elimination format
+
 ### Changed
 
 ### Fixed
