@@ -1,10 +1,15 @@
-export default function buildRoundRobinStandings(tournament) {
+import { Tournament, TournamentFormat } from "@/types/tournament";
+import { Match } from "@/types/match";
+
+export default function buildRoundRobinStandings(tournament: Tournament) {
   if (!tournament || tournament.format !== "roundrobin") return [];
   if (!tournament.teams || tournament.teams.length === 0) return [];
 
-  const pointsWin = tournament.pointsWin ?? 3;
-  const pointsDraw = tournament.pointsTie ?? 1;
-  const pointsLoss = tournament.pointsLose ?? 0;
+  if (tournament.formatSettings.type !== TournamentFormat.ROUND_ROBIN) return;
+
+  const pointsWin = tournament.formatSettings.pointsWin ?? 3;
+  const pointsTie = tournament.formatSettings.pointsTie ?? 1;
+  const pointsLose = tournament.formatSettings.pointsLose ?? 0;
 
   const rows = [...tournament.teams].map((team) => ({
     id: team.id,
@@ -18,11 +23,14 @@ export default function buildRoundRobinStandings(tournament) {
     pts: 0,
   }));
 
-  const getRow = (teamId) => rows.find((m) => m.id === teamId);
+  const getRow = (teamId: Match["teamA" | "teamB"]) =>
+    rows.find((rowTeam) => rowTeam.id === teamId);
 
-  for (const md of tournament.matchdays || []) {
-    for (const m of md.matches || []) {
-      const { teamA, teamAScore, teamB, teamBScore, winnerId, isDraw } = m;
+  for (const matchday of tournament.matchdays || []) {
+    for (const match of matchday.matches || []) {
+      const { teamA, teamAScore, teamB, teamBScore, winnerId, isDraw } = match;
+
+      if (!teamAScore || !teamBScore) return;
 
       const hasA = Boolean(teamA);
       const hasB = Boolean(teamB);
@@ -43,8 +51,8 @@ export default function buildRoundRobinStandings(tournament) {
         a.t += 1;
         b.t += 1;
         a.gd;
-        a.pts += pointsDraw;
-        b.pts += pointsDraw;
+        a.pts += pointsTie;
+        b.pts += pointsTie;
         continue;
       }
 
@@ -54,14 +62,14 @@ export default function buildRoundRobinStandings(tournament) {
         a.w += 1;
         b.l += 1;
         a.pts += pointsWin;
-        b.pts += pointsLoss;
+        b.pts += pointsLose;
       } else if (winnerId === teamB) {
         a.gp += 1;
         b.gp += 1;
         b.w += 1;
         a.l += 1;
         b.pts += pointsWin;
-        a.pts += pointsLoss;
+        a.pts += pointsLose;
       }
 
       a.gd += teamAScore - teamBScore;

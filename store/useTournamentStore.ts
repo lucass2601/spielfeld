@@ -4,18 +4,23 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
 
-import generateMatches from "@/utils/generateMatches";
+import generateRoundRobinMatches from "@/utils/generateRoundRobinMatches";
 import buildRoundRobinStandings from "@/utils/buildRoundRobinStandings";
+
+import generateKnockoutMatches from "@/utils/generateKnockoutMatches";
 
 import {
   StatusType,
   TournamentFormat,
   NewTournament,
   Tournament,
+  TournamentSettings,
 } from "@/types/tournament";
 
 import { Team } from "@/types/team";
 import { Match, MatchStatus, MatchEvent } from "@/types/match";
+import advanceKnockoutWinners from "@/utils/advanceKnockoutWinners";
+import cascadeKnockoutReset from "@/utils/cascadeKnockoutReset";
 
 type TournamentStore = {
   newTournament: NewTournament;
@@ -24,6 +29,16 @@ type TournamentStore = {
   getTeam: (tournament_id: string, team_id: string) => Team | undefined;
   getMatch: (tournament_id: string, match_id: string) => Match | undefined;
   updateTournamentMatches: (tournament_id: string) => void;
+  updateRoundRobinStandings: (tournament_id: string) => void;
+  updateTournamentMatchWinner: (
+    tournament_id: string,
+    match_id: string,
+    team_id: string | null,
+    isDraw: boolean,
+    teamAScore: number,
+    teamBScore: number,
+  ) => void;
+  resetTournamentMatch: (tournament_id: string, match_id: string) => void;
 };
 
 const initialState = {
@@ -31,14 +46,17 @@ const initialState = {
     status: StatusType.DRAFT,
     imageUri: "",
     format: TournamentFormat.ROUND_ROBIN,
+    formatSettings: {
+      type: TournamentFormat.ROUND_ROBIN,
+      pointsWin: 3,
+      pointsTie: 1,
+      pointsLose: 0,
+    },
     sport: null,
     name: "",
     startDate: "",
     teams: [],
     matchdays: [],
-    pointsWin: 3,
-    pointsTie: 1,
-    pointsLose: 0,
   },
   tournaments: [],
 };
@@ -64,6 +82,8 @@ const useTournamentStore = create<TournamentStore>()(
             ...state.tournaments,
             {
               id: tournament_id,
+              teams: [],
+              matchdays: [],
               ...state.newTournament,
             },
           ],
@@ -79,9 +99,13 @@ const useTournamentStore = create<TournamentStore>()(
       },
 
       getTournament: (tournament_id: string) => {
-        return get().tournaments.find(
+        const tournament = get().tournaments.find(
           (tournament) => tournament.id === tournament_id,
         );
+
+        if (!tournament) return;
+
+        return tournament;
       },
 
       deleteTournament: (tournament_id: string) =>
@@ -131,10 +155,15 @@ const useTournamentStore = create<TournamentStore>()(
               ? {
                   ...tournament,
                   matchdays:
-                    generateMatches(
-                      tournament.teams.map((team) => team.id),
-                      tournament.format,
-                    ) || [],
+                    tournament.format === TournamentFormat.ROUND_ROBIN
+                      ? generateRoundRobinMatches(
+                          tournament.teams.map((team) => team.id),
+                          tournament.format,
+                        ) || []
+                      : generateKnockoutMatches(
+                          tournament.teams.map((team) => team.id),
+                          tournament.format,
+                        ) || [],
                 }
               : tournament,
           ),
@@ -149,18 +178,34 @@ const useTournamentStore = create<TournamentStore>()(
               status: StatusType.ACTIVE,
               matchdays: tournament.matchdays.map((md) => ({
                 ...md,
-                matches: md.matches.map((match) =>
-                  match.id === match_id
-                    ? {
-                        ...match,
-                        winnerId: null,
-                        isDraw: false,
-                        teamAScore: 0,
-                        teamBScore: 0,
-                        status: MatchStatus.SCHEDULED,
-                      }
-                    : match,
-                ),
+                matches: md.matches.map((match) => {
+                  if (match.id !== match_id) {
+                    return match;
+                  }
+
+                  const resetMatchBody = {
+                    winnerId: null,
+                    isDraw: false,
+                    teamAScore: null,
+                    teamBScore: null,
+                    status: MatchStatus.SCHEDULED,
+                  };
+
+                  if (tournament.format === TournamentFormat.KNOCKOUT) {
+                    cascadeKnockoutReset(
+                      tournament.matchdays,
+                      match.id,
+                      match.teamA,
+                      match.teamB,
+                      // resetMatchBody
+                    );
+                  }
+
+                  return {
+                    ...match,
+                    ...resetMatchBody,
+                  };
+                }),
               })),
             };
           }),
@@ -200,6 +245,10 @@ const useTournamentStore = create<TournamentStore>()(
                   : match,
               ),
             }));
+
+            if (tournament.format === TournamentFormat.KNOCKOUT) {
+              advanceKnockoutWinners(updatedMatchdays);
+            }
 
             const allFinished = updatedMatchdays
               .flatMap((md) => md.matches)
@@ -241,10 +290,13 @@ const useTournamentStore = create<TournamentStore>()(
         }));
       },
 
-      updateTournamentStandings: (tournament_id: string) => {
+      updateRoundRobinStandings: (tournament_id: Tournament["id"]) => {
         const tournament = get().tournaments.find(
           (t) => t.id === tournament_id,
         );
+
+        if (!tournament) return;
+
         return buildRoundRobinStandings(tournament);
       },
 
@@ -255,9 +307,13 @@ const useTournamentStore = create<TournamentStore>()(
 
         if (!tournament) return;
 
-        const allMatches = tournament.matchdays.flatMap((md) => md.matches);
+        const allMatches = tournament?.matchdays.flatMap((md) => md.matches);
+        if (!allMatches) return;
 
-        return allMatches?.find((match) => match.id === match_id);
+        const match = allMatches?.find((match) => match.id === match_id);
+        if (!match) return;
+
+        return match;
       },
 
       getTeam: (tournament_id: string, team_id: string) => {
@@ -480,7 +536,7 @@ const useTournamentStore = create<TournamentStore>()(
 
       updateTournamentSettings: (
         tournament_id: string,
-        settings: Partial<Tournament>,
+        settings: TournamentSettings,
       ) => {
         set((state) => ({
           tournaments: state.tournaments.map((tournament) =>

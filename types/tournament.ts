@@ -13,31 +13,36 @@ export enum TournamentFormat {
   KNOCKOUT = "knockout",
 }
 
-export type NewTournament = {
-  status: StatusType;
-  imageUri: string | null;
-  format: TournamentFormat;
-  sport: Sport | null;
-  name: string;
-  startDate: string;
-  teams: Team[];
-  matchdays: Matchday[];
+export type RoundRobinSettings = {
+  type: TournamentFormat.ROUND_ROBIN;
   pointsWin: number;
   pointsTie: number;
   pointsLose: number;
 };
 
-export type Tournament = {
-  id: string;
+export type KnockoutSettings = {
+  type: TournamentFormat.KNOCKOUT;
+};
+
+export type FormatSettings = RoundRobinSettings | KnockoutSettings;
+
+export type NewTournament = {
   status: StatusType;
   imageUri: string | null;
   format: TournamentFormat;
+  formatSettings: FormatSettings;
   sport: Sport | null;
   name: string;
   startDate: string;
+};
+
+export type Tournament = NewTournament & {
+  id: string;
   teams: Team[];
   matchdays: Matchday[];
-  pointsWin: number;
-  pointsTie: number;
-  pointsLose: number;
 };
+
+export type TournamentSettings = Pick<
+  Tournament,
+  "name" | "imageUri" | "startDate" | "sport"
+>;

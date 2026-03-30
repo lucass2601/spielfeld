@@ -108,11 +108,10 @@ const FormatTab = () => {
                   selected={selectedFormat === "roundrobin"}
                 />
                 <TournamentFormatItem
-                  title="Knockout (Coming soon)"
+                  title="Knockout"
                   description="A team is eliminated after losing a match until only one winner remains. Fast-paced, exciting, and perfect for large tournaments."
                   onPress={() => setSelectedFormat("knockout")}
                   selected={selectedFormat === "knockout"}
-                  disabled={true}
                 />
               </View>
             </View>

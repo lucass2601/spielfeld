@@ -3,6 +3,7 @@ import ScreenContainer from "@/components/layouts/ScreenContainer";
 import TournamentFormatItem from "@/components/molcecules/TournamentFormatItem";
 import useTournamentStore from "@/store/useTournamentStore";
 import { colors, typography } from "@/theme/theme";
+import { TournamentFormat } from "@/types/tournament";
 import { router } from "expo-router";
 import { useState, useEffect } from "react";
 import { View, Text, StyleSheet } from "react-native";
@@ -33,22 +34,18 @@ export default function Wizard_Format() {
         <TournamentFormatItem
           title="League"
           description="Each team competes against everyone else, and the one with the most points wins. Ideal for fair competition and multiple matches."
-          onPress={() => setSelectedFormat("roundrobin")}
-          selected={selectedFormat === "roundrobin"}
+          onPress={() => setSelectedFormat(TournamentFormat.ROUND_ROBIN)}
+          selected={selectedFormat === TournamentFormat.ROUND_ROBIN}
         />
         <TournamentFormatItem
-          title="Knockout (Coming soon)"
+          title="Knockout"
           description="A team is eliminated after losing a match until only one winner remains. Fast-paced, exciting, and perfect for large tournaments."
-          onPress={() => setSelectedFormat("knockout")}
-          selected={selectedFormat === "knockout"}
-          disabled={true}
+          onPress={() => setSelectedFormat(TournamentFormat.KNOCKOUT)}
+          selected={selectedFormat === TournamentFormat.KNOCKOUT}
         />
       </View>
       <View style={{ marginTop: "auto", marginBottom: 24 }}>
-        <Button
-          onPress={submitWizard}
-          label="Next"
-        />
+        <Button onPress={submitWizard} label="Next" />
       </View>
     </ScreenContainer>
   );
