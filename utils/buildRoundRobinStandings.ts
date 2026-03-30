@@ -5,8 +5,6 @@ export default function buildRoundRobinStandings(tournament: Tournament) {
   if (!tournament || tournament.format !== "roundrobin") return [];
   if (!tournament.teams || tournament.teams.length === 0) return [];
 
-  console.log(tournament);
-
   if (tournament.formatSettings.type !== TournamentFormat.ROUND_ROBIN) return;
 
   const pointsWin = tournament.formatSettings.pointsWin ?? 3;
