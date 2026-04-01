@@ -26,6 +26,18 @@ export type KnockoutSettings = {
 
 export type FormatSettings = RoundRobinSettings | KnockoutSettings;
 
+export type RoundRobinRow = {
+  id: Team["id"];
+  name: Team["name"];
+  imageUri: Team["imageUri"];
+  gamesPlayed: number;
+  wins: number;
+  ties: number;
+  loses: number;
+  goalDifference: number;
+  points: number;
+};
+
 export type NewTournament = {
   status: StatusType;
   imageUri: string | null;

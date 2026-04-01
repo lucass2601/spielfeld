@@ -175,10 +175,12 @@ export default function MatchesTab() {
                     borderTopLeftRadius: 35,
                   }}
                 >
-                  <MatchDetailsModal
-                    match={selectedMatch}
-                    onClose={() => setModalOpen(false)}
-                  />
+                  {selectedMatch && (
+                    <MatchDetailsModal
+                      match={selectedMatch}
+                      onClose={() => setModalOpen(false)}
+                    />
+                  )}
                 </View>
               </KeyboardAvoidingView>
             </View>
