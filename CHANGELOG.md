@@ -10,6 +10,7 @@
 
 ### Fixed
 
+- Fix Round Robin standings
 - Fix score inputs to be numeric instead of text
 
 ### Removed
