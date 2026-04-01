@@ -5,8 +5,13 @@ import useTournamentStore from "@/store/useTournamentStore";
 import { useGlobalSearchParams } from "expo-router";
 import { View, ScrollView } from "react-native";
 
-import { Tournament, TournamentFormat } from "@/types/tournament";
+import {
+  RoundRobinRow,
+  Tournament,
+  TournamentFormat,
+} from "@/types/tournament";
 import { colors } from "@/theme/theme";
+import buildRoundRobinStandings from "@/utils/buildRoundRobinStandings";
 
 export default function StandingsTab() {
   const { tournament_id } = useGlobalSearchParams<{
@@ -17,9 +22,9 @@ export default function StandingsTab() {
     state.getTournament(tournament_id),
   );
 
-  const updateRoundRobinStandings = useTournamentStore(
-    (state) => state.updateRoundRobinStandings,
-  );
+  // const updateRoundRobinStandings = useTournamentStore(
+  //   (state) => state.updateRoundRobinStandings,
+  // );
 
   if (!tournament) return null;
 
@@ -32,15 +37,13 @@ export default function StandingsTab() {
   }
 
   if (tournament.format === TournamentFormat.ROUND_ROBIN) {
-    const standingsData = updateRoundRobinStandings(tournament_id);
+    const standingsData: RoundRobinRow[] = buildRoundRobinStandings(tournament);
+
+    if (!standingsData) return;
 
     return (
       <ScreenContainer>
-        <View style={{ flex: 1 }}>
-          <ScrollView contentContainerStyle={{ flex: 1 }}>
-            <RoundRobinTable data={standingsData} />
-          </ScrollView>
-        </View>
+        <RoundRobinTable standingsData={standingsData} />
       </ScreenContainer>
     );
   }

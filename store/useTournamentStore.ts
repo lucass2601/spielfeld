@@ -29,7 +29,6 @@ type TournamentStore = {
   getTeam: (tournament_id: string, team_id: string) => Team | undefined;
   getMatch: (tournament_id: string, match_id: string) => Match | undefined;
   updateTournamentMatches: (tournament_id: string) => void;
-  updateRoundRobinStandings: (tournament_id: string) => void;
   updateTournamentMatchWinner: (
     tournament_id: string,
     match_id: string,
@@ -84,6 +83,7 @@ const useTournamentStore = create<TournamentStore>()(
               id: tournament_id,
               teams: [],
               matchdays: [],
+              standings: null,
               ...state.newTournament,
             },
           ],
@@ -246,6 +246,10 @@ const useTournamentStore = create<TournamentStore>()(
               ),
             }));
 
+            if (tournament.format === TournamentFormat.ROUND_ROBIN) {
+              buildRoundRobinStandings(tournament);
+            }
+
             if (tournament.format === TournamentFormat.KNOCKOUT) {
               advanceKnockoutWinners(updatedMatchdays);
             }
@@ -288,16 +292,6 @@ const useTournamentStore = create<TournamentStore>()(
             };
           }),
         }));
-      },
-
-      updateRoundRobinStandings: (tournament_id: Tournament["id"]) => {
-        const tournament = get().tournaments.find(
-          (t) => t.id === tournament_id,
-        );
-
-        if (!tournament) return;
-
-        return buildRoundRobinStandings(tournament);
       },
 
       getMatch: (tournament_id: string, match_id: string) => {
