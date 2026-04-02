@@ -23,29 +23,19 @@ import { formatDateTime } from "@/utils/dateUtils";
 import useTournamentStore from "@/store/useTournamentStore";
 import Button from "@/components/atoms/Button";
 
+import { Tournament } from "@/types/tournament";
+
 const Index = () => {
   const [greeting, setGreeting] = useState("");
 
   const tournaments = useTournamentStore((state) => state.tournaments);
 
-  const now = new Date();
-  const sortedTournaments = [...tournaments].sort((a, b) => {
-    const aDate = new Date(a.startDate);
-    const bDate = new Date(b.startDate);
-    const aUpcoming = aDate >= now;
-    const bUpcoming = bDate >= now;
-    if (aUpcoming && !bUpcoming) return -1;
-    if (!aUpcoming && bUpcoming) return 1;
-    if (aUpcoming && bUpcoming) return aDate - bDate;
-    return bDate - aDate;
-  });
-
-  const handleTournamentPress = (tournament_id) => {
+  const handleTournamentPress = (tournament_id: Tournament["id"]) => {
     router.push(`/tournament/${tournament_id}`);
   };
 
   const clearNewTournament = useTournamentStore(
-    (state) => state.clearNewTournament
+    (state) => state.clearNewTournament,
   );
 
   const handleCreateTournament = () => {
@@ -118,7 +108,7 @@ const Index = () => {
 
               <View>
                 <View style={styles.listContainer}>
-                  {sortedTournaments.map((tournament) => (
+                  {tournaments.map((tournament) => (
                     <TournamentItem
                       key={tournament.id}
                       imageUri={tournament.imageUri}

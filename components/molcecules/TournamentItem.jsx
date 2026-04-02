@@ -18,7 +18,6 @@ const TournamentItem = ({
   sport,
   preview = false,
   onPress,
-  style,
   ...props
 }) => {
   const tournamentYear = startDate ? new Date(startDate).getFullYear() : null;
@@ -27,7 +26,7 @@ const TournamentItem = ({
     tournamentYear && tournamentYear !== currentYear ? "LLL d, yyyy" : "LLL d";
 
   return (
-    <Pressable onPress={onPress} style={[styles.container, style]} {...props}>
+    <Pressable onPress={onPress} style={styles.container} {...props}>
       <View style={styles.imageContainer}>
         <Image
           style={styles.cover}

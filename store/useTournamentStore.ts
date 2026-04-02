@@ -25,6 +25,7 @@ import cascadeKnockoutReset from "@/utils/cascadeKnockoutReset";
 type TournamentStore = {
   newTournament: NewTournament;
   tournaments: Tournament[];
+  clearNewTournament: () => void;
   getTournament: (tournament_id: string) => Tournament | undefined;
   getTeam: (tournament_id: string, team_id: string) => Team | undefined;
   getMatch: (tournament_id: string, match_id: string) => Match | undefined;
@@ -38,6 +39,7 @@ type TournamentStore = {
     teamBScore: number,
   ) => void;
   resetTournamentMatch: (tournament_id: string, match_id: string) => void;
+  resetAllData: () => void;
 };
 
 const initialState = {

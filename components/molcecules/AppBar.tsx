@@ -5,6 +5,15 @@ import { colors, typography } from "@/theme/theme";
 
 import IconArrowBack from "@/assets/icons/icon-arrow-back.svg";
 
+type AppBarProps = {
+  backPress?: () => void;
+  forwardPress?: () => void;
+  iconLeft?: React.ReactNode;
+  iconRight?: React.ReactNode;
+  textRight?: string;
+  title: string;
+};
+
 export default function AppBar({
   backPress,
   forwardPress,
@@ -12,7 +21,7 @@ export default function AppBar({
   iconRight,
   textRight,
   title,
-}) {
+}: AppBarProps) {
   const router = useRouter();
 
   return (
