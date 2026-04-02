@@ -26,6 +26,10 @@ type TournamentStore = {
   newTournament: NewTournament;
   tournaments: Tournament[];
   clearNewTournament: () => void;
+  setNewTournamentInfo: <T extends keyof NewTournament>(
+    key: T,
+    value: NewTournament[T],
+  ) => void;
   getTournament: (tournament_id: string) => Tournament | undefined;
   getTeam: (tournament_id: string, team_id: string) => Team | undefined;
   getMatch: (tournament_id: string, match_id: string) => Match | undefined;
@@ -38,6 +42,7 @@ type TournamentStore = {
     teamAScore: number,
     teamBScore: number,
   ) => void;
+  submitNewTournament: () => Tournament | undefined;
   resetTournamentMatch: (tournament_id: string, match_id: string) => void;
   resetAllData: () => void;
 };

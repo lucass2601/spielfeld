@@ -23,8 +23,8 @@ export default function Wizard_Information() {
   const [tournamentName, setTournamentName] = useState(
     newTournament.name || "",
   );
-  const [imageUri, setImageUri] = useState(newTournament.imageUri || null);
-  const [startDate, setStartDate] = useState(newTournament.startDate || null);
+  const [imageUri, setImageUri] = useState(newTournament.imageUri);
+  const [startDate, setStartDate] = useState(newTournament.startDate);
 
   useEffect(() => {
     setNewTournamentInfo("imageUri", imageUri);
@@ -35,7 +35,9 @@ export default function Wizard_Information() {
   }, [tournamentName]);
 
   useEffect(() => {
-    setNewTournamentInfo("startDate", startDate);
+    if (startDate) {
+      setNewTournamentInfo("startDate", startDate);
+    }
   }, [startDate]);
 
   const submitWizard = () => {
@@ -60,7 +62,9 @@ export default function Wizard_Information() {
 
           <DateTimePickerInput
             value={startDate}
-            onChange={(newStartDate) => setStartDate(newStartDate)}
+            onChange={(newStartDate) =>
+              setStartDate(newStartDate.toISOString())
+            }
             label="Start Date"
             placeholder="Select starting date"
           />
