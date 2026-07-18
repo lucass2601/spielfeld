@@ -1,42 +1,29 @@
+import { memo } from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import { colors, typography } from "@/theme/theme";
 
 import Avatar from "@/components/atoms/Avatar";
 
-import useTournamentStore from "@/store/useTournamentStore";
-
-import { useGlobalSearchParams } from "expo-router";
 import { Match, MatchStatus } from "@/types/match";
 import { Team } from "@/types/team";
-import { Tournament } from "@/types/tournament";
 
 const MatchItem = ({
   match,
+  teamsById,
   title,
   onPress,
   teamAFallbackName,
   teamBFallbackName,
 }: {
   match: Match;
+  teamsById: Map<Team["id"], Team>;
   title: string;
-  onPress: () => void | null;
+  onPress: (match_id: Match["id"]) => void;
   teamAFallbackName?: string;
   teamBFallbackName?: string;
 }) => {
-  const { tournament_id } = useGlobalSearchParams<{
-    tournament_id?: Tournament["id"];
-  }>();
-
-  const getTeam = useTournamentStore((state) => state.getTeam);
-
-  const getTeamData = (team_id: Team["id"]) => {
-    if (!tournament_id || !team_id) return;
-
-    return getTeam(tournament_id, team_id);
-  };
-
-  const teamA = match?.teamA && getTeamData(match.teamA);
-  const teamB = match?.teamB && getTeamData(match.teamB);
+  const teamA = match?.teamA ? teamsById.get(match.teamA) : undefined;
+  const teamB = match?.teamB ? teamsById.get(match.teamB) : undefined;
 
   const isDraw = Boolean(match.isDraw);
   const isFinished = match.status === MatchStatus.FINISHED;
@@ -58,7 +45,7 @@ const MatchItem = ({
 
   return (
     <Pressable
-      onPress={teamABYE || teamBBYE ? null : onPress}
+      onPress={teamABYE || teamBBYE ? undefined : () => onPress(match.id)}
       disabled={teamABYE || teamBBYE}
       style={({ pressed }) => [
         styles.container,
@@ -112,7 +99,7 @@ const MatchItem = ({
   );
 };
 
-export default MatchItem;
+export default memo(MatchItem);
 
 const styles = StyleSheet.create({
   container: {
