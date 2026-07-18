@@ -3,31 +3,31 @@ import { colors, typography } from "@/theme/theme";
 
 import tournamentPlaceholder from "@/assets/images/tournament-placeholder.png";
 
-const tournamentSportDefinitions = {
-  null: "No Sport",
-  football: "Football",
+import { formatDateTime } from "@/utils/dateUtils";
+import { Sport, SportNames } from "@/types/sport";
+
+type TournamentItemProps = {
+  imageUri?: string | null;
+  name: string;
+  startDate: string;
+  sport: Sport | null;
+  onPress?: () => void;
 };
 
-import { formatDateTime } from "@/utils/dateUtils";
-
 const TournamentItem = ({
-  imageUri,
+  imageUri = tournamentPlaceholder,
   name = "Turniername",
   startDate,
-  teams,
   sport,
-  preview = false,
   onPress,
-  style,
-  ...props
-}) => {
+}: TournamentItemProps) => {
   const tournamentYear = startDate ? new Date(startDate).getFullYear() : null;
   const currentYear = new Date().getFullYear();
   const dateFormat =
     tournamentYear && tournamentYear !== currentYear ? "LLL d, yyyy" : "LLL d";
 
   return (
-    <Pressable onPress={onPress} style={[styles.container, style]} {...props}>
+    <Pressable onPress={onPress} style={styles.container}>
       <View style={styles.imageContainer}>
         <Image
           style={styles.cover}
@@ -35,7 +35,9 @@ const TournamentItem = ({
         />
       </View>
       <View style={styles.infoContainer}>
-        <Text style={styles.sport}>{tournamentSportDefinitions[sport]}</Text>
+        <Text style={styles.sport}>
+          {sport ? SportNames[sport] : SportNames.null}
+        </Text>
         <Text style={styles.name} numberOfLines={1}>
           {name}
         </Text>

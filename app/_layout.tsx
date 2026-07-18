@@ -1,10 +1,12 @@
-import {
-  useFonts,
-  Manrope_400Regular,
-  Manrope_500Medium,
-  Manrope_600SemiBold,
-  Manrope_700Bold,
-} from "@expo-google-fonts/manrope";
+// import {
+//   useFonts,
+//   Manrope_400Regular,
+//   Manrope_500Medium,
+//   Manrope_600SemiBold,
+//   Manrope_700Bold,
+// } from "@expo-google-fonts/manrope";
+
+import { useFonts } from "expo-font";
 
 import { Stack } from "expo-router";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
@@ -22,10 +24,10 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
-    Manrope_400Regular,
-    Manrope_500Medium,
-    Manrope_600SemiBold,
-    Manrope_700Bold,
+    Manrope_400Regular: require("../assets/fonts/Manrope-Regular.ttf"),
+    Manrope_500Medium: require("../assets/fonts/Manrope-Medium.ttf"),
+    Manrope_600SemiBold: require("../assets/fonts/Manrope-SemiBold.ttf"),
+    Manrope_700Bold: require("../assets/fonts/Manrope-Bold.ttf"),
   });
 
   const [storeHydrated, setStoreHydrated] = useState(
@@ -39,15 +41,13 @@ export default function RootLayout() {
     return unsub;
   }, []);
 
-  const ready = (loaded || error) && storeHydrated;
-
   useEffect(() => {
-    if (ready) {
+    if (storeHydrated && (loaded || error)) {
       SplashScreen.hideAsync();
     }
-  }, [ready]);
+  }, [loaded, error, storeHydrated]);
 
-  if (!ready) {
+  if (!storeHydrated || (!loaded && !error)) {
     return null;
   }
 
@@ -63,31 +63,11 @@ export default function RootLayout() {
               }}
               edges={["top"]}
             >
-              <Stack>
-                <Stack.Screen
-                  name="index"
-                  options={{
-                    headerShown: false,
-                  }}
-                />
-                <Stack.Screen
-                  name="wizard"
-                  options={{
-                    headerShown: false,
-                  }}
-                />
-                <Stack.Screen
-                  name="tournament/[tournament_id]"
-                  options={{
-                    headerShown: false,
-                  }}
-                />
-                <Stack.Screen
-                  name="settings"
-                  options={{
-                    headerShown: false,
-                  }}
-                />
+              <Stack screenOptions={{ headerShown: false }}>
+                <Stack.Screen name="index" />
+                <Stack.Screen name="wizard" />
+                <Stack.Screen name="tournament/[tournament_id]" />
+                <Stack.Screen name="settings" />
               </Stack>
             </SafeAreaView>
             <StatusBar style="dark" />

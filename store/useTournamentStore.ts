@@ -5,7 +5,6 @@ import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
 
 import generateRoundRobinMatches from "@/utils/generateRoundRobinMatches";
-import buildRoundRobinStandings from "@/utils/buildRoundRobinStandings";
 
 import generateKnockoutMatches from "@/utils/generateKnockoutMatches";
 
@@ -25,6 +24,11 @@ import cascadeKnockoutReset from "@/utils/cascadeKnockoutReset";
 type TournamentStore = {
   newTournament: NewTournament;
   tournaments: Tournament[];
+  clearNewTournament: () => void;
+  setNewTournamentInfo: <T extends keyof NewTournament>(
+    key: T,
+    value: NewTournament[T],
+  ) => void;
   getTournament: (tournament_id: string) => Tournament | undefined;
   getTeam: (tournament_id: string, team_id: string) => Team | undefined;
   getMatch: (tournament_id: string, match_id: string) => Match | undefined;
@@ -37,7 +41,9 @@ type TournamentStore = {
     teamAScore: number,
     teamBScore: number,
   ) => void;
+  submitNewTournament: () => Tournament | undefined;
   resetTournamentMatch: (tournament_id: string, match_id: string) => void;
+  resetAllData: () => void;
 };
 
 const initialState = {
@@ -245,10 +251,6 @@ const useTournamentStore = create<TournamentStore>()(
                   : match,
               ),
             }));
-
-            if (tournament.format === TournamentFormat.ROUND_ROBIN) {
-              buildRoundRobinStandings(tournament);
-            }
 
             if (tournament.format === TournamentFormat.KNOCKOUT) {
               advanceKnockoutWinners(updatedMatchdays);

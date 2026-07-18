@@ -21,6 +21,9 @@ export default function Wizard_Summary() {
 
   const submitWizard = () => {
     const newTournament = submitNewTournament();
+
+    if (!newTournament) return;
+
     router.dismissAll();
     router.replace(`/tournament/${newTournament.id}`);
   };
@@ -34,12 +37,10 @@ export default function Wizard_Summary() {
         <View>
           {newTournament && (
             <TournamentItem
-              preview={true}
-              imageUri={imageUri}
+              imageUri={imageUri ?? null}
               name={name}
               startDate={dateString}
               sport={sport}
-              format={format}
             />
           )}
         </View>
@@ -106,10 +107,7 @@ export default function Wizard_Summary() {
         </View>
       </View>
       <View style={{ marginTop: "auto", marginBottom: 24 }}>
-        <Button
-          onPress={submitWizard}
-          label="Create Tournament"
-        />
+        <Button onPress={submitWizard} label="Create Tournament" />
       </View>
     </ScreenContainer>
   );

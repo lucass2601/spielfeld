@@ -20,21 +20,23 @@ import { colors, typography } from "@/theme/theme";
 interface DateTimePickerInputProps {
   label?: string;
   placeholder: string;
-  value?: Date;
+  value: string;
   onChange: (date: Date) => void;
 }
 
 const DateTimePickerInput = ({
   label,
   placeholder,
-  value,
+  value = new Date().toISOString(),
   onChange,
 }: DateTimePickerInputProps) => {
   const sheetRef = useRef<BottomSheetModal>(null);
-  const [tempDate, setTempDate] = useState<Date>(value ?? new Date());
+  const [tempDate, setTempDate] = useState<Date>(
+    value ? new Date(value) : new Date(),
+  );
 
   const openSheet = () => {
-    setTempDate(value ?? new Date());
+    setTempDate(value ? new Date(value) : new Date());
     sheetRef.current?.present();
   };
 
@@ -69,7 +71,9 @@ const DateTimePickerInput = ({
         <Pressable style={styles.inputContainer} onPress={openSheet}>
           <IconCalendar height={20} width={20} color={colors["grey-400"]} />
           <Text style={[styles.inputText, !value && styles.placeholder]}>
-            {value ? formatDateTime(value.toISOString()) : placeholder}
+            {value
+              ? formatDateTime(new Date(value).toISOString())
+              : placeholder}
           </Text>
         </Pressable>
       </View>

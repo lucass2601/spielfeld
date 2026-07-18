@@ -17,8 +17,24 @@ import TournamentItem from "@/components/molcecules/TournamentItem";
 export default function ManageTab() {
   const { tournament_id } = useGlobalSearchParams();
 
-  const tournament = useTournamentStore((state) =>
-    state.getTournament(tournament_id),
+  const tournamentExists = useTournamentStore((state) =>
+    Boolean(state.getTournament(tournament_id)),
+  );
+
+  const tournamentName = useTournamentStore(
+    (state) => state.getTournament(tournament_id)?.name,
+  );
+  const tournamentImageUri = useTournamentStore(
+    (state) => state.getTournament(tournament_id)?.imageUri,
+  );
+  const tournamentStartDate = useTournamentStore(
+    (state) => state.getTournament(tournament_id)?.startDate,
+  );
+  const tournamentSport = useTournamentStore(
+    (state) => state.getTournament(tournament_id)?.sport,
+  );
+  const tournamentFormat = useTournamentStore(
+    (state) => state.getTournament(tournament_id)?.format,
   );
 
   const deleteTournament = useTournamentStore(
@@ -29,9 +45,9 @@ export default function ManageTab() {
     (state) => state.deleteTournamentMatches,
   );
 
-  if (!tournament) return null;
+  if (!tournamentExists) return null;
 
-  const dateString = new Date(tournament.startDate).toISOString();
+  const dateString = new Date(tournamentStartDate).toISOString();
 
   const managementOptions = [
     {
@@ -116,11 +132,11 @@ export default function ManageTab() {
       <View style={styles.managementContainer}>
         <TournamentItem
           preview={true}
-          imageUri={tournament.imageUri}
-          name={tournament.name}
+          imageUri={tournamentImageUri}
+          name={tournamentName}
           startDate={dateString}
-          sport={tournament.sport}
-          format={tournament.format}
+          sport={tournamentSport}
+          format={tournamentFormat}
         />
         <OptionGroup options={managementOptions} />
       </View>

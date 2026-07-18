@@ -9,6 +9,7 @@ import { View, Text, StyleSheet } from "react-native";
 
 import IconSportSoccer from "@/assets/icons/icon-sport-soccer.svg";
 import IconSportNoSport from "@/assets/icons/icon-sport-no-sport.svg";
+import { Sport } from "@/types/sport";
 
 export default function Wizard_Format() {
   const newTournament = useTournamentStore((state) => state.newTournament);
@@ -57,15 +58,12 @@ export default function Wizard_Format() {
             />
           }
           title="Football"
-          onPress={() => setSelectedSport("football")}
+          onPress={() => setSelectedSport(Sport.FOOTBALL)}
           selected={selectedSport === "football"}
         />
       </View>
       <View style={{ marginTop: "auto", marginBottom: 24 }}>
-        <Button
-          onPress={submitWizard}
-          label="Next"
-        />
+        <Button onPress={submitWizard} label="Next" />
       </View>
     </ScreenContainer>
   );
