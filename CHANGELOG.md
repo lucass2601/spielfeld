@@ -8,10 +8,15 @@
 
 ### Changed
 
+- Change `Manage` tab to use granular Zustand selectors instead of subscribing to the whole tournament, so it no longer re-renders on unrelated score updates
+- Change match list in `Matches` tab from `ScrollView` to `SectionList` for virtualization, and memoize `MatchItem` rows so unrelated score updates don't re-render the whole list
+- Change team lookups in `MatchItem` to use a `Map` instead of a linear search
+
 ### Fixed
 
 - Fix Round Robin standings
 - Fix score inputs to be numeric instead of text
+- Fix Round Robin standings being recomputed on every render and redundantly recalculated (and discarded) on every score update
 
 ### Removed
 
