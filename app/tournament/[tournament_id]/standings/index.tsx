@@ -4,6 +4,7 @@ import KnockoutBracket from "@/components/molcecules/KnockoutBracket";
 import useTournamentStore from "@/store/useTournamentStore";
 import { useGlobalSearchParams } from "expo-router";
 import { View, ScrollView } from "react-native";
+import { useMemo } from "react";
 
 import {
   RoundRobinRow,
@@ -22,9 +23,10 @@ export default function StandingsTab() {
     state.getTournament(tournament_id),
   );
 
-  // const updateRoundRobinStandings = useTournamentStore(
-  //   (state) => state.updateRoundRobinStandings,
-  // );
+  const standingsData: RoundRobinRow[] = useMemo(
+    () => (tournament ? buildRoundRobinStandings(tournament) : []),
+    [tournament],
+  );
 
   if (!tournament) return null;
 
@@ -37,8 +39,6 @@ export default function StandingsTab() {
   }
 
   if (tournament.format === TournamentFormat.ROUND_ROBIN) {
-    const standingsData: RoundRobinRow[] = buildRoundRobinStandings(tournament);
-
     if (!standingsData) return;
 
     return (

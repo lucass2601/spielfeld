@@ -5,7 +5,6 @@ import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
 
 import generateRoundRobinMatches from "@/utils/generateRoundRobinMatches";
-import buildRoundRobinStandings from "@/utils/buildRoundRobinStandings";
 
 import generateKnockoutMatches from "@/utils/generateKnockoutMatches";
 
@@ -252,10 +251,6 @@ const useTournamentStore = create<TournamentStore>()(
                   : match,
               ),
             }));
-
-            if (tournament.format === TournamentFormat.ROUND_ROBIN) {
-              buildRoundRobinStandings(tournament);
-            }
 
             if (tournament.format === TournamentFormat.KNOCKOUT) {
               advanceKnockoutWinners(updatedMatchdays);
