@@ -100,7 +100,7 @@ const FormatTab = () => {
           <View style={styles.content}>
             <View style={styles.formatContainer}>
               <Text style={styles.label}>Format</Text>
-              <View>
+              <View style={styles.formatList}>
                 <TournamentFormatItem
                   title="League"
                   description="Each team competes against everyone else, and the one with the most points wins. Ideal for fair competition and multiple matches."
@@ -152,6 +152,9 @@ export default FormatTab;
 const styles = StyleSheet.create({
   content: {
     gap: 20,
+  },
+  formatList: {
+    gap: 12,
   },
   label: {
     marginBottom: 12,
