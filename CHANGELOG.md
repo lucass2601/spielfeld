@@ -17,6 +17,7 @@
 - Fix Round Robin standings
 - Fix score inputs to be numeric instead of text
 - Fix Round Robin standings being recomputed on every render and redundantly recalculated (and discarded) on every score update
+- Fix missing gap between format options in `manage/format`
 
 ### Removed
 
