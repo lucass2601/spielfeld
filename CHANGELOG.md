@@ -19,6 +19,7 @@
 - Fix score inputs to be numeric instead of text
 - Fix Round Robin standings being recomputed on every render and redundantly recalculated (and discarded) on every score update
 - Fix missing gap between format options in `manage/format`
+- Fix knockout bracket matches that relied on a bye not updating their participants until a manual reload, by making `advanceKnockoutWinners` and `cascadeKnockoutReset` return new match objects instead of mutating in place
 
 ### Removed
 

@@ -75,7 +75,7 @@ export default function generateKnockoutMatches(
   }
 
   // Step 5: Auto-finish bye matches and advance winners into later rounds
-  advanceKnockoutWinners(matchdays);
+  matchdays = advanceKnockoutWinners(matchdays);
 
   return matchdays;
 }

@@ -179,40 +179,41 @@ const useTournamentStore = create<TournamentStore>()(
         set((state) => ({
           tournaments: state.tournaments.map((tournament) => {
             if (tournament.id !== tournament_id) return tournament;
+
+            const targetMatch = tournament.matchdays
+              .flatMap((md) => md.matches)
+              .find((match) => match.id === match_id);
+
+            if (!targetMatch) return tournament;
+
+            const resetMatchBody = {
+              winnerId: null,
+              isDraw: false,
+              teamAScore: null,
+              teamBScore: null,
+              status: MatchStatus.SCHEDULED,
+            };
+
+            let updatedMatchdays = tournament.matchdays.map((md) => ({
+              ...md,
+              matches: md.matches.map((match) =>
+                match.id === match_id ? { ...match, ...resetMatchBody } : match,
+              ),
+            }));
+
+            if (tournament.format === TournamentFormat.KNOCKOUT) {
+              updatedMatchdays = cascadeKnockoutReset(
+                updatedMatchdays,
+                match_id,
+                targetMatch.teamA,
+                targetMatch.teamB,
+              );
+            }
+
             return {
               ...tournament,
               status: StatusType.ACTIVE,
-              matchdays: tournament.matchdays.map((md) => ({
-                ...md,
-                matches: md.matches.map((match) => {
-                  if (match.id !== match_id) {
-                    return match;
-                  }
-
-                  const resetMatchBody = {
-                    winnerId: null,
-                    isDraw: false,
-                    teamAScore: null,
-                    teamBScore: null,
-                    status: MatchStatus.SCHEDULED,
-                  };
-
-                  if (tournament.format === TournamentFormat.KNOCKOUT) {
-                    cascadeKnockoutReset(
-                      tournament.matchdays,
-                      match.id,
-                      match.teamA,
-                      match.teamB,
-                      // resetMatchBody
-                    );
-                  }
-
-                  return {
-                    ...match,
-                    ...resetMatchBody,
-                  };
-                }),
-              })),
+              matchdays: updatedMatchdays,
             };
           }),
         }));
@@ -236,7 +237,7 @@ const useTournamentStore = create<TournamentStore>()(
 
             if (!isDraw && !teamExists) return tournament;
 
-            const updatedMatchdays = tournament.matchdays.map((md) => ({
+            let updatedMatchdays = tournament.matchdays.map((md) => ({
               ...md,
               matches: md.matches.map((match) =>
                 match.id === match_id
@@ -253,7 +254,7 @@ const useTournamentStore = create<TournamentStore>()(
             }));
 
             if (tournament.format === TournamentFormat.KNOCKOUT) {
-              advanceKnockoutWinners(updatedMatchdays);
+              updatedMatchdays = advanceKnockoutWinners(updatedMatchdays);
             }
 
             const allFinished = updatedMatchdays
