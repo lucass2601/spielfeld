@@ -2,6 +2,8 @@ import { View, Text, SectionList, Modal, Alert } from "react-native";
 import { useGlobalSearchParams, router } from "expo-router";
 import * as StoreReview from "expo-store-review";
 
+import getItemLayout from "react-native-get-item-layout-section-list";
+
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 
 import { colors, typography } from "@/theme/theme";
@@ -9,6 +11,7 @@ import { colors, typography } from "@/theme/theme";
 import useTournamentStore from "@/store/useTournamentStore";
 import Button from "@/components/atoms/Button";
 import MatchItem from "@/components/molcecules/MatchItem";
+
 import MatchDetailsModal from "@/components/molcecules/MatchDetailsModal";
 import RoundSelector from "@/components/molcecules/RoundSelector";
 
@@ -28,6 +31,16 @@ type MatchSection = {
   data: Match[];
 };
 
+const MATCH_ITEM_ROW_SPACING = 12;
+const SECTION_FOOTER_HEIGHT = 24;
+
+// getItemLayout needs a row/section-header height before layout has actually
+// happened. These are just a starting point for the very first render — the
+// real values are measured off the first mounted row/header (see onLayout
+// below) and override them immediately, so nothing here needs to be exact.
+const INITIAL_ITEM_HEIGHT_ESTIMATE = 155;
+const INITIAL_SECTION_HEADER_HEIGHT_ESTIMATE = 20;
+
 export default function MatchesTab() {
   const { tournament_id } = useGlobalSearchParams<{
     tournament_id: Tournament["id"];
@@ -35,6 +48,15 @@ export default function MatchesTab() {
 
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedMatch, setSelectedMatch] = useState<Match | null>(null);
+
+  const listRef = useRef<SectionList<Match, MatchSection>>(null);
+
+  const [itemHeight, setItemHeight] = useState(INITIAL_ITEM_HEIGHT_ESTIMATE);
+  const [sectionHeaderHeight, setSectionHeaderHeight] = useState(
+    INITIAL_SECTION_HEADER_HEIGHT_ESTIMATE,
+  );
+  const hasMeasuredItemHeight = useRef(false);
+  const hasMeasuredSectionHeaderHeight = useRef(false);
 
   const tournament = useTournamentStore((state) =>
     state.getTournament(tournament_id),
@@ -130,13 +152,23 @@ export default function MatchesTab() {
     updateTournamentMatches(tournament_id);
   };
 
+  const scrollToSection = useCallback((sectionIndex: number) => {
+    listRef.current?.scrollToLocation({
+      sectionIndex,
+      itemIndex: 0,
+      animated: true,
+    });
+  }, []);
+
   const renderSectionHeader = useCallback(
     ({ section }: { section: MatchSection }) => (
       <Text
-        style={[
-          typography.body.medium.semibold,
-          { color: colors["grey-500"] },
-        ]}
+        onLayout={(e) => {
+          if (hasMeasuredSectionHeaderHeight.current) return;
+          hasMeasuredSectionHeaderHeight.current = true;
+          setSectionHeaderHeight(e.nativeEvent.layout.height);
+        }}
+        style={[typography.body.medium.semibold, { color: colors["grey-500"] }]}
       >
         {section.title}
       </Text>
@@ -160,7 +192,16 @@ export default function MatchesTab() {
         section.matchday_index > 0;
 
       return (
-        <View style={{ marginTop: 12 }}>
+        <View
+          style={{ marginTop: MATCH_ITEM_ROW_SPACING }}
+          onLayout={(e) => {
+            if (hasMeasuredItemHeight.current) return;
+            hasMeasuredItemHeight.current = true;
+            // onLayout reports this View's own border-box only, never its
+            // marginTop, so the row spacing has to be added back on top.
+            setItemHeight(e.nativeEvent.layout.height + MATCH_ITEM_ROW_SPACING);
+          }}
+        >
           <MatchItem
             match={match}
             teamsById={teamsById}
@@ -181,6 +222,16 @@ export default function MatchesTab() {
       );
     },
     [format, totalRounds, teamsById, handleMatchPress],
+  );
+
+  const _getItemLayout = useMemo(
+    () =>
+      getItemLayout<Match, MatchSection>({
+        getItemHeight: itemHeight,
+        getSectionHeaderHeight: sectionHeaderHeight,
+        getSectionFooterHeight: SECTION_FOOTER_HEIGHT,
+      }),
+    [itemHeight, sectionHeaderHeight],
   );
 
   return (
@@ -223,7 +274,7 @@ export default function MatchesTab() {
             <RoundSelector
               rounds={tournament?.matchdays}
               getLabel={(index) => sections[index]?.title ?? ""}
-              onSelect={() => {}} // jump-to-round scrolling not implemented yet, see SPI-63
+              onSelect={scrollToSection}
             />
           </View>
           <Modal
@@ -260,11 +311,15 @@ export default function MatchesTab() {
             </View>
           </Modal>
           <SectionList
+            getItemLayout={_getItemLayout}
+            ref={listRef}
             sections={sections}
             keyExtractor={(match) => match.id}
             renderItem={renderItem}
             renderSectionHeader={renderSectionHeader}
-            renderSectionFooter={() => <View style={{ height: 24 }} />}
+            renderSectionFooter={() => (
+              <View style={{ height: SECTION_FOOTER_HEIGHT }} />
+            )}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{
               paddingHorizontal: 24,

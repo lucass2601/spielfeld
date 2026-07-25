@@ -5,6 +5,7 @@
 ### Added
 
 - Add single-elimination format
+- Add jump-to-round scrolling in `Matches` tab via `RoundSelector`, using measured row/section-header heights so `SectionList.scrollToLocation` works even for not-yet-mounted rounds
 
 ### Changed
 
