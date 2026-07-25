@@ -1,29 +1,39 @@
 import { Matchday, MatchStatus } from "@/types/match";
 
-export default function advanceKnockoutWinners(matchdays: Matchday[]) {
-  for (let round = 0; round < matchdays.length - 1; round++) {
-    const currentMatches = matchdays[round].matches;
-    const nextMatches = matchdays[round + 1].matches;
+export default function advanceKnockoutWinners(
+  matchdays: Matchday[],
+): Matchday[] {
+  const result = matchdays.map((md) => ({ ...md, matches: [...md.matches] }));
+
+  for (let round = 0; round < result.length - 1; round++) {
+    const currentMatches = result[round].matches;
+    const nextMatches = result[round + 1].matches;
 
     for (let i = 0; i < currentMatches.length; i++) {
-      const match = currentMatches[i];
+      let match = currentMatches[i];
 
-      if ((!match.teamA || !match.teamB) && round === 0) {
-        match.winnerId = match.teamA ?? match.teamB;
-        match.status = MatchStatus.FINISHED;
+      if ((!match.teamA || !match.teamB) && round === 0 && !match.winnerId) {
+        match = {
+          ...match,
+          winnerId: match.teamA ?? match.teamB,
+          status: MatchStatus.FINISHED,
+        };
+        currentMatches[i] = match;
       }
 
       if (!match.winnerId) continue;
 
-      const nextMatch = nextMatches[Math.floor(i / 2)];
+      const nextIndex = Math.floor(i / 2);
+      const nextMatch = nextMatches[nextIndex];
       if (!nextMatch) continue;
 
       // Even index → teamA, odd index → teamB
-      if (i % 2 === 0) {
-        nextMatch.teamA = match.winnerId;
-      } else {
-        nextMatch.teamB = match.winnerId;
+      const slot = i % 2 === 0 ? "teamA" : "teamB";
+      if (nextMatch[slot] !== match.winnerId) {
+        nextMatches[nextIndex] = { ...nextMatch, [slot]: match.winnerId };
       }
     }
   }
+
+  return result;
 }
